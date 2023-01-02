@@ -18,6 +18,8 @@ var conf = struct {
 	RedisPsw       string `mapstructure:"REDIS_PSW"`
 	RedisDb        int    `mapstructure:"REDIS_DB"`
 	RedisKeyPrefix string `mapstructure:"REDIS_KEY_PREFIX"`
+	FrontDir       string `mapstructure:"FRONT_DIR"`
+	FrontConfig    string `mapstructure:"FRONT_CONFIG"`
 }{}
 
 func confLoad() {
@@ -30,6 +32,7 @@ func confLoad() {
 	viper.SetDefault("SWAG_BASE_PATH", "/")
 	viper.SetDefault("SWAG_SCHEMA", "https")
 	viper.SetDefault("REDIS_KEY_PREFIX", "stg_")
+	viper.SetDefault("FRONT_DIR_PATH", "./front")
 
 	viper.SetConfigFile("conf.yml")
 	_ = viper.ReadInConfig()

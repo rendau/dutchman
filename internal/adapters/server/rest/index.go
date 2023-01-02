@@ -3,6 +3,7 @@ package rest
 import (
 	"context"
 	"net/http"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rendau/dop/adapters/logger"
@@ -17,39 +18,77 @@ type St struct {
 	ucs *usecases.St
 }
 
-func GetHandler(lg logger.Lite, ucs *usecases.St, withCors bool) http.Handler {
+func GetHandler(
+	lg logger.Lite,
+	ucs *usecases.St,
+	frontDir string,
+	frontConfig string,
+	withCors bool,
+) http.Handler {
 	gin.SetMode(gin.ReleaseMode)
 
 	r := gin.New()
 
 	// middlewares
+	setMiddlewares(r, lg, withCors)
 
+	// doc
+	addDocRoutes(r.Group("/doc"))
+
+	// api
+	addApiRoutes(r.Group("/api"), &St{lg: lg, ucs: ucs})
+
+	// healthcheck
+	addHealthcheckRoute(r)
+
+	// static
+	addStaticRoutes(r, frontDir, frontConfig)
+
+	return r
+}
+
+func setMiddlewares(r *gin.Engine, lg logger.WarnAndError, withCors bool) {
 	r.Use(dopHttps.MwRecovery(lg, nil))
 	if withCors {
 		r.Use(dopHttps.MwCors())
 	}
+}
 
-	// handlers
-
-	// doc
-	r.GET("/doc/*any", ginSwag.WrapHandler(swagFiles.Handler, func(c *ginSwag.Config) {
+func addDocRoutes(r *gin.RouterGroup) {
+	r.GET("/*any", ginSwag.WrapHandler(swagFiles.Handler, func(c *ginSwag.Config) {
 		c.DefaultModelsExpandDepth = 0
 		c.DocExpansion = "none"
 	}))
+}
 
-	s := &St{lg: lg, ucs: ucs}
-
-	// healthcheck
-	r.GET("/healthcheck", func(c *gin.Context) { c.Status(http.StatusOK) })
-
+func addApiRoutes(r *gin.RouterGroup, s *St) {
 	// dic
 	r.GET("/dic", s.hDicGet)
 
 	// config
-	r.PUT("/config", s.hConfigUpdate)
 	r.GET("/config", s.hConfigGet)
+	r.PUT("/config", s.hConfigUpdate)
+}
 
-	return r
+func addHealthcheckRoute(r *gin.Engine) {
+	r.GET("/healthcheck", func(c *gin.Context) { c.Status(http.StatusOK) })
+}
+
+func addStaticRoutes(r *gin.Engine, dir, config string) {
+	// config.js
+	configRaw := []byte(config)
+	r.GET("/config.js", func(c *gin.Context) {
+		c.Data(http.StatusOK, "text/javascript; charset=UTF-8", configRaw)
+	})
+
+	// static
+	r.NoRoute(func(c *gin.Context) {
+		path := filepath.Join(dir, c.Request.URL.Path)
+		if c.Request.URL.Path == "/" {
+			path += "/"
+		}
+		http.ServeFile(c.Writer, c.Request, path)
+	})
 }
 
 func (o *St) getRequestContext(c *gin.Context) context.Context {

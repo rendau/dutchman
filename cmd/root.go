@@ -83,6 +83,8 @@ func Execute() {
 		rest.GetHandler(
 			app.lg,
 			app.ucs,
+			conf.FrontDir,
+			conf.FrontConfig,
 			conf.HttpCors,
 		),
 		app.lg,
