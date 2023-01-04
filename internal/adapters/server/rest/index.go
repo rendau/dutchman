@@ -3,7 +3,6 @@ package rest
 import (
 	"context"
 	"net/http"
-	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rendau/dop/adapters/logger"
@@ -36,13 +35,10 @@ func GetHandler(
 	addDocRoutes(r.Group("/doc"))
 
 	// api
-	addApiRoutes(r.Group("/api"), &St{lg: lg, ucs: ucs})
+	addApiRoutes(r, &St{lg: lg, ucs: ucs})
 
 	// healthcheck
 	addHealthcheckRoute(r)
-
-	// static
-	addStaticRoutes(r, frontDir, frontConfig)
 
 	return r
 }
@@ -61,7 +57,7 @@ func addDocRoutes(r *gin.RouterGroup) {
 	}))
 }
 
-func addApiRoutes(r *gin.RouterGroup, s *St) {
+func addApiRoutes(r *gin.Engine, s *St) {
 	// dic
 	r.GET("/dic", s.hDicGet)
 
@@ -72,23 +68,6 @@ func addApiRoutes(r *gin.RouterGroup, s *St) {
 
 func addHealthcheckRoute(r *gin.Engine) {
 	r.GET("/healthcheck", func(c *gin.Context) { c.Status(http.StatusOK) })
-}
-
-func addStaticRoutes(r *gin.Engine, dir, config string) {
-	// config.js
-	configRaw := []byte(config)
-	r.GET("/config.js", func(c *gin.Context) {
-		c.Data(http.StatusOK, "text/javascript; charset=UTF-8", configRaw)
-	})
-
-	// static
-	r.NoRoute(func(c *gin.Context) {
-		path := filepath.Join(dir, c.Request.URL.Path)
-		if c.Request.URL.Path == "/" {
-			path += "/"
-		}
-		http.ServeFile(c.Writer, c.Request, path)
-	})
 }
 
 func (o *St) getRequestContext(c *gin.Context) context.Context {
