@@ -21,6 +21,7 @@ type St struct {
 	Config  *Config
 	Dic     *Dic
 	Session *Session
+	Data    *Data
 }
 
 func New(
@@ -41,6 +42,7 @@ func New(
 	c.Config = NewConfig(c)
 	c.Dic = NewDic(c)
 	c.Session = NewSession(c)
+	c.Data = NewData(c)
 
 	return c
 }

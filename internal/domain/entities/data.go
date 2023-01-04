@@ -1,9 +1,13 @@
 package entities
 
+import (
+	"encoding/json"
+)
+
 type DataSt struct {
-	Id   string `json:"id" db:"id"`
-	Name string `json:"name" db:"name"`
-	Val  string `json:"val" db:"val"`
+	Id   string          `json:"id" db:"id"`
+	Name string          `json:"name" db:"name"`
+	Val  json.RawMessage `json:"val" db:"val"`
 }
 
 type DataListSt struct {
@@ -12,6 +16,6 @@ type DataListSt struct {
 }
 
 type DataCUSt struct {
-	Name *string `json:"name" db:"name"`
-	Val  *string `json:"val" db:"val"`
+	Name *string          `json:"name" db:"name"`
+	Val  *json.RawMessage `json:"val" db:"val"`
 }

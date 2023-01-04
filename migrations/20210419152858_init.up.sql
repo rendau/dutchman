@@ -10,8 +10,13 @@ create table cfg
     v jsonb not null default '{}'
 );
 
--- create index tablename_colname_idx
---     on tablename (colname);
+create table data
+(
+    id   uuid  not null default gen_random_uuid()
+        primary key,
+    name text  not null default '',
+    val  jsonb not null default '{}'
+);
 
 do
 $$
