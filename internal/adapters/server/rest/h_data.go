@@ -11,7 +11,6 @@ import (
 
 // @Router   /data [get]
 // @Tags     data
-// @Param    query  query  entities.DataListParsSt  false  "query"
 // @Produce  json
 // @Success  200  {object}  dopTypes.ListRep{results=[]entities.DataListSt}
 // @Failure  400  {object}  dopTypes.ErrRep

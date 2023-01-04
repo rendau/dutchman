@@ -7,7 +7,7 @@ import (
 type DataSt struct {
 	Id   string          `json:"id" db:"id"`
 	Name string          `json:"name" db:"name"`
-	Val  json.RawMessage `json:"val" db:"val"`
+	Val  json.RawMessage `json:"val" db:"val" swaggertype:"string"`
 }
 
 type DataListSt struct {
@@ -17,5 +17,5 @@ type DataListSt struct {
 
 type DataCUSt struct {
 	Name *string          `json:"name" db:"name"`
-	Val  *json.RawMessage `json:"val" db:"val"`
+	Val  *json.RawMessage `json:"val" db:"val" swaggertype:"string"`
 }
