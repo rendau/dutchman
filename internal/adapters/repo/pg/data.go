@@ -39,7 +39,7 @@ func (d *St) DataList(ctx context.Context) ([]*entities.DataListSt, int64, error
 		Conds: conds,
 		Args:  args,
 		AllowedSorts: map[string]string{
-			"default": "t.id",
+			"default": "t.name",
 		},
 	})
 
