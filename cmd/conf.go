@@ -30,7 +30,7 @@ func confLoad() {
 	viper.SetDefault("SWAG_HOST", "example.com")
 	viper.SetDefault("SWAG_BASE_PATH", "/")
 	viper.SetDefault("SWAG_SCHEMA", "https")
-	viper.SetDefault("REDIS_KEY_PREFIX", "stg_")
+	viper.SetDefault("REDIS_KEY_PREFIX", "dutchman_")
 	viper.SetDefault("FRONT_DIR_PATH", "./front")
 
 	viper.SetConfigFile("conf.yml")
