@@ -64,6 +64,7 @@ func Execute() {
 		app.cache,
 		app.db,
 		app.repo,
+		conf.ConfDir,
 		false,
 	)
 
@@ -83,8 +84,6 @@ func Execute() {
 		rest.GetHandler(
 			app.lg,
 			app.ucs,
-			conf.FrontDir,
-			conf.FrontConfig,
 			conf.HttpCors,
 		),
 		app.lg,

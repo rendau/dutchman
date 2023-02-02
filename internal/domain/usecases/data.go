@@ -75,3 +75,8 @@ func (u *St) DataDelete(ctx context.Context,
 		return u.cr.Data.Delete(ctx, id)
 	})
 }
+
+func (u *St) DataDeploy(ctx context.Context,
+	obj *entities.DataDeployReqSt) error {
+	return u.cr.Data.Deploy(ctx, obj)
+}

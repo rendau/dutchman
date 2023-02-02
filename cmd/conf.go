@@ -18,8 +18,7 @@ var conf = struct {
 	RedisPsw       string `mapstructure:"REDIS_PSW"`
 	RedisDb        int    `mapstructure:"REDIS_DB"`
 	RedisKeyPrefix string `mapstructure:"REDIS_KEY_PREFIX"`
-	FrontDir       string `mapstructure:"FRONT_DIR"`
-	FrontConfig    string `mapstructure:"FRONT_CONFIG"`
+	ConfDir        string `mapstructure:"CONF_DIR"`
 }{}
 
 func confLoad() {

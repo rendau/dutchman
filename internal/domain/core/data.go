@@ -2,9 +2,17 @@ package core
 
 import (
 	"context"
+	"crypto/tls"
+	"net/http"
+	"os"
+	"path/filepath"
+	"time"
 
+	"github.com/rendau/dop/adapters/client/httpc"
+	"github.com/rendau/dop/adapters/client/httpc/httpclient"
 	"github.com/rendau/dop/dopErrs"
 	"github.com/rendau/dutchman/internal/domain/entities"
+	"github.com/rendau/dutchman/internal/domain/errs"
 )
 
 type Data struct {
@@ -84,4 +92,34 @@ func (c *Data) Update(ctx context.Context, id string, obj *entities.DataCUSt) er
 
 func (c *Data) Delete(ctx context.Context, id string) error {
 	return c.r.repo.DataDelete(ctx, id)
+}
+
+func (c *Data) Deploy(ctx context.Context, obj *entities.DataDeployReqSt) error {
+	if obj.ConfFile == "" {
+		return errs.ConfFileNameRequired
+	}
+
+	err := os.WriteFile(filepath.Join(c.r.confDir, obj.ConfFile), obj.Data, os.ModePerm)
+	if err != nil {
+		return errs.FailToSaveFile
+	}
+
+	if obj.Url != "" {
+		hClient := httpclient.New(c.r.lg, &httpc.OptionsSt{
+			Client: &http.Client{
+				Timeout:   15 * time.Second,
+				Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
+			},
+			Method:    obj.Method,
+			Uri:       obj.Url,
+			LogPrefix: "Deploy webhook:",
+		})
+
+		_, err = hClient.Send(&httpc.OptionsSt{})
+		if err != nil {
+			return errs.FailToSendDeployWebhook
+		}
+	}
+
+	return nil
 }

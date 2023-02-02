@@ -20,8 +20,6 @@ type St struct {
 func GetHandler(
 	lg logger.Lite,
 	ucs *usecases.St,
-	frontDir string,
-	frontConfig string,
 	withCors bool,
 ) http.Handler {
 	gin.SetMode(gin.ReleaseMode)
@@ -59,6 +57,7 @@ func GetHandler(
 	r.GET("/data/:id", s.hDataGet)
 	r.PUT("/data/:id", s.hDataUpdate)
 	r.DELETE("/data/:id", s.hDataDelete)
+	r.POST("/data/deploy", s.hDataDeploy)
 
 	return r
 }

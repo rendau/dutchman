@@ -14,6 +14,7 @@ type St struct {
 	cache   cache.Cache
 	db      db.RDBContextTransaction
 	repo    repo.Repo
+	confDir string
 	testing bool
 
 	wg sync.WaitGroup
@@ -29,6 +30,7 @@ func New(
 	cache cache.Cache,
 	db db.RDBContextTransaction,
 	repo repo.Repo,
+	confDir string,
 	testing bool,
 ) *St {
 	c := &St{
@@ -36,6 +38,7 @@ func New(
 		cache:   cache,
 		db:      db,
 		repo:    repo,
+		confDir: confDir,
 		testing: testing,
 	}
 

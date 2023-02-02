@@ -89,3 +89,17 @@ func (o *St) hDataDelete(c *gin.Context) {
 
 	dopHttps.Error(c, o.ucs.DataDelete(o.getRequestContext(c), id))
 }
+
+// @Router   /data/deploy [POST]
+// @Tags     data
+// @Param    body  body  entities.DataDeployReqSt  false  "body"
+// @Success  200
+// @Failure  400  {object}  dopTypes.ErrRep
+func (o *St) hDataDeploy(c *gin.Context) {
+	reqObj := &entities.DataDeployReqSt{}
+	if !dopHttps.BindJSON(c, reqObj) {
+		return
+	}
+
+	dopHttps.Error(c, o.ucs.DataDeploy(o.getRequestContext(c), reqObj))
+}
