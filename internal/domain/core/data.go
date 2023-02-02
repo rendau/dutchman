@@ -111,11 +111,12 @@ func (c *Data) Deploy(ctx context.Context, obj *entities.DataDeployReqSt) error 
 				Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
 			},
 			Method:    obj.Method,
-			Uri:       obj.Url,
 			LogPrefix: "Deploy webhook:",
 		})
 
-		_, err = hClient.Send(&httpc.OptionsSt{})
+		_, err = hClient.Send(&httpc.OptionsSt{
+			Uri: obj.Url,
+		})
 		if err != nil {
 			return errs.FailToSendDeployWebhook
 		}
