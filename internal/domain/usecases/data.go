@@ -7,25 +7,25 @@ import (
 )
 
 func (u *St) DataList(ctx context.Context) ([]*entities.DataListSt, int64, error) {
-	// var err error
+	var err error
 
-	// ses := u.SessionGetFromContext(ctx)
-	//
-	// if err = u.SessionRequireAuth(ses); err != nil {
-	// 	return nil, 0, err
-	// }
+	ses := u.SessionGetFromContext(ctx)
+
+	if err = u.SessionRequireAuth(ses); err != nil {
+		return nil, 0, err
+	}
 
 	return u.cr.Data.List(ctx)
 }
 
 func (u *St) DataGet(ctx context.Context, id string) (*entities.DataSt, error) {
-	// var err error
+	var err error
 
-	// ses := u.SessionGetFromContext(ctx)
-	//
-	// if err = u.SessionRequireAuth(ses); err != nil {
-	// 	return nil, 0, err
-	// }
+	ses := u.SessionGetFromContext(ctx)
+
+	if err = u.SessionRequireAuth(ses); err != nil {
+		return nil, err
+	}
 
 	return u.cr.Data.Get(ctx, id, true)
 }
@@ -34,11 +34,11 @@ func (u *St) DataCreate(ctx context.Context,
 	obj *entities.DataCUSt) (string, error) {
 	var err error
 
-	// ses := u.SessionGetFromContext(ctx)
-	//
-	// if err = u.SessionRequireAuth(ses); err != nil {
-	// 	return "", err
-	// }
+	ses := u.SessionGetFromContext(ctx)
+
+	if err = u.SessionRequireAuth(ses); err != nil {
+		return "", err
+	}
 
 	var result string
 
@@ -52,11 +52,13 @@ func (u *St) DataCreate(ctx context.Context,
 
 func (u *St) DataUpdate(ctx context.Context,
 	id string, obj *entities.DataCUSt) error {
-	// ses := u.SessionGetFromContext(ctx)
-	//
-	// if err = u.SessionRequireAuth(ses); err != nil {
-	// 	return err
-	// }
+	var err error
+
+	ses := u.SessionGetFromContext(ctx)
+
+	if err = u.SessionRequireAuth(ses); err != nil {
+		return err
+	}
 
 	return u.db.TransactionFn(ctx, func(ctx context.Context) error {
 		return u.cr.Data.Update(ctx, id, obj)
@@ -65,11 +67,13 @@ func (u *St) DataUpdate(ctx context.Context,
 
 func (u *St) DataDelete(ctx context.Context,
 	id string) error {
-	// ses := u.SessionGetFromContext(ctx)
-	//
-	// if err = u.SessionRequireAuth(ses); err != nil {
-	// 	return err
-	// }
+	var err error
+
+	ses := u.SessionGetFromContext(ctx)
+
+	if err = u.SessionRequireAuth(ses); err != nil {
+		return err
+	}
 
 	return u.db.TransactionFn(ctx, func(ctx context.Context) error {
 		return u.cr.Data.Delete(ctx, id)
@@ -78,5 +82,13 @@ func (u *St) DataDelete(ctx context.Context,
 
 func (u *St) DataDeploy(ctx context.Context,
 	obj *entities.DataDeployReqSt) error {
+	var err error
+
+	ses := u.SessionGetFromContext(ctx)
+
+	if err = u.SessionRequireAuth(ses); err != nil {
+		return err
+	}
+
 	return u.cr.Data.Deploy(ctx, obj)
 }
