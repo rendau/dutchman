@@ -51,6 +51,11 @@ func GetHandler(
 	r.GET("/config", s.hConfigGet)
 	r.PUT("/config", s.hConfigUpdate)
 
+	// profile
+	r.GET("/profile", s.hProfileGet)
+	r.POST("/profile/auth", s.hProfileAuth)
+	r.POST("/profile/auth/token", s.hProfileAuthByRefreshToken)
+
 	// data
 	r.GET("/data", s.hDataList)
 	r.POST("/data", s.hDataCreate)

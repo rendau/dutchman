@@ -10,18 +10,21 @@ import (
 )
 
 type St struct {
-	lg      logger.Lite
-	cache   cache.Cache
-	db      db.RDBContextTransaction
-	repo    repo.Repo
-	confDir string
-	testing bool
+	lg                  logger.Lite
+	cache               cache.Cache
+	db                  db.RDBContextTransaction
+	repo                repo.Repo
+	authPassword        string
+	sessionRefreshToken string
+	confDir             string
+	testing             bool
 
 	wg sync.WaitGroup
 
 	Config  *Config
 	Dic     *Dic
 	Session *Session
+	Profile *Profile
 	Data    *Data
 }
 
@@ -30,21 +33,26 @@ func New(
 	cache cache.Cache,
 	db db.RDBContextTransaction,
 	repo repo.Repo,
+	authPassword string,
+	sessionRefreshToken string,
 	confDir string,
 	testing bool,
 ) *St {
 	c := &St{
-		lg:      lg,
-		cache:   cache,
-		db:      db,
-		repo:    repo,
-		confDir: confDir,
-		testing: testing,
+		lg:                  lg,
+		cache:               cache,
+		db:                  db,
+		repo:                repo,
+		authPassword:        authPassword,
+		sessionRefreshToken: sessionRefreshToken,
+		confDir:             confDir,
+		testing:             testing,
 	}
 
 	c.Config = NewConfig(c)
 	c.Dic = NewDic(c)
 	c.Session = NewSession(c)
+	c.Profile = NewProfile(c)
 	c.Data = NewData(c)
 
 	return c

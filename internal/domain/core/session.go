@@ -2,9 +2,7 @@ package core
 
 import (
 	"context"
-	"strconv"
 
-	"github.com/rendau/dop/adapters/jwt"
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
@@ -18,16 +16,20 @@ func NewSession(r *St) *Session {
 	return &Session{r: r}
 }
 
-func (c *Session) GetFromToken(token string) *entities.Session {
-	var session entities.Session
+func (c *Session) Get(ctx context.Context, token string) *entities.Session {
+	result := &entities.Session{}
 
-	if jwt.ParsePayload(token, &session) != nil {
-		session = entities.Session{}
+	if token == "" {
+		return result
 	}
 
-	session.Id, _ = strconv.ParseInt(session.Sub, 10, 64)
+	// check in cache
+	_, ok, err := c.r.cache.Get(token)
+	if err == nil && ok {
+		result.Authed = true
+	}
 
-	return &session
+	return result
 }
 
 func (c *Session) SetToContext(ctx context.Context, ses *entities.Session) context.Context {

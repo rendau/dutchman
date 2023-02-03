@@ -64,6 +64,8 @@ func Execute() {
 		app.cache,
 		app.db,
 		app.repo,
+		conf.AuthPassword,
+		conf.SessionRefreshToken,
 		conf.ConfDir,
 		false,
 	)

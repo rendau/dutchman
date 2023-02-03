@@ -7,12 +7,12 @@ import (
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
-func (u *St) SessionGetFromToken(token string) *entities.Session {
-	return u.cr.Session.GetFromToken(token)
+func (u *St) SessionGet(ctx context.Context, token string) *entities.Session {
+	return u.cr.Session.Get(ctx, token)
 }
 
 func (u *St) SessionRequireAuth(ses *entities.Session) error {
-	if ses.Id == 0 {
+	if !ses.Authed {
 		return dopErrs.NotAuthorized
 	}
 
@@ -24,7 +24,7 @@ func (u *St) SessionSetToContext(ctx context.Context, ses *entities.Session) con
 }
 
 func (u *St) SessionSetToContextByToken(ctx context.Context, token string) context.Context {
-	return u.cr.Session.SetToContext(ctx, u.SessionGetFromToken(token))
+	return u.cr.Session.SetToContext(ctx, u.SessionGet(ctx, token))
 }
 
 func (u *St) SessionGetFromContext(ctx context.Context) *entities.Session {
