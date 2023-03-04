@@ -20,6 +20,8 @@ type DataCUSt struct {
 	Val  *json.RawMessage `json:"val" db:"val" swaggertype:"string"`
 }
 
+// Deploy
+
 type DataDeployReqSt struct {
 	ConfFile string          `json:"conf_file"`
 	Url      string          `json:"url"`

@@ -61,6 +61,9 @@ func GetHandler(
 	r.DELETE("/data/:id", s.hDataDelete)
 	r.POST("/data/deploy", s.hDataDeploy)
 
+	// proxy_request
+	r.POST("/proxy_request", s.hProxyRequest)
+
 	return r
 }
 
