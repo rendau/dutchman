@@ -245,21 +245,115 @@ const docTemplate = `{
                 }
             }
         },
-        "/dic": {
+        "/data/deploy": {
+            "post": {
+                "tags": [
+                    "data"
+                ],
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/entities.DataDeployReqSt"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dopTypes.ErrRep"
+                        }
+                    }
+                }
+            }
+        },
+        "/profile": {
             "get": {
-                "description": "Get all dictionaries",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "dic"
+                    "profile"
                 ],
-                "summary": "dictionaries",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entities.DicSt"
+                            "$ref": "#/definitions/entities.ProfileSt"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dopTypes.ErrRep"
+                        }
+                    }
+                }
+            }
+        },
+        "/profile/auth": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "profile"
+                ],
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/entities.ProfileAuthReqSt"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.ProfileAuthRepSt"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dopTypes.ErrRep"
+                        }
+                    }
+                }
+            }
+        },
+        "/profile/auth/token": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "profile"
+                ],
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/entities.ProfileAuthByRefreshTokenReqSt"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.ProfileAuthByRefreshTokenRepSt"
                         }
                     },
                     "400": {
@@ -302,24 +396,8 @@ const docTemplate = `{
                 "results": {}
             }
         },
-        "entities.ConfigContactsSt": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                }
-            }
-        },
         "entities.ConfigSt": {
-            "type": "object",
-            "properties": {
-                "contacts": {
-                    "$ref": "#/definitions/entities.ConfigContactsSt"
-                }
-            }
+            "type": "object"
         },
         "entities.DataCUSt": {
             "type": "object",
@@ -328,6 +406,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "val": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.DataDeployReqSt": {
+            "type": "object",
+            "properties": {
+                "conf_file": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "url": {
                     "type": "string"
                 }
             }
@@ -357,7 +452,42 @@ const docTemplate = `{
                 }
             }
         },
-        "entities.DicSt": {
+        "entities.ProfileAuthByRefreshTokenRepSt": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.ProfileAuthByRefreshTokenReqSt": {
+            "type": "object",
+            "properties": {
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.ProfileAuthRepSt": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.ProfileAuthReqSt": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.ProfileSt": {
             "type": "object"
         }
     }

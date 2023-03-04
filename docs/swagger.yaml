@@ -18,23 +18,24 @@ definitions:
     properties:
       results: {}
     type: object
-  entities.ConfigContactsSt:
-    properties:
-      email:
-        type: string
-      phone:
-        type: string
-    type: object
   entities.ConfigSt:
-    properties:
-      contacts:
-        $ref: '#/definitions/entities.ConfigContactsSt'
     type: object
   entities.DataCUSt:
     properties:
       name:
         type: string
       val:
+        type: string
+    type: object
+  entities.DataDeployReqSt:
+    properties:
+      conf_file:
+        type: string
+      data:
+        type: string
+      method:
+        type: string
+      url:
         type: string
     type: object
   entities.DataListSt:
@@ -53,7 +54,29 @@ definitions:
       val:
         type: string
     type: object
-  entities.DicSt:
+  entities.ProfileAuthByRefreshTokenRepSt:
+    properties:
+      access_token:
+        type: string
+    type: object
+  entities.ProfileAuthByRefreshTokenReqSt:
+    properties:
+      refresh_token:
+        type: string
+    type: object
+  entities.ProfileAuthRepSt:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  entities.ProfileAuthReqSt:
+    properties:
+      password:
+        type: string
+    type: object
+  entities.ProfileSt:
     type: object
 info:
   contact: {}
@@ -198,21 +221,78 @@ paths:
             $ref: '#/definitions/dopTypes.ErrRep'
       tags:
       - data
-  /dic:
+  /data/deploy:
+    post:
+      parameters:
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.DataDeployReqSt'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - data
+  /profile:
     get:
-      description: Get all dictionaries
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entities.DicSt'
+            $ref: '#/definitions/entities.ProfileSt'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/dopTypes.ErrRep'
-      summary: dictionaries
       tags:
-      - dic
+      - profile
+  /profile/auth:
+    post:
+      parameters:
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.ProfileAuthReqSt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.ProfileAuthRepSt'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - profile
+  /profile/auth/token:
+    post:
+      parameters:
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.ProfileAuthByRefreshTokenReqSt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.ProfileAuthByRefreshTokenRepSt'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - profile
 swagger: "2.0"
