@@ -22,7 +22,6 @@ type St struct {
 	wg sync.WaitGroup
 
 	Config  *Config
-	Dic     *Dic
 	Session *Session
 	Profile *Profile
 	Data    *Data
@@ -50,7 +49,6 @@ func New(
 	}
 
 	c.Config = NewConfig(c)
-	c.Dic = NewDic(c)
 	c.Session = NewSession(c)
 	c.Profile = NewProfile(c)
 	c.Data = NewData(c)

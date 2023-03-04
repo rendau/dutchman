@@ -44,9 +44,6 @@ func GetHandler(
 	// api
 	s := &St{lg: lg, ucs: ucs}
 
-	// dic
-	r.GET("/dic", s.hDicGet)
-
 	// config
 	r.GET("/config", s.hConfigGet)
 	r.PUT("/config", s.hConfigUpdate)
