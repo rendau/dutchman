@@ -1,0 +1,2581 @@
+{
+  "apps": [
+    {
+      "id": "4d4fbd74-81f7-489f-9e39-8b8d82cbefbb",
+      "name": "---",
+      "path": "",
+      "active": true,
+      "endpoints": [
+        {
+          "id": "7b9d0c0e-a106-461d-a389-86d0334758cf",
+          "path": "_health",
+          "active": true,
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        }
+      ],
+      "backend_base": {
+        "host": "http://localhost:8080",
+        "path": "_"
+      }
+    },
+    {
+      "id": "aed77509-d86a-4ec4-bb71-f0dff86559d2",
+      "name": "1c_gw",
+      "path": "1c_gw",
+      "active": true,
+      "endpoints": [
+        {
+          "id": "8a996b91-9d4f-4e73-aab1-1eb733c03af9",
+          "path": "doc",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "5ce7bc05-fb58-4877-b2f2-339d2f501e7d",
+          "path": "doc/{level1}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "995735e7-4105-4061-b15e-43936ff3e43a",
+          "path": "unload_command",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "c319c2cb-c41b-4c5a-9d83-02ed534650c8",
+          "path": "quantities",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        }
+      ],
+      "backend_base": {
+        "host": "http://1c_gw",
+        "path": ""
+      }
+    },
+    {
+      "id": "0c44c2bd-8443-4a88-991b-772a0e832379",
+      "name": "account",
+      "path": "account",
+      "active": true,
+      "endpoints": [
+        {
+          "id": "0a32ec22-c812-4011-afb8-a83a5d0e78e9",
+          "path": "doc",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "02a1ca22-cdc4-43fb-aac9-73474b0764d7",
+          "path": "doc/{level1}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "54d2d495-7c11-4d54-a873-05a6f02c22c2",
+          "path": "dic",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "e01125bb-1f60-42ff-8006-6e31597a505d",
+          "path": "config",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "2fa65c26-7e7f-4f1e-a5ff-09bc9273bc81",
+          "path": "config",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "c14bd55d-f28f-47e7-8b24-657796ea5075",
+          "path": "profile/send_validating_code",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "7ec05186-9f8d-4f71-a2e8-0b57d5ff0a98",
+          "path": "profile/auth",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "fda729c5-ccd5-4489-af59-fc1c98b4ae4a",
+          "path": "profile/auth/token",
+          "active": false,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "fd5ee8d7-214c-4dfd-8b6a-3c90b33f958b",
+          "path": "profile/logout",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "0afc9872-aa1f-4664-b42f-417124b6e3b9",
+          "path": "profile/change_phone",
+          "active": false,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "fb4a034f-3f7f-4274-934a-5e93f8ba87d6",
+          "path": "profile",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "f9cc7def-5f3e-4497-9868-b6ad6717796b",
+          "path": "profile",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "5f245479-f6b2-41c4-8a79-8d5ade2c1b56",
+          "path": "role",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "09f1dc3b-07d5-4906-963e-0ca6b411626a",
+          "path": "role",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "5342bf03-1733-4fce-bcfb-02762cf2939d",
+          "path": "role/{id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "233ec092-19f6-4b9c-9fb9-eb28cb60b81a",
+          "path": "role/{id}",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "870237f0-e6f7-4d1a-889b-effb2d5091c1",
+          "path": "role/{id}",
+          "active": false,
+          "method": "DELETE",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "dd4b2a32-05ac-4112-a08c-aad26bde24d5",
+          "path": "usr",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "80e208ae-2ac9-453c-8675-2cceefd3eb3b",
+          "path": "usr",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "1451ab88-3f75-4cd8-b69c-7c9526be6c49",
+          "path": "usr/{id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "2bd94c1f-9942-49a1-8ab0-21d0815d8a2b",
+          "path": "usr/{id}",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "79ca3fcc-9479-48ab-ac8e-8fe4b111163b",
+          "path": "usr/{id}",
+          "active": true,
+          "method": "DELETE",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "e1881f9c-8057-413e-a87e-db0c91c69d28",
+          "path": "usr/{id}/new_access_token",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "d57a730d-c044-4d73-9e68-fe1f18ce5c9e",
+          "path": "usr/{id}/new_refresh_token",
+          "active": false,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "c4006274-a1d0-4c87-a59a-54c1e3a9d398",
+          "path": "perm",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "80e30e0e-e1ee-4694-a8ed-43f36ed63c24",
+          "path": "perm",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "793e4213-a9a8-47e5-a450-fa682218dccb",
+          "path": "perm/{id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "43296b97-630c-40e7-b2b2-daf6ca390438",
+          "path": "perm/{id}",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "b28eca32-55bc-4509-adb1-fd9185d04eed",
+          "path": "perm/{id}",
+          "active": true,
+          "method": "DELETE",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "d224a525-a3a1-4bc2-9c6f-0b942c261c0c",
+          "path": "app",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "bd265792-0e56-4549-82cf-0d53b63edefd",
+          "path": "app",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "423e1b50-8b81-439a-a126-b06f39320d9d",
+          "path": "app/{id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "e5a269b8-2e3f-4879-9cc8-c23388cdfd33",
+          "path": "app/{id}",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "f5469207-93b6-4245-b9fa-dafbb9bdaeb9",
+          "path": "app/{id}",
+          "active": true,
+          "method": "DELETE",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "d16572d1-222b-4c20-86d6-f2f3ebc9341e",
+          "path": "app/{id}/fetch_perms",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "8252c666-62d7-4e26-9216-a678f92f5ae9",
+          "path": "app/{id}/sync_perms",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        }
+      ],
+      "backend_base": {
+        "host": "http://account_account",
+        "path": ""
+      }
+    },
+    {
+      "id": "7c626375-d256-40f9-a827-f8d62e1ededa",
+      "name": "cb",
+      "path": "cb",
+      "active": true,
+      "endpoints": [
+        {
+          "id": "9c4b5693-9140-410e-bbb2-61051cc40b4d",
+          "path": "doc",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "68e4b7b7-e8c0-41c1-b15f-a30274160d18",
+          "path": "doc/{level1}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "930078d3-9e3a-41ee-aba4-362c9f4d1e24",
+          "path": "product",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "2c439d2c-9b89-4266-91a6-2b06581b4754",
+          "path": "dic",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "72d57e21-3796-489a-815c-87b09b9837ce",
+          "path": "city",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "304c0f73-370d-4306-b170-4b77c9bb3e1b",
+          "path": "city/{id}",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "297d7858-b34d-4465-8fca-1d94bc59498b",
+          "path": "city/{id}",
+          "active": true,
+          "method": "DELETE",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "4f2f9c58-c49c-43d0-9c9d-49220d879819",
+          "path": "report/r1",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "e1ea36f0-f415-4206-b6b1-2afacd416810",
+          "path": "report/r2",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "62b2b39d-71dd-425a-88c7-d8752fe2d82a",
+          "path": "receipt_request",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "7920fa94-ae74-48af-a279-8c3ffd104b55",
+          "path": "receipt_request/{id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "b2f77685-9d29-4b5d-8c11-661111be3a5e",
+          "path": "sms/send_validating_code",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "aab86377-ee59-4b58-928d-f754eb876f24",
+          "path": "sms/check_validating_code",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "6b53c4ed-1339-40b2-93db-b11b4c2c6393",
+          "path": "prv/Halyk/ord/{ord_id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "c010c570-6805-45df-a662-1d7b9d935ea7",
+          "path": "prv/FreedomFinance/webhook",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": true,
+            "allowed_ips": [
+              "195.93.152.236",
+              "84.252.158.79",
+              "31.31.217.170"
+            ]
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "a4f70f5a-17c3-4911-97c6-6e656c60c4e6",
+          "path": "prv/Halyk/webhook/scoring",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": true,
+            "allowed_ips": [
+              "193.93.56.214",
+              "193.93.56.213",
+              "193.93.56.212",
+              "193.93.56.206",
+              "193.93.56.115"
+            ]
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "7bedfeab-795d-46b5-84ff-258522338465",
+          "path": "prv/Eurasian/webhook/scoring",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "3d318056-01d9-4c31-8315-e157ea8c1a22",
+          "path": "prv/Jusan/webhook",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "a84d4d8f-32cb-4233-a3fe-e1d762a49df4",
+          "path": "prv/Halyk/webhook/contract",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "14e80a3b-c8ce-470d-85a9-6623626b55b8",
+          "path": "prv/Eurasian/webhook/contract",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "63a28d29-b8d0-4690-b190-d1baf946c021",
+          "path": "prv",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "662e173a-87fc-43a4-b266-927f6424c475",
+          "path": "prv",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "aeaea111-973d-4a74-92dc-75f769f65a05",
+          "path": "prv/{id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "d3da2833-b60c-4037-ac2f-5ae873ed3dd0",
+          "path": "prv/{id}/logo",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "3bdd5a53-3e24-446a-b4a0-5371f900a177",
+          "path": "prv/{id}/logo.svg",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "16ce8d3e-c78f-42e7-a335-e3a8f4328862",
+          "path": "prv/{id}",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "2ec648cd-c9a9-4f50-bb38-ef1b71d15121",
+          "path": "prv/{id}",
+          "active": true,
+          "method": "DELETE",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "cf536e9b-795a-44a0-95bb-1a7d8452849c",
+          "path": "ord",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "fb75fc67-d61f-4af1-bcf1-7d60c9dbf97e",
+          "path": "ord/validate",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "bbd96409-075d-4267-8644-711d431fd59c",
+          "path": "ord",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "cf9e1b59-99a6-42a6-9276-afca78d21f9c",
+          "path": "ord/{id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "87697bc2-dbd8-40bc-bd54-545ecc215aa3",
+          "path": "ord/{id}/status",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "587fd8c8-89d8-4dbe-bd4c-bcd148fce7b5",
+          "path": "ord/{id}/select_condition",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "13443a30-b98a-4ab9-9ae8-a3a5c76df6cb",
+          "path": "ord/{id}/contract",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "6dff8a74-0f3a-4fe2-a7c9-d23b0a5a2b5e",
+          "path": "ord/cancel",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "b81ecd36-c214-4e5e-89aa-a7384b9b6a5b",
+          "path": "ord/cancel/check",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "e47f9862-6e8c-45b6-9cb1-41eb924fb82f",
+          "path": "ord/delivered",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "f264167f-c876-41fd-8d86-8a0878151e97",
+          "path": "ofr",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "54a55ffb-bebd-47e7-b6c4-d0baa7b59e2d",
+          "path": "ofr/{ord_id}/{prv_id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "ef9d83b0-7dee-4ecd-8e22-8daf7fdabc08",
+          "path": "refund_notify_rule",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "fe85e719-02a0-4501-9e0f-f654f1a935e8",
+          "path": "refund_notify_rule",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "8b7116d3-19c6-40f1-a26c-e79f22d65c15",
+          "path": "refund_notify_rule/{id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "d5f75628-0395-4918-9791-f4f7ef7330ad",
+          "path": "refund_notify_rule/{id}",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "8c0c1872-17b4-4800-831a-8ffa9897ba45",
+          "path": "refund_notify_rule/{id}",
+          "active": true,
+          "method": "DELETE",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        }
+      ],
+      "backend_base": {
+        "host": "http://credit_broker_credit-broker",
+        "path": ""
+      }
+    },
+    {
+      "id": "40954bb4-d9b9-4e09-92e2-d4cc7c01feb9",
+      "name": "fs",
+      "path": "fs",
+      "active": true,
+      "endpoints": [
+        {
+          "id": "aa76621b-82aa-468c-b714-0096c6350d09",
+          "path": "doc",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "54c1f4ef-4b8e-4735-a494-a9f792d10763",
+          "path": "doc/{level1}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "b76416a6-1ef0-40bc-a8ec-3dfd6cb4d7fe",
+          "path": "kvs/{key}",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "15c2c0e5-af68-4280-a5af-7d7d3aa45791",
+          "path": "kvs/{key}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        }
+      ],
+      "backend_base": {
+        "host": "http://fs_fs",
+        "path": ""
+      }
+    },
+    {
+      "id": "75a71975-06f5-41b0-a22b-d6b23207cf59",
+      "name": "gms",
+      "path": "gms",
+      "active": true,
+      "endpoints": [
+        {
+          "id": "646481df-6129-4948-8d7c-2ae678d754f0",
+          "path": "doc",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "6976f394-28cd-4324-b444-6e32f4662026",
+          "path": "doc/{level1}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "59d1b3d5-eafe-4cfc-b71b-e7e54231808f",
+          "path": "raid/start",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        }
+      ],
+      "backend_base": {
+        "host": "http://google-merchant-sync_google-merchant-sync",
+        "path": ""
+      }
+    },
+    {
+      "id": "48605ee8-3ab9-4351-93ec-1579d83e3124",
+      "name": "ob",
+      "path": "ob",
+      "active": true,
+      "endpoints": [
+        {
+          "id": "3e439174-e071-4c29-a802-00588d71ed18",
+          "path": "doc",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "69aaf293-008c-4b23-a34a-4e6b0ec9ec4c",
+          "path": "doc/{level1}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "b06bba6b-6dad-47cf-bf18-13ac7eac49e3",
+          "path": "dic",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "034ca89a-4c1c-44c6-af83-baf6ed6e2d6a",
+          "path": "ord",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "b35aeb36-56b9-4c6a-98c1-eb36961bad93",
+          "path": "ord/one",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "34e4eea6-80fe-4649-9bbb-2d19d80a2486",
+          "path": "ord/{id}/send_to_shop_as_new",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "6de8001f-e97e-467a-b9d7-ffa887588742",
+          "path": "prv_cfg",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "17907e75-0228-4c5c-905d-f45be7a375ea",
+          "path": "prv_cfg/{id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "ee59f652-5608-4430-9f48-04cb05e65b22",
+          "path": "prv_cfg/{id}",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "b6441da9-84d4-46d7-be13-a8b9d587bcff",
+          "path": "prv_city",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "8ec21826-fc3f-4e96-b2a8-61b0697a2412",
+          "path": "prv_city",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "e472343c-d50b-4ef0-b9c8-53701e255b7b",
+          "path": "warehouse",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "e0ce75e5-a0d6-47b3-bbf0-e0d346b4d49b",
+          "path": "warehouse",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "b55e0446-043c-4e55-b48a-7bd116788e47",
+          "path": "warehouse/{id}",
+          "active": true,
+          "method": "PUT",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "a976fb03-92a8-4827-8dbc-70974d4d35ea",
+          "path": "warehouse/{id}",
+          "active": true,
+          "method": "DELETE",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "6738baec-52d3-441b-ae2b-4d948726b57e",
+          "path": "prv_warehouse",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "4fab3335-fb03-4741-8b12-f76e7556216f",
+          "path": "prv_warehouse",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "4dd1393e-5901-46f8-8e3e-7857b074e52b",
+          "path": "report/{lvl1}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        }
+      ],
+      "backend_base": {
+        "host": "http://order_broker_order-broker",
+        "path": ""
+      }
+    },
+    {
+      "id": "feccb4b8-01b1-4497-9f1f-19cd6607ccb3",
+      "name": "stg",
+      "path": "stg",
+      "active": true,
+      "endpoints": [
+        {
+          "id": "d975edff-7247-4ea0-89b5-099993a139ea",
+          "path": "doc",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "bb6eccf6-7afe-4762-86af-943c9a84bb8d",
+          "path": "doc/{level1}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "a48e5c01-01b2-4045-9040-30bed844414d",
+          "path": "dic",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "e9fe94d4-747a-4a4c-a1dc-dea9153d3641",
+          "path": "subdivision",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "d64c4278-b54b-4c20-9fab-c305b7090c9f",
+          "path": "warehouse",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "9eb3ed03-89a3-499e-bf92-97e33699938b",
+          "path": "warehouse/{id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "fbdb8d47-1b6c-4bad-a695-39fe3094ba17",
+          "path": "warehouse/set",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "9ce2c0e4-abb0-4df2-bc49-dc944f83dd86",
+          "path": "node",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "47d8fc90-138f-4007-a1ca-54ea9b11661f",
+          "path": "node/set",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "c8f56e79-9a71-4181-b9a0-57342389707c",
+          "path": "city",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": false
+          }
+        },
+        {
+          "id": "54c8514c-abee-4f7f-9e14-968ae76e3de0",
+          "path": "product",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "0e5ae938-9f09-4221-88f4-90e1f67d1f2d",
+          "path": "product/set",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "30075cc4-f397-4628-ba3c-011c642cd979",
+          "path": "product/{id}",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "6f0106a9-5cf0-41d2-9f9e-9470f47b3607",
+          "path": "product/refresh_search_index",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "209103ff-62aa-4671-8c06-15e85049c2b5",
+          "path": "product_subdivision",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "f6f5d51d-8798-47be-bf67-4dbbbd88ea35",
+          "path": "product_subdivision/one",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "af29a8bc-70cb-4574-a2ce-5e995c603b19",
+          "path": "product_quantity",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "88b5edc8-286c-44b9-aec7-7460c2963983",
+          "path": "product_quantity/set_one",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "448a16ca-0d2e-4f4d-b37f-d9742a8528ce",
+          "path": "product_quantity/sync_check",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "03c15ab6-325b-44d9-a915-8a279b186ee6",
+          "path": "product_quantity/notify_all",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "c128c005-4c28-4c37-8b4c-c737e2e0164e",
+          "path": "promo_placeholder",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "e3ba56e5-2fc4-46f5-9156-4d63e6b706d1",
+          "path": "product_subdivision_promo",
+          "active": true,
+          "method": "GET",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "996a7dc0-252b-4503-bc8b-edf1f9afa1ac",
+          "path": "report/r1",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "c7dff8e2-2f23-4d97-b0a1-b369320dbbfb",
+          "path": "report/r2",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        },
+        {
+          "id": "f4f23b56-b56c-4f83-932c-2118c889db67",
+          "path": "report/r3",
+          "active": true,
+          "method": "POST",
+          "backend": {
+            "path": "",
+            "custom_path": false
+          },
+          "ip_validation": {
+            "enabled": false,
+            "allowed_ips": []
+          },
+          "jwt_validation": {
+            "roles": [],
+            "enabled": true
+          }
+        }
+      ],
+      "backend_base": {
+        "host": "http://stg_stg",
+        "path": ""
+      }
+    }
+  ],
+  "general": {
+    "timeout": "2m",
+    "jwt_conf": {
+      "alg": "RS256",
+      "cache": true,
+      "jwk_url": "http://jwts_jwts/jwk/set",
+      "roles_key": "roles",
+      "cache_duration": 300,
+      "roles_key_is_nested": false,
+      "disable_jwk_security": true
+    },
+    "cors_conf": {
+      "enabled": true,
+      "max_age": "120h",
+      "allow_headers": [
+        "*"
+      ],
+      "allow_methods": [
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT",
+        "DELETE",
+        "CONNECT",
+        "OPTIONS",
+        "TRACE",
+        "PATCH"
+      ],
+      "allow_origins": [
+        "*"
+      ],
+      "allow_credentials": true
+    },
+    "deploy_conf": {
+      "url": "",
+      "method": "POST",
+      "conf_file": "main.json"
+    },
+    "read_timeout": "2m",
+    "public_base_url": "https://api.mechta.market",
+    "read_header_timeout": "10s"
+  }
+}
