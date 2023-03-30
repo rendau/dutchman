@@ -6,22 +6,22 @@ import (
 
 type RealmSt struct {
 	Id   string          `json:"id" db:"id"`
-	Name string          `json:"name" db:"name"`
-	Conf json.RawMessage `json:"conf" db:"conf" swaggertype:"string"`
-}
-
-type RealmListSt struct {
-	Id   string `json:"id" db:"id"`
-	Name string `json:"name" db:"name"`
+	Data json.RawMessage `json:"data" db:"data" swaggertype:"string"`
 }
 
 type RealmCUSt struct {
 	Name *string          `json:"name" db:"name"`
-	Conf *json.RawMessage `json:"conf" db:"conf" swaggertype:"string"`
+	Data *json.RawMessage `json:"data" db:"data" swaggertype:"string"`
+}
+
+type RealmDeployConfSt struct {
+	Method   string `json:"method"`
+	Url      string `json:"url"`
+	ConfFile string `json:"conf_file"`
 }
 
 // Deploy
 
 type RealmDeployReqSt struct {
-	Data json.RawMessage `json:"data" swaggertype:"string"`
+	Config json.RawMessage `json:"config" swaggertype:"string"`
 }

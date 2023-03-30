@@ -24,7 +24,7 @@ type St struct {
 	Config  *Config
 	Session *Session
 	Profile *Profile
-	Data    *Data
+	Realm   *Realm
 }
 
 func New(
@@ -51,7 +51,7 @@ func New(
 	c.Config = NewConfig(c)
 	c.Session = NewSession(c)
 	c.Profile = NewProfile(c)
-	c.Data = NewData(c)
+	c.Realm = NewRealm(c)
 
 	return c
 }

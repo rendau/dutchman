@@ -53,16 +53,15 @@ func GetHandler(
 	r.POST("/profile/auth", s.hProfileAuth)
 	r.POST("/profile/auth/token", s.hProfileAuthByRefreshToken)
 
-	// data
-	r.GET("/data", s.hDataList)
-	r.POST("/data", s.hDataCreate)
-	r.GET("/data/:id", s.hDataGet)
-	r.PUT("/data/:id", s.hDataUpdate)
-	r.DELETE("/data/:id", s.hDataDelete)
-	r.POST("/data/deploy", s.hDataDeploy)
-
 	// proxy_request
 	r.POST("/proxy_request", s.hProxyRequest)
+
+	// realm
+	r.GET("/realm", s.hRealmList)
+	r.POST("/realm", s.hRealmCreate)
+	r.GET("/realm/:id", s.hRealmGet)
+	r.PUT("/realm/:id", s.hRealmUpdate)
+	r.DELETE("/realm/:id", s.hRealmDelete)
 
 	return r
 }
