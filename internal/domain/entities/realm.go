@@ -10,7 +10,6 @@ type RealmSt struct {
 }
 
 type RealmCUSt struct {
-	Name *string          `json:"name" db:"name"`
 	Data *json.RawMessage `json:"data" db:"data" swaggertype:"string"`
 }
 

@@ -21,10 +21,12 @@ type St struct {
 
 	wg sync.WaitGroup
 
-	Config  *Config
-	Session *Session
-	Profile *Profile
-	Realm   *Realm
+	Config   *Config
+	Session  *Session
+	Profile  *Profile
+	Realm    *Realm
+	App      *App
+	Endpoint *Endpoint
 }
 
 func New(
@@ -52,6 +54,8 @@ func New(
 	c.Session = NewSession(c)
 	c.Profile = NewProfile(c)
 	c.Realm = NewRealm(c)
+	c.App = NewApp(c)
+	c.Endpoint = NewEndpoint(c)
 
 	return c
 }

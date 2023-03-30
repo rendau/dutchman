@@ -63,6 +63,20 @@ func GetHandler(
 	r.PUT("/realm/:id", s.hRealmUpdate)
 	r.DELETE("/realm/:id", s.hRealmDelete)
 
+	// app
+	r.GET("/app", s.hAppList)
+	r.POST("/app", s.hAppCreate)
+	r.GET("/app/:id", s.hAppGet)
+	r.PUT("/app/:id", s.hAppUpdate)
+	r.DELETE("/app/:id", s.hAppDelete)
+
+	// endpoint
+	r.GET("/endpoint", s.hEndpointList)
+	r.POST("/endpoint", s.hEndpointCreate)
+	r.GET("/endpoint/:id", s.hEndpointGet)
+	r.PUT("/endpoint/:id", s.hEndpointUpdate)
+	r.DELETE("/endpoint/:id", s.hEndpointDelete)
+
 	return r
 }
 
