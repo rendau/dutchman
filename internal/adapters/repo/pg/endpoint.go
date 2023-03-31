@@ -26,18 +26,28 @@ func (d *St) EndpointGet(ctx context.Context, id string) (*entities.EndpointSt, 
 	return result, err
 }
 
-func (d *St) EndpointList(ctx context.Context) ([]*entities.EndpointSt, int64, error) {
+func (d *St) EndpointList(ctx context.Context, pars *entities.EndpointListParsSt) ([]*entities.EndpointSt, int64, error) {
 	conds := make([]string, 0)
 	args := map[string]any{}
+
+	// filter
+	if pars.AppId != nil {
+		conds = append(conds, `t.app_id = ${app_id}`)
+		args["app_id"] = *pars.AppId
+	}
+	if pars.Active != nil {
+		conds = append(conds, `t.active = ${active}`)
+		args["active"] = *pars.Active
+	}
 
 	result := make([]*entities.EndpointSt, 0, 100)
 
 	tCount, err := d.HfList(ctx, db.RDBListOptions{
 		Dst:    &result,
 		Tables: []string{`endpoint t`},
-
-		Conds: conds,
-		Args:  args,
+		LPars:  pars.ListParams,
+		Conds:  conds,
+		Args:   args,
 		AllowedSorts: map[string]string{
 			"default": "t.id",
 		},

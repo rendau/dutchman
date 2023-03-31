@@ -26,20 +26,22 @@ func (d *St) RealmGet(ctx context.Context, id string) (*entities.RealmSt, error)
 	return result, err
 }
 
-func (d *St) RealmList(ctx context.Context) ([]*entities.RealmSt, int64, error) {
+func (d *St) RealmList(ctx context.Context, pars *entities.RealmListParsSt) ([]*entities.RealmSt, int64, error) {
 	conds := make([]string, 0)
 	args := map[string]any{}
+
+	// filter
 
 	result := make([]*entities.RealmSt, 0, 100)
 
 	tCount, err := d.HfList(ctx, db.RDBListOptions{
 		Dst:    &result,
 		Tables: []string{`realm t`},
-
-		Conds: conds,
-		Args:  args,
+		LPars:  pars.ListParams,
+		Conds:  conds,
+		Args:   args,
 		AllowedSorts: map[string]string{
-			"default": "t.id",
+			"default": "t.data ->> 'name', t.id",
 		},
 	})
 

@@ -56,13 +56,6 @@ func GetHandler(
 	// proxy_request
 	r.POST("/proxy_request", s.hProxyRequest)
 
-	// realm
-	r.GET("/realm", s.hRealmList)
-	r.POST("/realm", s.hRealmCreate)
-	r.GET("/realm/:id", s.hRealmGet)
-	r.PUT("/realm/:id", s.hRealmUpdate)
-	r.DELETE("/realm/:id", s.hRealmDelete)
-
 	// app
 	r.GET("/app", s.hAppList)
 	r.POST("/app", s.hAppCreate)
@@ -76,6 +69,13 @@ func GetHandler(
 	r.GET("/endpoint/:id", s.hEndpointGet)
 	r.PUT("/endpoint/:id", s.hEndpointUpdate)
 	r.DELETE("/endpoint/:id", s.hEndpointDelete)
+
+	// realm
+	r.GET("/realm", s.hRealmList)
+	r.POST("/realm", s.hRealmCreate)
+	r.GET("/realm/:id", s.hRealmGet)
+	r.PUT("/realm/:id", s.hRealmUpdate)
+	r.DELETE("/realm/:id", s.hRealmDelete)
 
 	return r
 }

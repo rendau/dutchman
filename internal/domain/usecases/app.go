@@ -6,7 +6,8 @@ import (
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
-func (u *St) AppList(ctx context.Context) ([]*entities.AppSt, int64, error) {
+func (u *St) AppList(ctx context.Context,
+	pars *entities.AppListParsSt) ([]*entities.AppSt, int64, error) {
 	// var err error
 
 	// ses := u.SessionGetFromContext(ctx)
@@ -15,7 +16,11 @@ func (u *St) AppList(ctx context.Context) ([]*entities.AppSt, int64, error) {
 	// 	return nil, 0, err
 	// }
 
-	return u.cr.App.List(ctx)
+	// if err = dopTools.RequirePageSize(pars.ListParams, cns.MaxPageSize); err != nil {
+	// 	return nil, 0, err
+	// }
+
+	return u.cr.App.List(ctx, pars)
 }
 
 func (u *St) AppGet(ctx context.Context, id string) (*entities.AppSt, error) {

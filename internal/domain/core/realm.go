@@ -21,8 +21,8 @@ func (c *Realm) ValidateCU(ctx context.Context, obj *entities.RealmCUSt, id stri
 	return nil
 }
 
-func (c *Realm) List(ctx context.Context) ([]*entities.RealmSt, int64, error) {
-	items, tCount, err := c.r.repo.RealmList(ctx)
+func (c *Realm) List(ctx context.Context, pars *entities.RealmListParsSt) ([]*entities.RealmSt, int64, error) {
+	items, tCount, err := c.r.repo.RealmList(ctx, pars)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -84,38 +84,4 @@ func (c *Realm) Update(ctx context.Context, id string, obj *entities.RealmCUSt) 
 
 func (c *Realm) Delete(ctx context.Context, id string) error {
 	return c.r.repo.RealmDelete(ctx, id)
-}
-
-func (c *Realm) Deploy(ctx context.Context, id string, obj *entities.RealmDeployReqSt) error {
-	// var err error
-	//
-	// realm, err := c.Get(ctx, id, true)
-	// if err != nil {
-	// 	return err
-	// }
-	//
-	// err = os.WriteFile(filepath.Join(c.r.confDir, obj.ConfFile), obj.Config, os.ModePerm)
-	// if err != nil {
-	// 	return errs.FailToSaveFile
-	// }
-	//
-	// if obj.Url != "" {
-	// 	hClient := httpclient.New(c.r.lg, &httpc.OptionsSt{
-	// 		Client: &http.Client{
-	// 			Timeout:   15 * time.Second,
-	// 			Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
-	// 		},
-	// 		Method:    obj.Method,
-	// 		LogPrefix: "Deploy webhook:",
-	// 	})
-	//
-	// 	_, err = hClient.Send(&httpc.OptionsSt{
-	// 		Uri: obj.Url,
-	// 	})
-	// 	if err != nil {
-	// 		return errs.FailToSendDeployWebhook
-	// 	}
-	// }
-
-	return nil
 }

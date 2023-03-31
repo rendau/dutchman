@@ -26,18 +26,28 @@ func (d *St) AppGet(ctx context.Context, id string) (*entities.AppSt, error) {
 	return result, err
 }
 
-func (d *St) AppList(ctx context.Context) ([]*entities.AppSt, int64, error) {
+func (d *St) AppList(ctx context.Context, pars *entities.AppListParsSt) ([]*entities.AppSt, int64, error) {
 	conds := make([]string, 0)
 	args := map[string]any{}
+
+	// filter
+	if pars.RealmId != nil {
+		conds = append(conds, `t.realm_id = ${realm_id}`)
+		args["realm_id"] = *pars.RealmId
+	}
+	if pars.Active != nil {
+		conds = append(conds, `t.active = ${active}`)
+		args["active"] = *pars.Active
+	}
 
 	result := make([]*entities.AppSt, 0, 100)
 
 	tCount, err := d.HfList(ctx, db.RDBListOptions{
 		Dst:    &result,
 		Tables: []string{`app t`},
-
-		Conds: conds,
-		Args:  args,
+		LPars:  pars.ListParams,
+		Conds:  conds,
+		Args:   args,
 		AllowedSorts: map[string]string{
 			"default": "t.id",
 		},

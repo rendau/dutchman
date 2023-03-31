@@ -21,8 +21,8 @@ func (c *App) ValidateCU(ctx context.Context, obj *entities.AppCUSt, id string) 
 	return nil
 }
 
-func (c *App) List(ctx context.Context) ([]*entities.AppSt, int64, error) {
-	items, tCount, err := c.r.repo.AppList(ctx)
+func (c *App) List(ctx context.Context, pars *entities.AppListParsSt) ([]*entities.AppSt, int64, error) {
+	items, tCount, err := c.r.repo.AppList(ctx, pars)
 	if err != nil {
 		return nil, 0, err
 	}

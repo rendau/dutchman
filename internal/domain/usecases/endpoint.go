@@ -6,7 +6,8 @@ import (
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
-func (u *St) EndpointList(ctx context.Context) ([]*entities.EndpointSt, int64, error) {
+func (u *St) EndpointList(ctx context.Context,
+	pars *entities.EndpointListParsSt) ([]*entities.EndpointSt, int64, error) {
 	// var err error
 
 	// ses := u.SessionGetFromContext(ctx)
@@ -15,10 +16,15 @@ func (u *St) EndpointList(ctx context.Context) ([]*entities.EndpointSt, int64, e
 	// 	return nil, 0, err
 	// }
 
-	return u.cr.Endpoint.List(ctx)
+	// if err = dopTools.RequirePageSize(pars.ListParams, cns.MaxPageSize); err != nil {
+	// 	return nil, 0, err
+	// }
+
+	return u.cr.Endpoint.List(ctx, pars)
 }
 
-func (u *St) EndpointGet(ctx context.Context, id string) (*entities.EndpointSt, error) {
+func (u *St) EndpointGet(ctx context.Context,
+	id string, pars *entities.EndpointGetParsSt) (*entities.EndpointSt, error) {
 	// var err error
 
 	// ses := u.SessionGetFromContext(ctx)
@@ -27,7 +33,7 @@ func (u *St) EndpointGet(ctx context.Context, id string) (*entities.EndpointSt, 
 	// 	return nil, 0, err
 	// }
 
-	return u.cr.Endpoint.Get(ctx, id, true)
+	return u.cr.Endpoint.Get(ctx, id, pars, true)
 }
 
 func (u *St) EndpointCreate(ctx context.Context,

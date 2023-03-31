@@ -14,44 +14,58 @@ definitions:
           type: string
         type: object
     type: object
-  dopTypes.ListRep:
+  dopTypes.PaginatedListRep:
     properties:
+      page:
+        type: integer
+      page_size:
+        type: integer
       results: {}
+      total_count:
+        type: integer
+    type: object
+  entities.AppCUSt:
+    properties:
+      active:
+        type: boolean
+      data:
+        type: string
+      realm_id:
+        type: string
+    type: object
+  entities.AppSt:
+    properties:
+      active:
+        type: boolean
+      data:
+        type: string
+      id:
+        type: string
+      realm_id:
+        type: string
     type: object
   entities.ConfigSt:
     type: object
-  entities.DataCUSt:
+  entities.EndpointCUSt:
     properties:
-      name:
-        type: string
-      val:
-        type: string
-    type: object
-  entities.DataDeployReqSt:
-    properties:
-      conf_file:
+      active:
+        type: boolean
+      app_id:
         type: string
       data:
         type: string
-      method:
-        type: string
-      url:
-        type: string
     type: object
-  entities.DataListSt:
+  entities.EndpointSt:
     properties:
+      active:
+        type: boolean
+      app:
+        $ref: '#/definitions/entities.AppSt'
+      app_id:
+        type: string
+      data:
+        type: string
       id:
-        type: string
-      name:
-        type: string
-    type: object
-  entities.DataSt:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-      val:
         type: string
     type: object
   entities.ProfileAuthByRefreshTokenRepSt:
@@ -78,9 +92,163 @@ definitions:
     type: object
   entities.ProfileSt:
     type: object
+  entities.ProxyRequestSendReqSt:
+    properties:
+      uri:
+        type: string
+    type: object
+  entities.RealmCUSt:
+    properties:
+      data:
+        type: string
+    type: object
+  entities.RealmSt:
+    properties:
+      data:
+        type: string
+      id:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
+  /app:
+    get:
+      parameters:
+      - in: query
+        name: active
+        type: boolean
+      - in: query
+        items:
+          type: string
+        name: cols
+        type: array
+      - in: query
+        name: only_count
+        type: boolean
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: page_size
+        type: integer
+      - in: query
+        name: realm_id
+        type: string
+      - in: query
+        items:
+          type: string
+        name: sort
+        type: array
+      - in: query
+        name: sort_name
+        type: string
+      - in: query
+        name: with_total_count
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dopTypes.PaginatedListRep'
+            - properties:
+                results:
+                  items:
+                    $ref: '#/definitions/entities.AppSt'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - app
+    post:
+      parameters:
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.AppCUSt'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dopTypes.CreateRep'
+            - properties:
+                id:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - app
+  /app/:id:
+    delete:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - app
+    get:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.AppSt'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - app
+    put:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.AppCUSt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - app
   /config:
     get:
       produces:
@@ -116,8 +284,40 @@ paths:
       summary: Update configs
       tags:
       - config
-  /data:
+  /endpoint:
     get:
+      parameters:
+      - in: query
+        name: active
+        type: boolean
+      - in: query
+        name: app_id
+        type: string
+      - in: query
+        items:
+          type: string
+        name: cols
+        type: array
+      - in: query
+        name: only_count
+        type: boolean
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: page_size
+        type: integer
+      - in: query
+        items:
+          type: string
+        name: sort
+        type: array
+      - in: query
+        name: sort_name
+        type: string
+      - in: query
+        name: with_total_count
+        type: boolean
       produces:
       - application/json
       responses:
@@ -125,11 +325,11 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/dopTypes.ListRep'
+            - $ref: '#/definitions/dopTypes.PaginatedListRep'
             - properties:
                 results:
                   items:
-                    $ref: '#/definitions/entities.DataListSt'
+                    $ref: '#/definitions/entities.EndpointSt'
                   type: array
               type: object
         "400":
@@ -137,14 +337,14 @@ paths:
           schema:
             $ref: '#/definitions/dopTypes.ErrRep'
       tags:
-      - data
+      - endpoint
     post:
       parameters:
       - description: body
         in: body
         name: body
         schema:
-          $ref: '#/definitions/entities.DataCUSt'
+          $ref: '#/definitions/entities.EndpointCUSt'
       responses:
         "200":
           description: OK
@@ -160,8 +360,8 @@ paths:
           schema:
             $ref: '#/definitions/dopTypes.ErrRep'
       tags:
-      - data
-  /data/:id:
+      - endpoint
+  /endpoint/:id:
     delete:
       parameters:
       - description: id
@@ -177,7 +377,7 @@ paths:
           schema:
             $ref: '#/definitions/dopTypes.ErrRep'
       tags:
-      - data
+      - endpoint
     get:
       parameters:
       - description: id
@@ -185,19 +385,22 @@ paths:
         name: id
         required: true
         type: string
+      - in: query
+        name: with_app
+        type: boolean
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entities.DataSt'
+            $ref: '#/definitions/entities.EndpointSt'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/dopTypes.ErrRep'
       tags:
-      - data
+      - endpoint
     put:
       parameters:
       - description: id
@@ -209,7 +412,7 @@ paths:
         in: body
         name: body
         schema:
-          $ref: '#/definitions/entities.DataCUSt'
+          $ref: '#/definitions/entities.EndpointCUSt'
       produces:
       - application/json
       responses:
@@ -220,24 +423,7 @@ paths:
           schema:
             $ref: '#/definitions/dopTypes.ErrRep'
       tags:
-      - data
-  /data/deploy:
-    post:
-      parameters:
-      - description: body
-        in: body
-        name: body
-        schema:
-          $ref: '#/definitions/entities.DataDeployReqSt'
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/dopTypes.ErrRep'
-      tags:
-      - data
+      - endpoint
   /profile:
     get:
       produces:
@@ -295,4 +481,152 @@ paths:
             $ref: '#/definitions/dopTypes.ErrRep'
       tags:
       - profile
+  /proxy_request:
+    post:
+      parameters:
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.ProxyRequestSendReqSt'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - proxy_request
+  /realm:
+    get:
+      parameters:
+      - in: query
+        items:
+          type: string
+        name: cols
+        type: array
+      - in: query
+        name: only_count
+        type: boolean
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: page_size
+        type: integer
+      - in: query
+        items:
+          type: string
+        name: sort
+        type: array
+      - in: query
+        name: sort_name
+        type: string
+      - in: query
+        name: with_total_count
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dopTypes.PaginatedListRep'
+            - properties:
+                results:
+                  items:
+                    $ref: '#/definitions/entities.RealmSt'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - realm
+    post:
+      parameters:
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.RealmCUSt'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dopTypes.CreateRep'
+            - properties:
+                id:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - realm
+  /realm/:id:
+    delete:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - realm
+    get:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.RealmSt'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - realm
+    put:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.RealmCUSt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - realm
 swagger: "2.0"

@@ -21,8 +21,8 @@ func (c *Endpoint) ValidateCU(ctx context.Context, obj *entities.EndpointCUSt, i
 	return nil
 }
 
-func (c *Endpoint) List(ctx context.Context) ([]*entities.EndpointSt, int64, error) {
-	items, tCount, err := c.r.repo.EndpointList(ctx)
+func (c *Endpoint) List(ctx context.Context, pars *entities.EndpointListParsSt) ([]*entities.EndpointSt, int64, error) {
+	items, tCount, err := c.r.repo.EndpointList(ctx, pars)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -30,7 +30,7 @@ func (c *Endpoint) List(ctx context.Context) ([]*entities.EndpointSt, int64, err
 	return items, tCount, nil
 }
 
-func (c *Endpoint) Get(ctx context.Context, id string, errNE bool) (*entities.EndpointSt, error) {
+func (c *Endpoint) Get(ctx context.Context, id string, pars *entities.EndpointGetParsSt, errNE bool) (*entities.EndpointSt, error) {
 	result, err := c.r.repo.EndpointGet(ctx, id)
 	if err != nil {
 		return nil, err
@@ -40,6 +40,13 @@ func (c *Endpoint) Get(ctx context.Context, id string, errNE bool) (*entities.En
 			return nil, dopErrs.ObjectNotFound
 		}
 		return nil, nil
+	}
+
+	if pars.WithApp {
+		result.App, err = c.r.App.Get(ctx, result.AppId, true)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return result, nil
