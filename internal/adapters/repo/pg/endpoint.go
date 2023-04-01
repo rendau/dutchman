@@ -49,7 +49,7 @@ func (d *St) EndpointList(ctx context.Context, pars *entities.EndpointListParsSt
 		Conds:  conds,
 		Args:   args,
 		AllowedSorts: map[string]string{
-			"default": "t.id",
+			"default": "t.data ->> 'path', t.data ->> 'method', t.id",
 		},
 	})
 
