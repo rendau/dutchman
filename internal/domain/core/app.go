@@ -85,3 +85,12 @@ func (c *App) Update(ctx context.Context, id string, obj *entities.AppCUSt) erro
 func (c *App) Delete(ctx context.Context, id string) error {
 	return c.r.repo.AppDelete(ctx, id)
 }
+
+// func (c *App) FetchRoles(ctx context.Context, id string) []*entities.RoleRemoteRepItemSt {
+// 	app, err := c.Get(ctx, id, true)
+// 	if err != nil {
+// 		return []*entities.RoleRemoteRepItemSt{}
+// 	}
+//
+// 	return c.r.Role.FetchRemoteUri(app, app.RemotePath)
+// }

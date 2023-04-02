@@ -2,8 +2,15 @@ package core
 
 import (
 	"context"
+	"crypto/tls"
 	"encoding/json"
+	"fmt"
+	"net/http"
+	"strings"
+	"time"
 
+	"github.com/rendau/dop/adapters/client/httpc"
+	"github.com/rendau/dop/adapters/client/httpc/httpclient"
 	"github.com/rendau/dop/dopErrs"
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
@@ -87,9 +94,42 @@ func (c *Role) Delete(ctx context.Context, id string) error {
 	return c.r.repo.RoleDelete(ctx, id)
 }
 
-func (c *Role) parseRemoteJson(src []byte, path []string) ([]*entities.RoleRemoteRepItemSt, error) {
+func (c *Role) FetchRemoteUri(uri, path string) []*entities.RoleRemoteRepItemSt {
+	const fetchTimeout = 5 * time.Second
+
+	httpClient := httpclient.New(c.r.lg, &httpc.OptionsSt{
+		Client: &http.Client{
+			Timeout:   fetchTimeout,
+			Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
+		},
+	})
+
+	resp, err := httpClient.Send(&httpc.OptionsSt{
+		Method:   "GET",
+		Uri:      uri,
+		LogFlags: httpc.NoLogError,
+	})
+	if err != nil {
+		return []*entities.RoleRemoteRepItemSt{}
+	}
+
+	return c.parseRemoteJson(resp.BodyRaw, path)
+}
+
+func (c *Role) parseRemoteJson(src []byte, path string) []*entities.RoleRemoteRepItemSt {
+	pathSl := make([]string, 0, 10)
+	for _, p := range strings.Split(strings.TrimSpace(path), ".") {
+		if p = strings.TrimSpace(p); p != "" {
+			pathSl = append(pathSl, p)
+		}
+	}
+
+	return c.parseRemoteJsonPathSl(src, pathSl)
+}
+
+func (c *Role) parseRemoteJsonPathSl(src []byte, path []string) []*entities.RoleRemoteRepItemSt {
 	if len(src) == 0 {
-		return []*entities.RoleRemoteRepItemSt{}, nil
+		return []*entities.RoleRemoteRepItemSt{}
 	}
 
 	if len(path) == 0 {
@@ -97,18 +137,20 @@ func (c *Role) parseRemoteJson(src []byte, path []string) ([]*entities.RoleRemot
 
 		err := json.Unmarshal(src, &result)
 		if err != nil {
-			return nil, err
+			fmt.Println("fail to parse result", err)
+			return []*entities.RoleRemoteRepItemSt{}
 		}
 
-		return result, nil
+		return result
 	}
 
 	obj := map[string]json.RawMessage{}
 
 	err := json.Unmarshal(src, &obj)
 	if err != nil {
-		return nil, err
+		fmt.Println("fail to parse json-raw", err)
+		return []*entities.RoleRemoteRepItemSt{}
 	}
 
-	return c.parseRemoteJson(obj[path[0]], path[1:])
+	return c.parseRemoteJsonPathSl(obj[path[0]], path[1:])
 }

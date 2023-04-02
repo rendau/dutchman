@@ -2,38 +2,58 @@ package core
 
 import (
 	"reflect"
+	"strconv"
 	"testing"
 
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
 func TestRole_parseRemoteJson(t *testing.T) {
-	type fields struct {
-		r *St
-	}
-	type args struct {
-		src  []byte
-		path []string
-	}
+	cr := &Role{}
+
 	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		want    []*entities.RoleRemoteRepItemSt
-		wantErr bool
+		src  []byte
+		path string
+		want []*entities.RoleRemoteRepItemSt
 	}{
-		// TODO: Add test cases.
+		{
+			src: []byte(`{
+				"perms": [
+					{"code": "c1", "is_all": true, "dsc": "c1 desc"},
+					{"code": "c2", "is_all": false, "dsc": "c2 desc"}
+				]
+			}`),
+			path: "   perms   ",
+			want: []*entities.RoleRemoteRepItemSt{
+				{Code: "c1", IsAll: true, Dsc: "c1 desc"},
+				{Code: "c2", IsAll: false, Dsc: "c2 desc"},
+			},
+		},
+		{
+			src: []byte(`{
+				"k1": {
+					"foo": "bar",
+					"k2": {
+						"k3": {
+							"perms": [
+								{"code": "c1", "is_all": true, "dsc": "c1 desc"},
+								{"code": "c2", "is_all": false, "dsc": "c2 desc"}
+							],
+							"foo": "bar"
+						}
+					}
+				}
+			}`),
+			path: "..k1.k2 .  k3.perms .",
+			want: []*entities.RoleRemoteRepItemSt{
+				{Code: "c1", IsAll: true, Dsc: "c1 desc"},
+				{Code: "c2", IsAll: false, Dsc: "c2 desc"},
+			},
+		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			c := &Role{
-				r: tt.fields.r,
-			}
-			got, err := c.parseRemoteJson(tt.args.src, tt.args.path)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("parseRemoteJson() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
+	for ttI, tt := range tests {
+		t.Run(strconv.Itoa(ttI+1), func(t *testing.T) {
+			got := cr.parseRemoteJson(tt.src, tt.path)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("parseRemoteJson() got = %v, want %v", got, tt.want)
 			}
