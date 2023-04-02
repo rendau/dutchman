@@ -8,13 +8,13 @@ import (
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
-// @Router  /config [put]
-// @Tags    config
-// @Summary Update configs
-// @Accept  json
-// @Param   body body entities.ConfigSt false "body"
-// @Success 200
-// @Failure 400 {object} dopTypes.ErrRep
+// @Router		/config [put]
+// @Tags		config
+// @Summary	Update configs
+// @Accept		json
+// @Param		body	body	entities.ConfigSt	false	"body"
+// @Success	200
+// @Failure	400	{object}	dopTypes.ErrRep
 func (o *St) hConfigUpdate(c *gin.Context) {
 	reqObj := &entities.ConfigSt{}
 	if !dopHttps.BindJSON(c, reqObj) {
@@ -24,12 +24,12 @@ func (o *St) hConfigUpdate(c *gin.Context) {
 	dopHttps.Error(c, o.ucs.ConfigSet(o.getRequestContext(c), reqObj))
 }
 
-// @Router  /config [get]
-// @Tags    config
-// @Summary Get configs
-// @Produce json
-// @Success 200 {object} entities.ConfigSt
-// @Failure 400 {object} dopTypes.ErrRep
+// @Router		/config [get]
+// @Tags		config
+// @Summary	Get configs
+// @Produce	json
+// @Success	200	{object}	entities.ConfigSt
+// @Failure	400	{object}	dopTypes.ErrRep
 func (o *St) hConfigGet(c *gin.Context) {
 	result, err := o.ucs.ConfigGet(o.getRequestContext(c))
 	if dopHttps.Error(c, err) {

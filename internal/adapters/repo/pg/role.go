@@ -9,12 +9,12 @@ import (
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
-func (d *St) PermGet(ctx context.Context, id string) (*entities.PermSt, error) {
-	result := &entities.PermSt{}
+func (d *St) RoleGet(ctx context.Context, id string) (*entities.RoleSt, error) {
+	result := &entities.RoleSt{}
 
 	err := d.HfGet(ctx, db.RDBGetOptions{
 		Dst:    result,
-		Tables: []string{"perm"},
+		Tables: []string{`"role"`},
 		Conds:  []string{"id = ${id}"},
 		Args:   map[string]any{"id": id},
 	})
@@ -26,7 +26,7 @@ func (d *St) PermGet(ctx context.Context, id string) (*entities.PermSt, error) {
 	return result, err
 }
 
-func (d *St) PermList(ctx context.Context, pars *entities.PermListParsSt) ([]*entities.PermSt, int64, error) {
+func (d *St) RoleList(ctx context.Context, pars *entities.RoleListParsSt) ([]*entities.RoleSt, int64, error) {
 	conds := make([]string, 0)
 	args := map[string]any{}
 
@@ -36,11 +36,11 @@ func (d *St) PermList(ctx context.Context, pars *entities.PermListParsSt) ([]*en
 		args["app_id"] = *pars.AppId
 	}
 
-	result := make([]*entities.PermSt, 0, 100)
+	result := make([]*entities.RoleSt, 0, 100)
 
 	tCount, err := d.HfList(ctx, db.RDBListOptions{
 		Dst:    &result,
-		Tables: []string{`perm t`},
+		Tables: []string{`"role" t`},
 		LPars:  pars.ListParams,
 		Conds:  conds,
 		Args:   args,
@@ -52,23 +52,23 @@ func (d *St) PermList(ctx context.Context, pars *entities.PermListParsSt) ([]*en
 	return result, tCount, err
 }
 
-func (d *St) PermIdExists(ctx context.Context, id string) (bool, error) {
+func (d *St) RoleIdExists(ctx context.Context, id string) (bool, error) {
 	var cnt int
 
 	err := d.DbQueryRow(ctx, `
         select count(*)
-        from perm
+        from "role"
         where id = $1
     `, id).Scan(&cnt)
 
 	return cnt > 0, err
 }
 
-func (d *St) PermCreate(ctx context.Context, obj *entities.PermCUSt) (string, error) {
+func (d *St) RoleCreate(ctx context.Context, obj *entities.RoleCUSt) (string, error) {
 	var result string
 
 	err := d.HfCreate(ctx, db.RDBCreateOptions{
-		Table:  "perm",
+		Table:  `"role"`,
 		Obj:    obj,
 		RetCol: "id",
 		RetV:   &result,
@@ -77,18 +77,18 @@ func (d *St) PermCreate(ctx context.Context, obj *entities.PermCUSt) (string, er
 	return result, err
 }
 
-func (d *St) PermUpdate(ctx context.Context, id string, obj *entities.PermCUSt) error {
+func (d *St) RoleUpdate(ctx context.Context, id string, obj *entities.RoleCUSt) error {
 	return d.HfUpdate(ctx, db.RDBUpdateOptions{
-		Table: "perm",
+		Table: `"role"`,
 		Obj:   obj,
 		Conds: []string{"id = ${cond_id}"},
 		Args:  map[string]any{"cond_id": id},
 	})
 }
 
-func (d *St) PermDelete(ctx context.Context, id string) error {
+func (d *St) RoleDelete(ctx context.Context, id string) error {
 	return d.HfDelete(ctx, db.RDBDeleteOptions{
-		Table: "perm",
+		Table: `"role"`,
 		Conds: []string{"id = ${cond_id}"},
 		Args:  map[string]any{"cond_id": id},
 	})

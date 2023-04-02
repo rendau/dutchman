@@ -9,19 +9,19 @@ import (
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
-// @Router		/realm [get]
-// @Tags		realm
-// @Param		query	query	entities.RealmListParsSt	false	"query"
+// @Router		/role [get]
+// @Tags		role
+// @Param		query	query	entities.RoleListParsSt	false	"query"
 // @Produce	json
-// @Success	200	{object}	dopTypes.PaginatedListRep{results=[]entities.RealmSt}
+// @Success	200	{object}	dopTypes.PaginatedListRep{results=[]entities.RoleSt}
 // @Failure	400	{object}	dopTypes.ErrRep
-func (o *St) hRealmList(c *gin.Context) {
-	pars := &entities.RealmListParsSt{}
+func (o *St) hRoleList(c *gin.Context) {
+	pars := &entities.RoleListParsSt{}
 	if !dopHttps.BindQuery(c, pars) {
 		return
 	}
 
-	result, tCount, err := o.ucs.RealmList(o.getRequestContext(c), pars)
+	result, tCount, err := o.ucs.RoleList(o.getRequestContext(c), pars)
 	if dopHttps.Error(c, err) {
 		return
 	}
@@ -34,18 +34,18 @@ func (o *St) hRealmList(c *gin.Context) {
 	})
 }
 
-// @Router		/realm [post]
-// @Tags		realm
-// @Param		body	body		entities.RealmCUSt	false	"body"
+// @Router		/role [post]
+// @Tags		role
+// @Param		body	body		entities.RoleCUSt	false	"body"
 // @Success	200		{object}	dopTypes.CreateRep{id=string}
 // @Failure	400		{object}	dopTypes.ErrRep
-func (o *St) hRealmCreate(c *gin.Context) {
-	reqObj := &entities.RealmCUSt{}
+func (o *St) hRoleCreate(c *gin.Context) {
+	reqObj := &entities.RoleCUSt{}
 	if !dopHttps.BindJSON(c, reqObj) {
 		return
 	}
 
-	result, err := o.ucs.RealmCreate(o.getRequestContext(c), reqObj)
+	result, err := o.ucs.RoleCreate(o.getRequestContext(c), reqObj)
 	if dopHttps.Error(c, err) {
 		return
 	}
@@ -53,16 +53,16 @@ func (o *St) hRealmCreate(c *gin.Context) {
 	c.JSON(http.StatusOK, dopTypes.CreateRep{Id: result})
 }
 
-// @Router		/realm/:id [get]
-// @Tags		realm
+// @Router		/role/:id [get]
+// @Tags		role
 // @Param		id	path	string	true	"id"
 // @Produce	json
-// @Success	200	{object}	entities.RealmSt
+// @Success	200	{object}	entities.RoleSt
 // @Failure	400	{object}	dopTypes.ErrRep
-func (o *St) hRealmGet(c *gin.Context) {
+func (o *St) hRoleGet(c *gin.Context) {
 	id := c.Param("id")
 
-	result, err := o.ucs.RealmGet(o.getRequestContext(c), id)
+	result, err := o.ucs.RoleGet(o.getRequestContext(c), id)
 	if dopHttps.Error(c, err) {
 		return
 	}
@@ -70,31 +70,31 @@ func (o *St) hRealmGet(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-// @Router		/realm/:id [put]
-// @Tags		realm
+// @Router		/role/:id [put]
+// @Tags		role
 // @Param		id		path	string				true	"id"
-// @Param		body	body	entities.RealmCUSt	false	"body"
+// @Param		body	body	entities.RoleCUSt	false	"body"
 // @Produce	json
 // @Success	200
 // @Failure	400	{object}	dopTypes.ErrRep
-func (o *St) hRealmUpdate(c *gin.Context) {
+func (o *St) hRoleUpdate(c *gin.Context) {
 	id := c.Param("id")
 
-	reqObj := &entities.RealmCUSt{}
+	reqObj := &entities.RoleCUSt{}
 	if !dopHttps.BindJSON(c, reqObj) {
 		return
 	}
 
-	dopHttps.Error(c, o.ucs.RealmUpdate(o.getRequestContext(c), id, reqObj))
+	dopHttps.Error(c, o.ucs.RoleUpdate(o.getRequestContext(c), id, reqObj))
 }
 
-// @Router		/realm/:id [delete]
-// @Tags		realm
+// @Router		/role/:id [delete]
+// @Tags		role
 // @Param		id	path	string	true	"id"
 // @Success	200
 // @Failure	400	{object}	dopTypes.ErrRep
-func (o *St) hRealmDelete(c *gin.Context) {
+func (o *St) hRoleDelete(c *gin.Context) {
 	id := c.Param("id")
 
-	dopHttps.Error(c, o.ucs.RealmDelete(o.getRequestContext(c), id))
+	dopHttps.Error(c, o.ucs.RoleDelete(o.getRequestContext(c), id))
 }

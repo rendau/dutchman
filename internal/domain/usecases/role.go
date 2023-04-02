@@ -8,8 +8,8 @@ import (
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
-func (u *St) PermList(ctx context.Context,
-	pars *entities.PermListParsSt) ([]*entities.PermSt, int64, error) {
+func (u *St) RoleList(ctx context.Context,
+	pars *entities.RoleListParsSt) ([]*entities.RoleSt, int64, error) {
 	var err error
 
 	// ses := u.SessionGetFromContext(ctx)
@@ -22,10 +22,10 @@ func (u *St) PermList(ctx context.Context,
 		return nil, 0, err
 	}
 
-	return u.cr.Perm.List(ctx, pars)
+	return u.cr.Role.List(ctx, pars)
 }
 
-func (u *St) PermGet(ctx context.Context, id string) (*entities.PermSt, error) {
+func (u *St) RoleGet(ctx context.Context, id string) (*entities.RoleSt, error) {
 	// var err error
 
 	// ses := u.SessionGetFromContext(ctx)
@@ -34,11 +34,11 @@ func (u *St) PermGet(ctx context.Context, id string) (*entities.PermSt, error) {
 	// 	return nil, 0, err
 	// }
 
-	return u.cr.Perm.Get(ctx, id, true)
+	return u.cr.Role.Get(ctx, id, true)
 }
 
-func (u *St) PermCreate(ctx context.Context,
-	obj *entities.PermCUSt) (string, error) {
+func (u *St) RoleCreate(ctx context.Context,
+	obj *entities.RoleCUSt) (string, error) {
 	var err error
 
 	// ses := u.SessionGetFromContext(ctx)
@@ -50,15 +50,15 @@ func (u *St) PermCreate(ctx context.Context,
 	var result string
 
 	err = u.db.TransactionFn(ctx, func(ctx context.Context) error {
-		result, err = u.cr.Perm.Create(ctx, obj)
+		result, err = u.cr.Role.Create(ctx, obj)
 		return err
 	})
 
 	return result, err
 }
 
-func (u *St) PermUpdate(ctx context.Context,
-	id string, obj *entities.PermCUSt) error {
+func (u *St) RoleUpdate(ctx context.Context,
+	id string, obj *entities.RoleCUSt) error {
 	// ses := u.SessionGetFromContext(ctx)
 	//
 	// if err = u.SessionRequireAuth(ses); err != nil {
@@ -66,11 +66,11 @@ func (u *St) PermUpdate(ctx context.Context,
 	// }
 
 	return u.db.TransactionFn(ctx, func(ctx context.Context) error {
-		return u.cr.Perm.Update(ctx, id, obj)
+		return u.cr.Role.Update(ctx, id, obj)
 	})
 }
 
-func (u *St) PermDelete(ctx context.Context,
+func (u *St) RoleDelete(ctx context.Context,
 	id string) error {
 	// ses := u.SessionGetFromContext(ctx)
 	//
@@ -79,6 +79,6 @@ func (u *St) PermDelete(ctx context.Context,
 	// }
 
 	return u.db.TransactionFn(ctx, func(ctx context.Context) error {
-		return u.cr.Perm.Delete(ctx, id)
+		return u.cr.Role.Delete(ctx, id)
 	})
 }

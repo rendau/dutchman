@@ -12,11 +12,11 @@ import (
 	dopHttps "github.com/rendau/dop/adapters/server/https"
 )
 
-// @Router  /proxy_request [POST]
-// @Tags    proxy_request
-// @Param   body body entities.ProxyRequestSendReqSt false "body"
-// @Success 200
-// @Failure 400 {object} dopTypes.ErrRep
+// @Router		/proxy_request [POST]
+// @Tags		proxy_request
+// @Param		body	body	entities.ProxyRequestSendReqSt	false	"body"
+// @Success	200
+// @Failure	400	{object}	dopTypes.ErrRep
 func (o *St) hProxyRequest(c *gin.Context) {
 	const timeOut = 5 * time.Second
 

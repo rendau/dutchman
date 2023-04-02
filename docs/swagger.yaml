@@ -109,6 +109,22 @@ definitions:
       id:
         type: string
     type: object
+  entities.RoleCUSt:
+    properties:
+      app_id:
+        type: string
+      data:
+        type: string
+    type: object
+  entities.RoleSt:
+    properties:
+      app_id:
+        type: string
+      data:
+        type: string
+      id:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -118,7 +134,8 @@ paths:
       - in: query
         name: active
         type: boolean
-      - in: query
+      - collectionFormat: csv
+        in: query
         items:
           type: string
         name: cols
@@ -135,7 +152,8 @@ paths:
       - in: query
         name: realm_id
         type: string
-      - in: query
+      - collectionFormat: csv
+        in: query
         items:
           type: string
         name: sort
@@ -293,7 +311,8 @@ paths:
       - in: query
         name: app_id
         type: string
-      - in: query
+      - collectionFormat: csv
+        in: query
         items:
           type: string
         name: cols
@@ -307,7 +326,8 @@ paths:
       - in: query
         name: page_size
         type: integer
-      - in: query
+      - collectionFormat: csv
+        in: query
         items:
           type: string
         name: sort
@@ -501,7 +521,8 @@ paths:
   /realm:
     get:
       parameters:
-      - in: query
+      - collectionFormat: csv
+        in: query
         items:
           type: string
         name: cols
@@ -515,7 +536,8 @@ paths:
       - in: query
         name: page_size
         type: integer
-      - in: query
+      - collectionFormat: csv
+        in: query
         items:
           type: string
         name: sort
@@ -629,4 +651,140 @@ paths:
             $ref: '#/definitions/dopTypes.ErrRep'
       tags:
       - realm
+  /role:
+    get:
+      parameters:
+      - in: query
+        name: app_id
+        type: string
+      - collectionFormat: csv
+        in: query
+        items:
+          type: string
+        name: cols
+        type: array
+      - in: query
+        name: only_count
+        type: boolean
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: page_size
+        type: integer
+      - collectionFormat: csv
+        in: query
+        items:
+          type: string
+        name: sort
+        type: array
+      - in: query
+        name: sort_name
+        type: string
+      - in: query
+        name: with_total_count
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dopTypes.PaginatedListRep'
+            - properties:
+                results:
+                  items:
+                    $ref: '#/definitions/entities.RoleSt'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - role
+    post:
+      parameters:
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.RoleCUSt'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dopTypes.CreateRep'
+            - properties:
+                id:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - role
+  /role/:id:
+    delete:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - role
+    get:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.RoleSt'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - role
+    put:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.RoleCUSt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - role
 swagger: "2.0"
