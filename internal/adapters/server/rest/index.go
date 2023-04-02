@@ -77,6 +77,13 @@ func GetHandler(
 	r.PUT("/realm/:id", s.hRealmUpdate)
 	r.DELETE("/realm/:id", s.hRealmDelete)
 
+	// perm
+	r.GET("/perm", s.hPermList)
+	r.POST("/perm", s.hPermCreate)
+	r.GET("/perm/:id", s.hPermGet)
+	r.PUT("/perm/:id", s.hPermUpdate)
+	r.DELETE("/perm/:id", s.hPermDelete)
+
 	return r
 }
 

@@ -27,6 +27,7 @@ type St struct {
 	Realm    *Realm
 	App      *App
 	Endpoint *Endpoint
+	Perm     *Perm
 }
 
 func New(
@@ -56,6 +57,7 @@ func New(
 	c.Realm = NewRealm(c)
 	c.App = NewApp(c)
 	c.Endpoint = NewEndpoint(c)
+	c.Perm = NewPerm(c)
 
 	return c
 }

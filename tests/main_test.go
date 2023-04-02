@@ -41,6 +41,9 @@ func TestMain(m *testing.M) {
 		app.cache,
 		app.db,
 		app.repo,
+		"auth_password",
+		"session_token",
+		"./conf_dir",
 		true,
 	)
 

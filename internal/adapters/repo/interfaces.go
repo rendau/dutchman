@@ -34,4 +34,12 @@ type Repo interface {
 	RealmCreate(ctx context.Context, obj *entities.RealmCUSt) (string, error)
 	RealmUpdate(ctx context.Context, id string, obj *entities.RealmCUSt) error
 	RealmDelete(ctx context.Context, id string) error
+
+	// perm
+	PermGet(ctx context.Context, id string) (*entities.PermSt, error)
+	PermList(ctx context.Context, pars *entities.PermListParsSt) ([]*entities.PermSt, int64, error)
+	PermIdExists(ctx context.Context, id string) (bool, error)
+	PermCreate(ctx context.Context, obj *entities.PermCUSt) (string, error)
+	PermUpdate(ctx context.Context, id string, obj *entities.PermCUSt) error
+	PermDelete(ctx context.Context, id string) error
 }
