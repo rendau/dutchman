@@ -23,7 +23,7 @@ type PermCUSt struct {
 	Data  *json.RawMessage `json:"data" db:"data" swaggertype:"string"`
 }
 
-// remove
+// remote
 
 type PermRemoteRepSt struct {
 	Perms []*PermRemoteRepItemSt `json:"perms"`

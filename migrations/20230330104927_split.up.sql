@@ -18,6 +18,17 @@ create table app
 create index app_idx_realm_id on app (realm_id);
 create index app_idx_active on app (active);
 
+create table perm
+(
+    id       uuid    not null default gen_random_uuid()
+        primary key,
+    app_id   uuid    not null
+        constraint perm_fk_app_id
+            references app (id) on update cascade on delete cascade,
+    data     jsonb   not null default '{}'
+);
+create index perm_idx_app_id on perm (app_id);
+
 create table endpoint
 (
     id     uuid    not null default gen_random_uuid()
