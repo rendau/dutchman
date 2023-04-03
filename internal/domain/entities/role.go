@@ -7,9 +7,10 @@ import (
 )
 
 type RoleSt struct {
-	Id    string          `json:"id" db:"id"`
-	AppId string          `json:"app_id" db:"app_id"`
-	Data  json.RawMessage `json:"data" db:"data" swaggertype:"string"`
+	Id        string          `json:"id" db:"id"`
+	AppId     string          `json:"app_id" db:"app_id"`
+	IsFetched bool            `json:"is_fetched" db:"is_fetched"`
+	Data      json.RawMessage `json:"data" db:"data" swaggertype:"string"`
 }
 
 type RoleListParsSt struct {
@@ -19,14 +20,14 @@ type RoleListParsSt struct {
 }
 
 type RoleCUSt struct {
-	AppId *string          `json:"app_id" db:"app_id"`
-	Data  *json.RawMessage `json:"data" db:"data" swaggertype:"string"`
+	AppId     *string          `json:"app_id" db:"app_id"`
+	IsFetched *bool            `json:"is_fetched" db:"is_fetched"`
+	Data      *json.RawMessage `json:"data" db:"data" swaggertype:"string"`
 }
 
 // remote
 
 type RoleRemoteRepItemSt struct {
-	Code  string `json:"code"`
-	IsAll bool   `json:"is_all"`
-	Dsc   string `json:"dsc"`
+	Code string `json:"code"`
+	Dsc  string `json:"dsc"`
 }

@@ -25,8 +25,8 @@ func TestRole_parseRemoteJson(t *testing.T) {
 			}`),
 			path: "   perms   ",
 			want: []*entities.RoleRemoteRepItemSt{
-				{Code: "c1", IsAll: true, Dsc: "c1 desc"},
-				{Code: "c2", IsAll: false, Dsc: "c2 desc"},
+				{Code: "c1", Dsc: "c1 desc"},
+				{Code: "c2", Dsc: "c2 desc"},
 			},
 		},
 		{
@@ -46,8 +46,8 @@ func TestRole_parseRemoteJson(t *testing.T) {
 			}`),
 			path: "..k1.k2 .  k3.perms .",
 			want: []*entities.RoleRemoteRepItemSt{
-				{Code: "c1", IsAll: true, Dsc: "c1 desc"},
-				{Code: "c2", IsAll: false, Dsc: "c2 desc"},
+				{Code: "c1", Dsc: "c1 desc"},
+				{Code: "c2", Dsc: "c2 desc"},
 			},
 		},
 	}

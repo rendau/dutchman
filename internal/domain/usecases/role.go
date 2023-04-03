@@ -3,14 +3,12 @@ package usecases
 import (
 	"context"
 
-	"github.com/rendau/dop/dopTools"
-	"github.com/rendau/dutchman/internal/cns"
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
 func (u *St) RoleList(ctx context.Context,
 	pars *entities.RoleListParsSt) ([]*entities.RoleSt, int64, error) {
-	var err error
+	// var err error
 
 	// ses := u.SessionGetFromContext(ctx)
 	//
@@ -18,9 +16,9 @@ func (u *St) RoleList(ctx context.Context,
 	// 	return nil, 0, err
 	// }
 
-	if err = dopTools.RequirePageSize(pars.ListParams, cns.MaxPageSize); err != nil {
-		return nil, 0, err
-	}
+	// if err = dopTools.RequirePageSize(pars.ListParams, cns.MaxPageSize); err != nil {
+	// 	return nil, 0, err
+	// }
 
 	return u.cr.Role.List(ctx, pars)
 }
