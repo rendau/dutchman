@@ -26,6 +26,13 @@ func NewRole(r *St) *Role {
 func (c *Role) ValidateCU(ctx context.Context, obj *entities.RoleCUSt, id string) error {
 	// forCreate := id == ""
 
+	if obj.AppId != nil {
+		if *obj.AppId == "-" {
+			obj.AppId = nil
+		}
+		obj.DbAppId = &obj.AppId
+	}
+
 	return nil
 }
 

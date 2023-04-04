@@ -22,7 +22,7 @@ create table "role"
 (
     id         uuid    not null default gen_random_uuid()
         primary key,
-    app_id     uuid    not null
+    app_id     uuid
         constraint role_fk_app_id
             references app (id) on update cascade on delete cascade,
     is_fetched boolean not null default false,
