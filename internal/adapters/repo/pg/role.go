@@ -45,7 +45,7 @@ func (d *St) RoleList(ctx context.Context, pars *entities.RoleListParsSt) ([]*en
 		Conds:  conds,
 		Args:   args,
 		AllowedSorts: map[string]string{
-			"default": "t.id",
+			"default": "t.app_id, t.data ->> 'name'",
 		},
 	})
 
