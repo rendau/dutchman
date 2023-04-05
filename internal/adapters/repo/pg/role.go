@@ -32,8 +32,16 @@ func (d *St) RoleList(ctx context.Context, pars *entities.RoleListParsSt) ([]*en
 
 	// filter
 	if pars.AppId != nil {
-		conds = append(conds, `t.app_id = ${app_id}`)
-		args["app_id"] = *pars.AppId
+		if *pars.AppId == "-" {
+			conds = append(conds, `t.app_id is null`)
+		} else {
+			conds = append(conds, `t.app_id = ${app_id}`)
+			args["app_id"] = *pars.AppId
+		}
+	}
+	if pars.AppIdOrNull != nil {
+		conds = append(conds, `(t.app_id = ${app_id_or_null} or t.app_id is null)`)
+		args["app_id_or_null"] = *pars.AppIdOrNull
 	}
 
 	result := make([]*entities.RoleSt, 0, 100)

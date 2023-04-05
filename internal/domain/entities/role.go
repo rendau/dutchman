@@ -16,7 +16,8 @@ type RoleSt struct {
 type RoleListParsSt struct {
 	dopTypes.ListParams
 
-	AppId *string `json:"app_id" form:"app_id"`
+	AppId       *string `json:"app_id" form:"app_id"`
+	AppIdOrNull *string `json:"app_id_or_null" form:"app_id_or_null"`
 }
 
 type RoleCUSt struct {
