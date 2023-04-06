@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 
 	"github.com/rendau/dop/dopErrs"
+	"github.com/rendau/dop/dopTools"
+	"github.com/rendau/dutchman/internal/cns"
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
@@ -64,6 +66,8 @@ func (c *App) Create(ctx context.Context, obj *entities.AppCUSt) (string, error)
 		return "", err
 	}
 
+	c.SyncRoles(ctx, result)
+
 	return result, nil
 }
 
@@ -80,6 +84,8 @@ func (c *App) Update(ctx context.Context, id string, obj *entities.AppCUSt) erro
 		return err
 	}
 
+	c.SyncRoles(ctx, id)
+
 	return nil
 }
 
@@ -88,120 +94,117 @@ func (c *App) Delete(ctx context.Context, id string) error {
 }
 
 func (c *App) SyncRoles(ctx context.Context, id string) {
-	// app, err := c.Get(ctx, id, true)
-	// if err != nil {
-	// 	return
-	// }
-	//
-	// appData := &entities.AppDataForRemoteRolesSt{}
-	// err = json.Unmarshal(app.Data, appData)
-	// if err != nil {
-	// 	c.r.lg.Errorw("app data unmarshal error", err, "app_id", id)
-	// 	return
-	// }
-	//
-	// dbRoles, _, err := c.r.Role.List(ctx, &entities.RoleListParsSt{
-	// 	AppId:     &id,
-	// 	IsFetched: &cns.True,
-	// })
-	// if err != nil {
-	// 	return
-	// }
-	//
-	// if appData.RemoteRoles.Url == "" {
-	// 	if len(dbRoles) > 0 {
-	// 		// delete
-	// 		for _, dbRole := range dbRoles {
-	// 			err = c.r.Role.Delete(ctx, dbRole.Id)
-	// 			if err != nil {
-	// 				return
-	// 			}
-	// 		}
-	// 	}
-	//
-	// 	return
-	// }
-	//
-	// remoteItems := c.r.Role.FetchRemoteUri(appData.RemoteRoles.Url, appData.RemoteRoles.JsonPath)
-	// if err != nil {
-	// 	return
-	// }
-	//
-	// var found bool
-	//
-	// for _, dbRole := range dbRoles {
-	// 	found = false
-	//
-	// 	for _, freshRole := range remoteItems {
-	// 		if freshRole.Code == dbRole.Code {
-	// 			found = true
-	// 			break
-	// 		}
-	// 	}
-	//
-	// 	if !found {
-	// 		// delete
-	// 		err = c.r.Role.Delete(ctx, dbRole.Id)
-	// 		if err != nil {
-	// 			return err
-	// 		}
-	// 	}
-	// }
-	//
-	// for _, freshRole := range respObj.Roles {
-	// 	if freshRole.Code == "" {
-	// 		continue
-	// 	}
-	//
-	// 	found = false
-	//
-	// 	for _, dbRole := range dbRoles {
-	// 		if freshRole.Code == dbRole.Code {
-	// 			found = true
-	//
-	// 			if freshRole.IsAll != dbRole.IsAll || freshRole.Dsc != dbRole.Dsc {
-	// 				// update
-	// 				err = c.r.Role.Update(ctx, dbRole.Id, &entities.RoleCUSt{
-	// 					IsAll: &freshRole.IsAll,
-	// 					Dsc:   &freshRole.Dsc,
-	// 				})
-	// 				if err != nil {
-	// 					return err
-	// 				}
-	// 			}
-	//
-	// 			break
-	// 		}
-	// 	}
-	//
-	// 	if !found {
-	// 		// create
-	// 		_, err = c.r.Role.Create(ctx, &entities.RoleCUSt{
-	// 			AppId:     &id,
-	// 			Code:      &freshRole.Code,
-	// 			IsAll:     &freshRole.IsAll,
-	// 			Dsc:       &freshRole.Dsc,
-	// 			IsFetched: &cns.True,
-	// 		})
-	// 		if err != nil {
-	// 			return err
-	// 		}
-	// 	}
-	// }
-	//
-	// return nil
-}
-
-func (c *App) FetchRoles(ctx context.Context, id string) []*entities.RoleRemoteRepItemSt {
 	app, err := c.Get(ctx, id, true)
 	if err != nil {
-		return []*entities.RoleRemoteRepItemSt{}
+		return
+	}
+
+	appData := &entities.AppDataForRemoteRolesSt{}
+	err = json.Unmarshal(app.Data, appData)
+	if err != nil {
+		c.r.lg.Errorw("app data unmarshal error", err, "app_id", id)
+		return
+	}
+
+	dbRoles, _, err := c.r.Role.List(ctx, &entities.RoleListParsSt{
+		AppId:     &id,
+		IsFetched: &cns.True,
+	})
+	if err != nil {
+		return
+	}
+
+	if appData.RemoteRoles.Url == "" {
+		if len(dbRoles) > 0 {
+			// delete
+			for _, dbRole := range dbRoles {
+				err = c.r.Role.Delete(ctx, dbRole.Id)
+				if err != nil {
+					return
+				}
+			}
+		}
+
+		return
+	}
+
+	remoteItems := c.r.Role.FetchRemoteUri(appData.RemoteRoles.Url, appData.RemoteRoles.JsonPath)
+	if err != nil {
+		return
+	}
+
+	var found bool
+
+	for _, dbRole := range dbRoles {
+		found = false
+
+		for _, freshRole := range remoteItems {
+			if freshRole.Code == dbRole.Code {
+				found = true
+				break
+			}
+		}
+
+		if !found {
+			// delete
+			err = c.r.Role.Delete(ctx, dbRole.Id)
+			if err != nil {
+				return
+			}
+		}
+	}
+
+	for _, freshRole := range remoteItems {
+		if freshRole.Code == "" {
+			continue
+		}
+
+		found = false
+
+		for _, dbRole := range dbRoles {
+			if freshRole.Code == dbRole.Code {
+				found = true
+
+				if freshRole.Dsc != dbRole.Dsc {
+					// update
+					err = c.r.Role.Update(ctx, dbRole.Id, &entities.RoleCUSt{
+						Dsc:       &freshRole.Dsc,
+						IsFetched: &cns.True,
+					})
+					if err != nil {
+						return
+					}
+				}
+
+				break
+			}
+		}
+
+		if !found {
+			// create
+			_, err = c.r.Role.Create(ctx, &entities.RoleCUSt{
+				DbAppId:   dopTools.NewPtr(&id),
+				IsFetched: &cns.True,
+				Code:      &freshRole.Code,
+				Dsc:       &freshRole.Dsc,
+			})
+			if err != nil {
+				return
+			}
+		}
+	}
+}
+
+func (c *App) FetchRoles(ctx context.Context, id string) []*entities.RoleFetchRemoteRepItemSt {
+	app, err := c.Get(ctx, id, true)
+	if err != nil {
+		return []*entities.RoleFetchRemoteRepItemSt{}
 	}
 
 	data := &entities.AppDataForRemoteRolesSt{}
 	err = json.Unmarshal(app.Data, data)
 	if err != nil {
-		return []*entities.RoleRemoteRepItemSt{}
+		return []*entities.RoleFetchRemoteRepItemSt{}
 	}
 
 	return c.r.Role.FetchRemoteUri(data.RemoteRoles.Url, data.RemoteRoles.JsonPath)

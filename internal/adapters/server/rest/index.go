@@ -62,6 +62,7 @@ func GetHandler(
 	r.GET("/app/:id", s.hAppGet)
 	r.PUT("/app/:id", s.hAppUpdate)
 	r.DELETE("/app/:id", s.hAppDelete)
+	r.POST("/app/:id/sync_roles", s.hAppSyncRoles)
 
 	// endpoint
 	r.GET("/endpoint", s.hEndpointList)
@@ -83,6 +84,7 @@ func GetHandler(
 	r.GET("/role/:id", s.hRoleGet)
 	r.PUT("/role/:id", s.hRoleUpdate)
 	r.DELETE("/role/:id", s.hRoleDelete)
+	r.POST("/role/fetch_remote_uri", s.hRoleFetchRemoteUri)
 
 	return r
 }

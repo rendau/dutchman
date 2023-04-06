@@ -98,3 +98,19 @@ func (o *St) hRoleDelete(c *gin.Context) {
 
 	dopHttps.Error(c, o.ucs.RoleDelete(o.getRequestContext(c), id))
 }
+
+// @Router		/role/fetch_remote_uri [post]
+// @Tags		role
+// @Param		body	body		entities.RoleFetchRemoteReqSt	false	"body"
+// @Success	200		{array}		entities.RoleFetchRemoteRepItemSt
+// @Failure	400		{object}	dopTypes.ErrRep
+func (o *St) hRoleFetchRemoteUri(c *gin.Context) {
+	reqObj := &entities.RoleFetchRemoteReqSt{}
+	if !dopHttps.BindJSON(c, reqObj) {
+		return
+	}
+
+	result := o.ucs.RoleFetchRemoteUri(o.getRequestContext(c), reqObj.Uri, reqObj.Path)
+
+	c.JSON(http.StatusOK, result)
+}

@@ -101,7 +101,7 @@ func (c *Role) Delete(ctx context.Context, id string) error {
 	return c.r.repo.RoleDelete(ctx, id)
 }
 
-func (c *Role) FetchRemoteUri(uri, path string) []*entities.RoleRemoteRepItemSt {
+func (c *Role) FetchRemoteUri(uri, path string) []*entities.RoleFetchRemoteRepItemSt {
 	const fetchTimeout = 5 * time.Second
 
 	httpClient := httpclient.New(c.r.lg, &httpc.OptionsSt{
@@ -117,13 +117,13 @@ func (c *Role) FetchRemoteUri(uri, path string) []*entities.RoleRemoteRepItemSt 
 		LogFlags: httpc.NoLogError,
 	})
 	if err != nil {
-		return []*entities.RoleRemoteRepItemSt{}
+		return []*entities.RoleFetchRemoteRepItemSt{}
 	}
 
 	return c.parseRemoteJson(resp.BodyRaw, path)
 }
 
-func (c *Role) parseRemoteJson(src []byte, path string) []*entities.RoleRemoteRepItemSt {
+func (c *Role) parseRemoteJson(src []byte, path string) []*entities.RoleFetchRemoteRepItemSt {
 	pathSl := make([]string, 0, 10)
 	for _, p := range strings.Split(strings.TrimSpace(path), ".") {
 		if p = strings.TrimSpace(p); p != "" {
@@ -134,18 +134,18 @@ func (c *Role) parseRemoteJson(src []byte, path string) []*entities.RoleRemoteRe
 	return c.parseRemoteJsonPathSl(src, pathSl)
 }
 
-func (c *Role) parseRemoteJsonPathSl(src []byte, path []string) []*entities.RoleRemoteRepItemSt {
+func (c *Role) parseRemoteJsonPathSl(src []byte, path []string) []*entities.RoleFetchRemoteRepItemSt {
 	if len(src) == 0 {
-		return []*entities.RoleRemoteRepItemSt{}
+		return []*entities.RoleFetchRemoteRepItemSt{}
 	}
 
 	if len(path) == 0 {
-		result := make([]*entities.RoleRemoteRepItemSt, 0)
+		result := make([]*entities.RoleFetchRemoteRepItemSt, 0)
 
 		err := json.Unmarshal(src, &result)
 		if err != nil {
 			fmt.Println("fail to parse result", err)
-			return []*entities.RoleRemoteRepItemSt{}
+			return []*entities.RoleFetchRemoteRepItemSt{}
 		}
 
 		return result
@@ -156,7 +156,7 @@ func (c *Role) parseRemoteJsonPathSl(src []byte, path []string) []*entities.Role
 	err := json.Unmarshal(src, &obj)
 	if err != nil {
 		fmt.Println("fail to parse json-raw", err)
-		return []*entities.RoleRemoteRepItemSt{}
+		return []*entities.RoleFetchRemoteRepItemSt{}
 	}
 
 	return c.parseRemoteJsonPathSl(obj[path[0]], path[1:])

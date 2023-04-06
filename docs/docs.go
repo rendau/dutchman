@@ -888,12 +888,22 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
+                        "type": "string",
+                        "name": "app_id_or_null",
+                        "in": "query"
+                    },
+                    {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
                         "collectionFormat": "csv",
                         "name": "cols",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "is_fetched",
                         "in": "query"
                     },
                     {
@@ -1096,6 +1106,40 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/role/fetch_remote_uri": {
+            "post": {
+                "tags": [
+                    "role"
+                ],
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/entities.RoleFetchRemoteReqSt"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entities.RoleFetchRemoteRepItemSt"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dopTypes.ErrRep"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1276,7 +1320,35 @@ const docTemplate = `{
                 "app_id": {
                     "type": "string"
                 },
-                "data": {
+                "code": {
+                    "type": "string"
+                },
+                "dsc": {
+                    "type": "string"
+                },
+                "is_fetched": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "entities.RoleFetchRemoteRepItemSt": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "dsc": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.RoleFetchRemoteReqSt": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "uri": {
                     "type": "string"
                 }
             }
@@ -1287,11 +1359,17 @@ const docTemplate = `{
                 "app_id": {
                     "type": "string"
                 },
-                "data": {
+                "code": {
+                    "type": "string"
+                },
+                "dsc": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
+                },
+                "is_fetched": {
+                    "type": "boolean"
                 }
             }
         }

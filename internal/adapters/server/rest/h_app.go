@@ -98,3 +98,14 @@ func (o *St) hAppDelete(c *gin.Context) {
 
 	dopHttps.Error(c, o.ucs.AppDelete(o.getRequestContext(c), id))
 }
+
+// @Router		/app/:id/sync_roles [post]
+// @Tags		app
+// @Param		id	path	string	true	"id"
+// @Success	200
+// @Failure	400	{object}	dopTypes.ErrRep
+func (o *St) hAppSyncRoles(c *gin.Context) {
+	id := c.Param("id")
+
+	o.ucs.AppSyncRoles(o.getRequestContext(c), id)
+}

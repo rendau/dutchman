@@ -14,7 +14,7 @@ func TestRole_parseRemoteJson(t *testing.T) {
 	tests := []struct {
 		src  []byte
 		path string
-		want []*entities.RoleRemoteRepItemSt
+		want []*entities.RoleFetchRemoteRepItemSt
 	}{
 		{
 			src: []byte(`{
@@ -24,7 +24,7 @@ func TestRole_parseRemoteJson(t *testing.T) {
 				]
 			}`),
 			path: "   perms   ",
-			want: []*entities.RoleRemoteRepItemSt{
+			want: []*entities.RoleFetchRemoteRepItemSt{
 				{Code: "c1", Dsc: "c1 desc"},
 				{Code: "c2", Dsc: "c2 desc"},
 			},
@@ -35,7 +35,7 @@ func TestRole_parseRemoteJson(t *testing.T) {
 				{"code": "c2", "is_all": false, "dsc": "c2 desc"}
 			]`),
 			path: "",
-			want: []*entities.RoleRemoteRepItemSt{
+			want: []*entities.RoleFetchRemoteRepItemSt{
 				{Code: "c1", Dsc: "c1 desc"},
 				{Code: "c2", Dsc: "c2 desc"},
 			},
@@ -56,7 +56,7 @@ func TestRole_parseRemoteJson(t *testing.T) {
 				}
 			}`),
 			path: "..k1.k2 .  k3.perms .",
-			want: []*entities.RoleRemoteRepItemSt{
+			want: []*entities.RoleFetchRemoteRepItemSt{
 				{Code: "c1", Dsc: "c1 desc"},
 				{Code: "c2", Dsc: "c2 desc"},
 			},

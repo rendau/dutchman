@@ -80,3 +80,14 @@ func (u *St) RoleDelete(ctx context.Context,
 		return u.cr.Role.Delete(ctx, id)
 	})
 }
+
+func (u *St) RoleFetchRemoteUri(ctx context.Context,
+	uri, path string) []*entities.RoleFetchRemoteRepItemSt {
+	// ses := u.SessionGetFromContext(ctx)
+	//
+	// if err = u.SessionRequireAuth(ses); err != nil {
+	// 	return err
+	// }
+
+	return u.cr.Role.FetchRemoteUri(uri, path)
+}

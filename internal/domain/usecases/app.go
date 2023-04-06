@@ -80,3 +80,17 @@ func (u *St) AppDelete(ctx context.Context,
 		return u.cr.App.Delete(ctx, id)
 	})
 }
+
+func (u *St) AppSyncRoles(ctx context.Context,
+	id string) {
+	// ses := u.SessionGetFromContext(ctx)
+	//
+	// if err = u.SessionRequireAuth(ses); err != nil {
+	// 	return err
+	// }
+
+	_ = u.db.TransactionFn(ctx, func(ctx context.Context) error {
+		u.cr.App.SyncRoles(ctx, id)
+		return nil
+	})
+}

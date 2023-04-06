@@ -60,7 +60,7 @@ func (d *St) RoleList(ctx context.Context, pars *entities.RoleListParsSt) ([]*en
 		Conds:  conds,
 		Args:   args,
 		AllowedSorts: map[string]string{
-			"default": "t.app_id, t.code",
+			"default": "t.is_fetched, t.app_id, t.code",
 		},
 	})
 

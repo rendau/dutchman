@@ -30,7 +30,12 @@ type RoleCUSt struct {
 
 // remote
 
-type RoleRemoteRepItemSt struct {
+type RoleFetchRemoteReqSt struct {
+	Uri  string `json:"uri"`
+	Path string `json:"path"`
+}
+
+type RoleFetchRemoteRepItemSt struct {
 	Code string `json:"code"`
 	Dsc  string `json:"dsc"`
 }

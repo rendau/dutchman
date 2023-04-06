@@ -113,17 +113,39 @@ definitions:
     properties:
       app_id:
         type: string
-      data:
+      code:
+        type: string
+      dsc:
+        type: string
+      is_fetched:
+        type: boolean
+    type: object
+  entities.RoleFetchRemoteRepItemSt:
+    properties:
+      code:
+        type: string
+      dsc:
+        type: string
+    type: object
+  entities.RoleFetchRemoteReqSt:
+    properties:
+      path:
+        type: string
+      uri:
         type: string
     type: object
   entities.RoleSt:
     properties:
       app_id:
         type: string
-      data:
+      code:
+        type: string
+      dsc:
         type: string
       id:
         type: string
+      is_fetched:
+        type: boolean
     type: object
 info:
   contact: {}
@@ -657,12 +679,18 @@ paths:
       - in: query
         name: app_id
         type: string
+      - in: query
+        name: app_id_or_null
+        type: string
       - collectionFormat: csv
         in: query
         items:
           type: string
         name: cols
         type: array
+      - in: query
+        name: is_fetched
+        type: boolean
       - in: query
         name: only_count
         type: boolean
@@ -781,6 +809,27 @@ paths:
       responses:
         "200":
           description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - role
+  /role/fetch_remote_uri:
+    post:
+      parameters:
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.RoleFetchRemoteReqSt'
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.RoleFetchRemoteRepItemSt'
+            type: array
         "400":
           description: Bad Request
           schema:
