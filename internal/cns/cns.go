@@ -11,6 +11,8 @@ const (
 
 var (
 	AppTimeLocation = time.FixedZone("AST", 21600) // +0600
+
+	True = true
 )
 
 // Roles

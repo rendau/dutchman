@@ -43,6 +43,13 @@ func (d *St) RoleList(ctx context.Context, pars *entities.RoleListParsSt) ([]*en
 		conds = append(conds, `(t.app_id = ${app_id_or_null} or t.app_id is null)`)
 		args["app_id_or_null"] = *pars.AppIdOrNull
 	}
+	if pars.IsFetched != nil {
+		if *pars.IsFetched {
+			conds = append(conds, `t.is_fetched`)
+		} else {
+			conds = append(conds, `not t.is_fetched`)
+		}
+	}
 
 	result := make([]*entities.RoleSt, 0, 100)
 
@@ -53,7 +60,7 @@ func (d *St) RoleList(ctx context.Context, pars *entities.RoleListParsSt) ([]*en
 		Conds:  conds,
 		Args:   args,
 		AllowedSorts: map[string]string{
-			"default": "t.app_id, t.data ->> 'name'",
+			"default": "t.app_id, t.code",
 		},
 	})
 

@@ -30,6 +30,17 @@ func TestRole_parseRemoteJson(t *testing.T) {
 			},
 		},
 		{
+			src: []byte(`[
+				{"code": "c1", "is_all": true, "dsc": "c1 desc"},
+				{"code": "c2", "is_all": false, "dsc": "c2 desc"}
+			]`),
+			path: "",
+			want: []*entities.RoleRemoteRepItemSt{
+				{Code: "c1", Dsc: "c1 desc"},
+				{Code: "c2", Dsc: "c2 desc"},
+			},
+		},
+		{
 			src: []byte(`{
 				"k1": {
 					"foo": "bar",

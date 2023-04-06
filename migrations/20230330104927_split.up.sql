@@ -20,13 +20,14 @@ create index app_idx_active on app (active);
 
 create table "role"
 (
-    id         uuid    not null default gen_random_uuid()
+    id         uuid    not null          default gen_random_uuid()
         primary key,
     app_id     uuid
         constraint role_fk_app_id
             references app (id) on update cascade on delete cascade,
-    is_fetched boolean not null default false,
-    data       jsonb   not null default '{}'
+    is_fetched boolean not null          default false,
+    code       text    not null not null default '',
+    dsc        text    not null          default ''
 );
 create index role_idx_app_id on "role" (app_id);
 create index role_idx_is_fetched on "role" (is_fetched);

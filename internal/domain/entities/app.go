@@ -25,3 +25,14 @@ type AppCUSt struct {
 	Active  *bool            `json:"active" db:"active"`
 	Data    *json.RawMessage `json:"data" db:"data" swaggertype:"string"`
 }
+
+// data
+
+type AppDataForRemoteRolesSt struct {
+	RemoteRoles AppDataRemoteRolesSt `json:"remote_roles"`
+}
+
+type AppDataRemoteRolesSt struct {
+	Url      string `json:"url"`
+	JsonPath string `json:"json_path"`
+}
