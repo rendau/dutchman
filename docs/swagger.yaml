@@ -29,16 +29,41 @@ definitions:
       active:
         type: boolean
       data:
-        type: string
+        $ref: '#/definitions/entities.AppDataSt'
       realm_id:
         type: string
+    type: object
+  entities.AppDataBackendBaseSt:
+    properties:
+      host:
+        type: string
+      path:
+        type: string
+    type: object
+  entities.AppDataRemoteRolesSt:
+    properties:
+      json_path:
+        type: string
+      url:
+        type: string
+    type: object
+  entities.AppDataSt:
+    properties:
+      backend_base:
+        $ref: '#/definitions/entities.AppDataBackendBaseSt'
+      name:
+        type: string
+      path:
+        type: string
+      remote_roles:
+        $ref: '#/definitions/entities.AppDataRemoteRolesSt'
     type: object
   entities.AppSt:
     properties:
       active:
         type: boolean
       data:
-        type: string
+        $ref: '#/definitions/entities.AppDataSt'
       id:
         type: string
       realm_id:
@@ -53,18 +78,54 @@ definitions:
       app_id:
         type: string
       data:
+        $ref: '#/definitions/entities.EndpointDataSt'
+    type: object
+  entities.EndpointDataBackendSt:
+    properties:
+      custom_path:
+        type: boolean
+      path:
+        type: string
+    type: object
+  entities.EndpointDataIpValidationSt:
+    properties:
+      allowed_ips:
+        items:
+          type: string
+        type: array
+      enabled:
+        type: boolean
+    type: object
+  entities.EndpointDataJwtValidationSt:
+    properties:
+      enabled:
+        type: boolean
+      roles:
+        items:
+          type: string
+        type: array
+    type: object
+  entities.EndpointDataSt:
+    properties:
+      backend:
+        $ref: '#/definitions/entities.EndpointDataBackendSt'
+      ip_validation:
+        $ref: '#/definitions/entities.EndpointDataIpValidationSt'
+      jwt_validation:
+        $ref: '#/definitions/entities.EndpointDataJwtValidationSt'
+      method:
+        type: string
+      path:
         type: string
     type: object
   entities.EndpointSt:
     properties:
       active:
         type: boolean
-      app:
-        $ref: '#/definitions/entities.AppSt'
       app_id:
         type: string
       data:
-        type: string
+        $ref: '#/definitions/entities.EndpointDataSt'
       id:
         type: string
     type: object
@@ -100,12 +161,78 @@ definitions:
   entities.RealmCUSt:
     properties:
       data:
+        $ref: '#/definitions/entities.RealmDataSt'
+    type: object
+  entities.RealmDataCorsConfSt:
+    properties:
+      allow_credentials:
+        type: boolean
+      allow_headers:
+        items:
+          type: string
+        type: array
+      allow_methods:
+        items:
+          type: string
+        type: array
+      allow_origins:
+        items:
+          type: string
+        type: array
+      enabled:
+        type: boolean
+      max_age:
+        type: string
+    type: object
+  entities.RealmDataDeployConfSt:
+    properties:
+      conf_file:
+        type: string
+      method:
+        type: string
+      url:
+        type: string
+    type: object
+  entities.RealmDataJwtConfSt:
+    properties:
+      alg:
+        type: string
+      cache:
+        type: boolean
+      cache_duration:
+        type: integer
+      disable_jwk_security:
+        type: boolean
+      jwk_url:
+        type: string
+      roles_key:
+        type: string
+      roles_key_is_nested:
+        type: boolean
+    type: object
+  entities.RealmDataSt:
+    properties:
+      cors_conf:
+        $ref: '#/definitions/entities.RealmDataCorsConfSt'
+      deploy_conf:
+        $ref: '#/definitions/entities.RealmDataDeployConfSt'
+      jwt_conf:
+        $ref: '#/definitions/entities.RealmDataJwtConfSt'
+      name:
+        type: string
+      public_base_url:
+        type: string
+      read_header_timeout:
+        type: string
+      read_timeout:
+        type: string
+      timeout:
         type: string
     type: object
   entities.RealmSt:
     properties:
       data:
-        type: string
+        $ref: '#/definitions/entities.RealmDataSt'
       id:
         type: string
     type: object
@@ -289,6 +416,23 @@ paths:
             $ref: '#/definitions/dopTypes.ErrRep'
       tags:
       - app
+  /app/:id/sync_roles:
+    post:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - app
   /config:
     get:
       produces:
@@ -427,9 +571,6 @@ paths:
         name: id
         required: true
         type: string
-      - in: query
-        name: with_app
-        type: boolean
       produces:
       - application/json
       responses:

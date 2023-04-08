@@ -245,6 +245,33 @@ const docTemplate = `{
                 }
             }
         },
+        "/app/:id/sync_roles": {
+            "post": {
+                "tags": [
+                    "app"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dopTypes.ErrRep"
+                        }
+                    }
+                }
+            }
+        },
         "/config": {
             "get": {
                 "produces": [
@@ -450,11 +477,6 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
-                    },
-                    {
-                        "type": "boolean",
-                        "name": "with_app",
-                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1188,10 +1210,49 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "data": {
-                    "type": "string"
+                    "$ref": "#/definitions/entities.AppDataSt"
                 },
                 "realm_id": {
                     "type": "string"
+                }
+            }
+        },
+        "entities.AppDataBackendBaseSt": {
+            "type": "object",
+            "properties": {
+                "host": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.AppDataRemoteRolesSt": {
+            "type": "object",
+            "properties": {
+                "json_path": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.AppDataSt": {
+            "type": "object",
+            "properties": {
+                "backend_base": {
+                    "$ref": "#/definitions/entities.AppDataBackendBaseSt"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "remote_roles": {
+                    "$ref": "#/definitions/entities.AppDataRemoteRolesSt"
                 }
             }
         },
@@ -1202,7 +1263,7 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "data": {
-                    "type": "string"
+                    "$ref": "#/definitions/entities.AppDataSt"
                 },
                 "id": {
                     "type": "string"
@@ -1225,6 +1286,65 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "data": {
+                    "$ref": "#/definitions/entities.EndpointDataSt"
+                }
+            }
+        },
+        "entities.EndpointDataBackendSt": {
+            "type": "object",
+            "properties": {
+                "custom_path": {
+                    "type": "boolean"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.EndpointDataIpValidationSt": {
+            "type": "object",
+            "properties": {
+                "allowed_ips": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "enabled": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "entities.EndpointDataJwtValidationSt": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "entities.EndpointDataSt": {
+            "type": "object",
+            "properties": {
+                "backend": {
+                    "$ref": "#/definitions/entities.EndpointDataBackendSt"
+                },
+                "ip_validation": {
+                    "$ref": "#/definitions/entities.EndpointDataIpValidationSt"
+                },
+                "jwt_validation": {
+                    "$ref": "#/definitions/entities.EndpointDataJwtValidationSt"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "path": {
                     "type": "string"
                 }
             }
@@ -1235,14 +1355,11 @@ const docTemplate = `{
                 "active": {
                     "type": "boolean"
                 },
-                "app": {
-                    "$ref": "#/definitions/entities.AppSt"
-                },
                 "app_id": {
                     "type": "string"
                 },
                 "data": {
-                    "type": "string"
+                    "$ref": "#/definitions/entities.EndpointDataSt"
                 },
                 "id": {
                     "type": "string"
@@ -1299,6 +1416,107 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {
+                    "$ref": "#/definitions/entities.RealmDataSt"
+                }
+            }
+        },
+        "entities.RealmDataCorsConfSt": {
+            "type": "object",
+            "properties": {
+                "allow_credentials": {
+                    "type": "boolean"
+                },
+                "allow_headers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "allow_methods": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "allow_origins": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "max_age": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.RealmDataDeployConfSt": {
+            "type": "object",
+            "properties": {
+                "conf_file": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.RealmDataJwtConfSt": {
+            "type": "object",
+            "properties": {
+                "alg": {
+                    "type": "string"
+                },
+                "cache": {
+                    "type": "boolean"
+                },
+                "cache_duration": {
+                    "type": "integer"
+                },
+                "disable_jwk_security": {
+                    "type": "boolean"
+                },
+                "jwk_url": {
+                    "type": "string"
+                },
+                "roles_key": {
+                    "type": "string"
+                },
+                "roles_key_is_nested": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "entities.RealmDataSt": {
+            "type": "object",
+            "properties": {
+                "cors_conf": {
+                    "$ref": "#/definitions/entities.RealmDataCorsConfSt"
+                },
+                "deploy_conf": {
+                    "$ref": "#/definitions/entities.RealmDataDeployConfSt"
+                },
+                "jwt_conf": {
+                    "$ref": "#/definitions/entities.RealmDataJwtConfSt"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "public_base_url": {
+                    "type": "string"
+                },
+                "read_header_timeout": {
+                    "type": "string"
+                },
+                "read_timeout": {
+                    "type": "string"
+                },
+                "timeout": {
                     "type": "string"
                 }
             }
@@ -1307,7 +1525,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "type": "string"
+                    "$ref": "#/definitions/entities.RealmDataSt"
                 },
                 "id": {
                     "type": "string"

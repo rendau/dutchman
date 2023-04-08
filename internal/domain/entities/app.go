@@ -1,16 +1,14 @@
 package entities
 
 import (
-	"encoding/json"
-
 	"github.com/rendau/dop/dopTypes"
 )
 
 type AppSt struct {
-	Id      string          `json:"id" db:"id"`
-	RealmId string          `json:"realm_id" db:"realm_id"`
-	Active  bool            `json:"active" db:"active"`
-	Data    json.RawMessage `json:"data" db:"data" swaggertype:"string"`
+	Id      string    `json:"id" db:"id"`
+	RealmId string    `json:"realm_id" db:"realm_id"`
+	Active  bool      `json:"active" db:"active"`
+	Data    AppDataSt `json:"data" db:"data"`
 }
 
 type AppListParsSt struct {
@@ -21,15 +19,23 @@ type AppListParsSt struct {
 }
 
 type AppCUSt struct {
-	RealmId *string          `json:"realm_id" db:"realm_id"`
-	Active  *bool            `json:"active" db:"active"`
-	Data    *json.RawMessage `json:"data" db:"data" swaggertype:"string"`
+	RealmId *string    `json:"realm_id" db:"realm_id"`
+	Active  *bool      `json:"active" db:"active"`
+	Data    *AppDataSt `json:"data" db:"data"`
 }
 
 // data
 
-type AppDataForRemoteRolesSt struct {
+type AppDataSt struct {
+	Name        string               `json:"name"`
+	Path        string               `json:"path"`
+	BackendBase AppDataBackendBaseSt `json:"backend_base"`
 	RemoteRoles AppDataRemoteRolesSt `json:"remote_roles"`
+}
+
+type AppDataBackendBaseSt struct {
+	Host string `json:"host"`
+	Path string `json:"path"`
 }
 
 type AppDataRemoteRolesSt struct {

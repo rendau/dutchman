@@ -42,13 +42,6 @@ func (c *Endpoint) Get(ctx context.Context, id string, pars *entities.EndpointGe
 		return nil, nil
 	}
 
-	if pars.WithApp {
-		result.App, err = c.r.App.Get(ctx, result.AppId, true)
-		if err != nil {
-			return nil, err
-		}
-	}
-
 	return result, nil
 }
 

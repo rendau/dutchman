@@ -2,7 +2,6 @@ package core
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/rendau/dop/dopErrs"
 	"github.com/rendau/dop/dopTools"
@@ -99,13 +98,6 @@ func (c *App) SyncRoles(ctx context.Context, id string) {
 		return
 	}
 
-	appData := &entities.AppDataForRemoteRolesSt{}
-	err = json.Unmarshal(app.Data, appData)
-	if err != nil {
-		c.r.lg.Errorw("app data unmarshal error", err, "app_id", id)
-		return
-	}
-
 	dbRoles, _, err := c.r.Role.List(ctx, &entities.RoleListParsSt{
 		AppId:     &id,
 		IsFetched: &cns.True,
@@ -114,7 +106,7 @@ func (c *App) SyncRoles(ctx context.Context, id string) {
 		return
 	}
 
-	if appData.RemoteRoles.Url == "" {
+	if app.Data.RemoteRoles.Url == "" {
 		if len(dbRoles) > 0 {
 			// delete
 			for _, dbRole := range dbRoles {
@@ -128,7 +120,7 @@ func (c *App) SyncRoles(ctx context.Context, id string) {
 		return
 	}
 
-	remoteItems := c.r.Role.FetchRemoteUri(appData.RemoteRoles.Url, appData.RemoteRoles.JsonPath)
+	remoteItems := c.r.Role.FetchRemoteUri(app.Data.RemoteRoles.Url, app.Data.RemoteRoles.JsonPath)
 	if err != nil {
 		return
 	}
@@ -201,11 +193,5 @@ func (c *App) FetchRoles(ctx context.Context, id string) []*entities.RoleFetchRe
 		return []*entities.RoleFetchRemoteRepItemSt{}
 	}
 
-	data := &entities.AppDataForRemoteRolesSt{}
-	err = json.Unmarshal(app.Data, data)
-	if err != nil {
-		return []*entities.RoleFetchRemoteRepItemSt{}
-	}
-
-	return c.r.Role.FetchRemoteUri(data.RemoteRoles.Url, data.RemoteRoles.JsonPath)
+	return c.r.Role.FetchRemoteUri(app.Data.RemoteRoles.Url, app.Data.RemoteRoles.JsonPath)
 }
