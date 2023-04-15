@@ -648,34 +648,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/proxy_request": {
-            "post": {
-                "tags": [
-                    "proxy_request"
-                ],
-                "parameters": [
-                    {
-                        "description": "body",
-                        "name": "body",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/entities.ProxyRequestSendReqSt"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/dopTypes.ErrRep"
-                        }
-                    }
-                }
-            }
-        },
         "/realm": {
             "get": {
                 "produces": [
@@ -885,6 +857,63 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dopTypes.ErrRep"
+                        }
+                    }
+                }
+            }
+        },
+        "/realm/:id/deploy": {
+            "post": {
+                "tags": [
+                    "realm"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dopTypes.ErrRep"
+                        }
+                    }
+                }
+            }
+        },
+        "/realm/:id/preview_conf": {
+            "get": {
+                "tags": [
+                    "realm"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.KrakendSt"
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
@@ -1366,6 +1395,184 @@ const docTemplate = `{
                 }
             }
         },
+        "entities.KrakendEndpointBackendSt": {
+            "type": "object",
+            "properties": {
+                "encoding": {
+                    "type": "string"
+                },
+                "host": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "method": {
+                    "type": "string"
+                },
+                "url_pattern": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.KrakendEndpointExtraConfigAuthValidatorSt": {
+            "type": "object",
+            "properties": {
+                "alg": {
+                    "type": "string"
+                },
+                "cache": {
+                    "type": "boolean"
+                },
+                "cache_duration": {
+                    "type": "integer"
+                },
+                "disable_jwk_security": {
+                    "type": "boolean"
+                },
+                "jwk_url": {
+                    "type": "string"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "roles_key": {
+                    "type": "string"
+                },
+                "roles_key_is_nested": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "entities.KrakendEndpointExtraConfigSt": {
+            "type": "object",
+            "properties": {
+                "auth/validator": {
+                    "$ref": "#/definitions/entities.KrakendEndpointExtraConfigAuthValidatorSt"
+                },
+                "validation/cel": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.KrakendEndpointExtraConfigValidationCelSt"
+                    }
+                }
+            }
+        },
+        "entities.KrakendEndpointExtraConfigValidationCelSt": {
+            "type": "object",
+            "properties": {
+                "check_expr": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.KrakendEndpointSt": {
+            "type": "object",
+            "properties": {
+                "backend": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.KrakendEndpointBackendSt"
+                    }
+                },
+                "endpoint": {
+                    "type": "string"
+                },
+                "extra_config": {
+                    "$ref": "#/definitions/entities.KrakendEndpointExtraConfigSt"
+                },
+                "input_headers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "input_query_strings": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "method": {
+                    "type": "string"
+                },
+                "output_encoding": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.KrakendExtraConfigSecurityCorsSt": {
+            "type": "object",
+            "properties": {
+                "allow_credentials": {
+                    "type": "boolean"
+                },
+                "allow_headers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "allow_methods": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "allow_origins": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "expose_headers": {
+                    "type": "string"
+                },
+                "max_age": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.KrakendExtraConfigSt": {
+            "type": "object",
+            "properties": {
+                "security/cors": {
+                    "$ref": "#/definitions/entities.KrakendExtraConfigSecurityCorsSt"
+                }
+            }
+        },
+        "entities.KrakendSt": {
+            "type": "object",
+            "properties": {
+                "$schema": {
+                    "type": "string"
+                },
+                "endpoints": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.KrakendEndpointSt"
+                    }
+                },
+                "extra_config": {
+                    "$ref": "#/definitions/entities.KrakendExtraConfigSt"
+                },
+                "read_header_timeout": {
+                    "type": "string"
+                },
+                "read_timeout": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "integer"
+                }
+            }
+        },
         "entities.ProfileAuthByRefreshTokenRepSt": {
             "type": "object",
             "properties": {
@@ -1403,14 +1610,6 @@ const docTemplate = `{
         },
         "entities.ProfileSt": {
             "type": "object"
-        },
-        "entities.ProxyRequestSendReqSt": {
-            "type": "object",
-            "properties": {
-                "uri": {
-                    "type": "string"
-                }
-            }
         },
         "entities.RealmCUSt": {
             "type": "object",

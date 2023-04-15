@@ -53,9 +53,6 @@ func GetHandler(
 	r.POST("/profile/auth", s.hProfileAuth)
 	r.POST("/profile/auth/token", s.hProfileAuthByRefreshToken)
 
-	// proxy_request
-	r.POST("/proxy_request", s.hProxyRequest)
-
 	// app
 	r.GET("/app", s.hAppList)
 	r.POST("/app", s.hAppCreate)

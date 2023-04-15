@@ -101,8 +101,8 @@ func (o *St) hRealmDelete(c *gin.Context) {
 
 // @Router		/realm/:id/preview_conf [GET]
 // @Tags		realm
-// @Param		id	path	string	true	"id"
-// @Success	200	entities.KrakendSt
+// @Param		id	path		string	true	"id"
+// @Success	200	{object}	entities.KrakendSt
 // @Failure	400	{object}	dopTypes.ErrRep
 func (o *St) hRealmPreviewConf(c *gin.Context) {
 	id := c.Param("id")

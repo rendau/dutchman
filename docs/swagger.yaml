@@ -129,6 +129,122 @@ definitions:
       id:
         type: string
     type: object
+  entities.KrakendEndpointBackendSt:
+    properties:
+      encoding:
+        type: string
+      host:
+        items:
+          type: string
+        type: array
+      method:
+        type: string
+      url_pattern:
+        type: string
+    type: object
+  entities.KrakendEndpointExtraConfigAuthValidatorSt:
+    properties:
+      alg:
+        type: string
+      cache:
+        type: boolean
+      cache_duration:
+        type: integer
+      disable_jwk_security:
+        type: boolean
+      jwk_url:
+        type: string
+      roles:
+        items:
+          type: string
+        type: array
+      roles_key:
+        type: string
+      roles_key_is_nested:
+        type: boolean
+    type: object
+  entities.KrakendEndpointExtraConfigSt:
+    properties:
+      auth/validator:
+        $ref: '#/definitions/entities.KrakendEndpointExtraConfigAuthValidatorSt'
+      validation/cel:
+        items:
+          $ref: '#/definitions/entities.KrakendEndpointExtraConfigValidationCelSt'
+        type: array
+    type: object
+  entities.KrakendEndpointExtraConfigValidationCelSt:
+    properties:
+      check_expr:
+        type: string
+    type: object
+  entities.KrakendEndpointSt:
+    properties:
+      backend:
+        items:
+          $ref: '#/definitions/entities.KrakendEndpointBackendSt'
+        type: array
+      endpoint:
+        type: string
+      extra_config:
+        $ref: '#/definitions/entities.KrakendEndpointExtraConfigSt'
+      input_headers:
+        items:
+          type: string
+        type: array
+      input_query_strings:
+        items:
+          type: string
+        type: array
+      method:
+        type: string
+      output_encoding:
+        type: string
+    type: object
+  entities.KrakendExtraConfigSecurityCorsSt:
+    properties:
+      allow_credentials:
+        type: boolean
+      allow_headers:
+        items:
+          type: string
+        type: array
+      allow_methods:
+        items:
+          type: string
+        type: array
+      allow_origins:
+        items:
+          type: string
+        type: array
+      expose_headers:
+        type: string
+      max_age:
+        type: string
+    type: object
+  entities.KrakendExtraConfigSt:
+    properties:
+      security/cors:
+        $ref: '#/definitions/entities.KrakendExtraConfigSecurityCorsSt'
+    type: object
+  entities.KrakendSt:
+    properties:
+      $schema:
+        type: string
+      endpoints:
+        items:
+          $ref: '#/definitions/entities.KrakendEndpointSt'
+        type: array
+      extra_config:
+        $ref: '#/definitions/entities.KrakendExtraConfigSt'
+      read_header_timeout:
+        type: string
+      read_timeout:
+        type: string
+      timeout:
+        type: string
+      version:
+        type: integer
+    type: object
   entities.ProfileAuthByRefreshTokenRepSt:
     properties:
       access_token:
@@ -152,11 +268,6 @@ definitions:
         type: string
     type: object
   entities.ProfileSt:
-    type: object
-  entities.ProxyRequestSendReqSt:
-    properties:
-      uri:
-        type: string
     type: object
   entities.RealmCUSt:
     properties:
@@ -664,23 +775,6 @@ paths:
             $ref: '#/definitions/dopTypes.ErrRep'
       tags:
       - profile
-  /proxy_request:
-    post:
-      parameters:
-      - description: body
-        in: body
-        name: body
-        schema:
-          $ref: '#/definitions/entities.ProxyRequestSendReqSt'
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/dopTypes.ErrRep'
-      tags:
-      - proxy_request
   /realm:
     get:
       parameters:
@@ -808,6 +902,42 @@ paths:
       responses:
         "200":
           description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - realm
+  /realm/:id/deploy:
+    post:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - realm
+  /realm/:id/preview_conf:
+    get:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.KrakendSt'
         "400":
           description: Bad Request
           schema:
