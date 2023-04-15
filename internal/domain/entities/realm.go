@@ -1,8 +1,6 @@
 package entities
 
 import (
-	"encoding/json"
-
 	"github.com/rendau/dop/dopTypes"
 )
 
@@ -55,16 +53,4 @@ type RealmDataJwtConfSt struct {
 	CacheDuration      int64  `json:"cache_duration"`
 	RolesKey           string `json:"roles_key"`
 	RolesKeyIsNested   bool   `json:"roles_key_is_nested"`
-}
-
-// Deploy
-
-type RealmDeployConfSt struct {
-	Method   string `json:"method"`
-	Url      string `json:"url"`
-	ConfFile string `json:"conf_file"`
-}
-
-type RealmDeployReqSt struct {
-	Config json.RawMessage `json:"config" swaggertype:"string"`
 }

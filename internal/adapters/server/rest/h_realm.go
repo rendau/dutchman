@@ -114,3 +114,14 @@ func (o *St) hRealmPreviewConf(c *gin.Context) {
 
 	c.JSON(http.StatusOK, result)
 }
+
+// @Router		/realm/:id/deploy [POST]
+// @Tags		realm
+// @Param		id	path	string	true	"id"
+// @Success	200
+// @Failure	400	{object}	dopTypes.ErrRep
+func (o *St) hRealmDeploy(c *gin.Context) {
+	id := c.Param("id")
+
+	dopHttps.Error(c, o.ucs.RealmDeploy(o.getRequestContext(c), id))
+}

@@ -2,9 +2,18 @@ package core
 
 import (
 	"context"
+	"crypto/tls"
+	"encoding/json"
+	"github.com/rendau/dop/adapters/client/httpc"
+	"github.com/rendau/dop/adapters/client/httpc/httpclient"
 	"github.com/rendau/dutchman/internal/cns"
+	"github.com/rendau/dutchman/internal/domain/errs"
+	"net/http"
+	"os"
 	"path"
+	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/rendau/dop/dopErrs"
 	"github.com/rendau/dutchman/internal/domain/entities"
@@ -208,4 +217,56 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 	}
 
 	return result, nil
+}
+
+func (c *Realm) Deploy(ctx context.Context, id string) error {
+	realm, err := c.Get(ctx, id, true)
+	if err != nil {
+		return err
+	}
+
+	if realm.Data.DeployConf.ConfFile == "" {
+		return errs.ConfFileNameRequired
+	}
+
+	conf, err := c.GenerateConf(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	confJson, err := json.MarshalIndent(conf, "", "  ")
+	if err != nil {
+		c.r.lg.Errorw("Failed to marshal conf", err)
+		return err
+	}
+
+	err = os.WriteFile(filepath.Join(c.r.confDir, realm.Data.DeployConf.ConfFile), confJson, os.ModePerm)
+	if err != nil {
+		return errs.FailToSaveFile
+	}
+
+	if realm.Data.DeployConf.Url != "" {
+		method := realm.Data.DeployConf.Method
+		if method == "" {
+			method = "GET"
+		}
+
+		hClient := httpclient.New(c.r.lg, &httpc.OptionsSt{
+			Client: &http.Client{
+				Timeout:   15 * time.Second,
+				Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
+			},
+			Method:    method,
+			LogPrefix: "Deploy webhook:",
+		})
+
+		_, err = hClient.Send(&httpc.OptionsSt{
+			Uri: realm.Data.DeployConf.Url,
+		})
+		if err != nil {
+			return errs.FailToSendDeployWebhook
+		}
+	}
+
+	return nil
 }

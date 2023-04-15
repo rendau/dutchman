@@ -91,3 +91,14 @@ func (u *St) RealmPreviewConf(ctx context.Context,
 
 	return u.cr.Realm.GenerateConf(ctx, id)
 }
+
+func (u *St) RealmDeploy(ctx context.Context,
+	id string) error {
+	// ses := u.SessionGetFromContext(ctx)
+	//
+	// if err = u.SessionRequireAuth(ses); err != nil {
+	// 	return err
+	// }
+
+	return u.cr.Realm.Deploy(ctx, id)
+}
