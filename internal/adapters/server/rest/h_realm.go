@@ -98,3 +98,19 @@ func (o *St) hRealmDelete(c *gin.Context) {
 
 	dopHttps.Error(c, o.ucs.RealmDelete(o.getRequestContext(c), id))
 }
+
+// @Router		/realm/:id/preview_conf [GET]
+// @Tags		realm
+// @Param		id	path	string	true	"id"
+// @Success	200	entities.KrakendSt
+// @Failure	400	{object}	dopTypes.ErrRep
+func (o *St) hRealmPreviewConf(c *gin.Context) {
+	id := c.Param("id")
+
+	result, err := o.ucs.RealmPreviewConf(o.getRequestContext(c), id)
+	if dopHttps.Error(c, err) {
+		return
+	}
+
+	c.JSON(http.StatusOK, result)
+}

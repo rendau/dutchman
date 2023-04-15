@@ -40,11 +40,11 @@ type RealmDataDeployConfSt struct {
 
 type RealmDataCorsConfSt struct {
 	Enabled          bool     `json:"enabled"`
-	AllowOrigins     []string `json:"allow_origins"`
-	AllowMethods     []string `json:"allow_methods"`
-	AllowHeaders     []string `json:"allow_headers"`
 	AllowCredentials bool     `json:"allow_credentials"`
 	MaxAge           string   `json:"max_age"`
+	AllowOrigins     []string `json:"allow_origins,omitempty"`
+	AllowMethods     []string `json:"allow_methods,omitempty"`
+	AllowHeaders     []string `json:"allow_headers,omitempty"`
 }
 
 type RealmDataJwtConfSt struct {

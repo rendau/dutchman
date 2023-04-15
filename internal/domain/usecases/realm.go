@@ -80,3 +80,14 @@ func (u *St) RealmDelete(ctx context.Context,
 		return u.cr.Realm.Delete(ctx, id)
 	})
 }
+
+func (u *St) RealmPreviewConf(ctx context.Context,
+	id string) (*entities.KrakendSt, error) {
+	// ses := u.SessionGetFromContext(ctx)
+	//
+	// if err = u.SessionRequireAuth(ses); err != nil {
+	// 	return err
+	// }
+
+	return u.cr.Realm.GenerateConf(ctx, id)
+}
