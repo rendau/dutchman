@@ -92,6 +92,10 @@ func (c *App) Delete(ctx context.Context, id string) error {
 	return c.r.repo.AppDelete(ctx, id)
 }
 
+func (c *App) DeleteMany(ctx context.Context, pars *entities.AppListParsSt) error {
+	return c.r.repo.AppDeleteMany(ctx, pars)
+}
+
 func (c *App) SyncRoles(ctx context.Context, id string) {
 	app, err := c.Get(ctx, id, true)
 	if err != nil {

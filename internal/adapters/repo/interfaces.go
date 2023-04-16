@@ -18,6 +18,7 @@ type Repo interface {
 	AppCreate(ctx context.Context, obj *entities.AppCUSt) (string, error)
 	AppUpdate(ctx context.Context, id string, obj *entities.AppCUSt) error
 	AppDelete(ctx context.Context, id string) error
+	AppDeleteMany(ctx context.Context, pars *entities.AppListParsSt) error
 
 	// endpoint
 	EndpointGet(ctx context.Context, id string) (*entities.EndpointSt, error)

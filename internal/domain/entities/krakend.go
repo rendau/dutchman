@@ -6,7 +6,7 @@ type KrakendSt struct {
 	Timeout           string                `json:"timeout"`
 	ReadHeaderTimeout string                `json:"read_header_timeout"`
 	ReadTimeout       string                `json:"read_timeout"`
-	Endpoints         []KrakendEndpointSt   `json:"endpoints"`
+	Endpoints         []*KrakendEndpointSt  `json:"endpoints"`
 	ExtraConfig       *KrakendExtraConfigSt `json:"extra_config,omitempty"`
 }
 

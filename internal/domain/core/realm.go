@@ -4,14 +4,17 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
+	"fmt"
 	"github.com/rendau/dop/adapters/client/httpc"
 	"github.com/rendau/dop/adapters/client/httpc/httpclient"
 	"github.com/rendau/dutchman/internal/cns"
 	"github.com/rendau/dutchman/internal/domain/errs"
+	"github.com/rendau/dutchman/internal/domain/util"
 	"net/http"
 	"os"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 
@@ -110,7 +113,7 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 		Timeout:           realm.Data.Timeout,
 		ReadHeaderTimeout: realm.Data.ReadHeaderTimeout,
 		ReadTimeout:       realm.Data.ReadTimeout,
-		Endpoints:         make([]entities.KrakendEndpointSt, 0),
+		Endpoints:         make([]*entities.KrakendEndpointSt, 0),
 	}
 
 	if realm.Data.CorsConf.Enabled {
@@ -164,7 +167,7 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 				epPath = endpoint.Data.Backend.Path
 			}
 
-			resEndpoint := entities.KrakendEndpointSt{
+			resEndpoint := &entities.KrakendEndpointSt{
 				Endpoint:          "/" + strings.TrimLeft(path.Join(app.Data.Path, endpoint.Data.Path), "/"),
 				Method:            endpoint.Data.Method,
 				OutputEncoding:    "no-op",
@@ -217,6 +220,196 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 	}
 
 	return result, nil
+}
+
+func (c *Realm) ImportConf(ctx context.Context, id string, cfg *entities.KrakendSt) error {
+	ipRegexp := regexp.MustCompile(`\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}`)
+
+	realm, err := c.Get(ctx, id, true)
+	if err != nil {
+		return err
+	}
+
+	// delete all apps
+	err = c.r.App.DeleteMany(ctx, &entities.AppListParsSt{
+		RealmId: &realm.Id,
+	})
+	if err != nil {
+		return err
+	}
+
+	type endpointSt struct {
+		commonSuffix string
+		ep           *entities.KrakendEndpointSt
+	}
+
+	type appSt struct {
+		beHost       string
+		bePathPrefix string
+		epPathPrefix string
+		endpoints    []*endpointSt
+	}
+
+	appMap := map[string]*appSt{}
+
+	for _, endpoint := range cfg.Endpoints {
+		if len(endpoint.Backend) == 0 {
+			continue
+		}
+
+		be := endpoint.Backend[0]
+
+		if strings.ToLower(be.Method) != strings.ToLower(endpoint.Method) {
+			continue
+		}
+
+		if len(be.Host) == 0 {
+			continue
+		}
+
+		beHost := be.Host[0]
+
+		epPathPrefix, bePathPrefix, commonSuffix := util.StrTrimCommonSuffix(endpoint.Endpoint, be.UrlPattern)
+
+		epPathPrefix = strings.TrimLeft(epPathPrefix, "/")
+		bePathPrefix = strings.TrimLeft(bePathPrefix, "/")
+		commonSuffix = strings.TrimLeft(commonSuffix, "/")
+
+		appKey := fmt.Sprintf("%s__**%s__**%s", beHost, bePathPrefix, epPathPrefix)
+
+		app, ok := appMap[appKey]
+		if ok {
+			app.endpoints = append(app.endpoints, &endpointSt{
+				commonSuffix: commonSuffix,
+				ep:           endpoint,
+			})
+		} else {
+			appMap[appKey] = &appSt{
+				beHost:       beHost,
+				bePathPrefix: bePathPrefix,
+				epPathPrefix: epPathPrefix,
+				endpoints: []*endpointSt{
+					{
+						commonSuffix: commonSuffix,
+						ep:           endpoint,
+					},
+				},
+			}
+		}
+	}
+
+	for _, app := range appMap {
+		name := app.epPathPrefix
+		if name == "" {
+			name = "---"
+		}
+
+		appId, err := c.r.App.Create(ctx, &entities.AppCUSt{
+			RealmId: &realm.Id,
+			Active:  &cns.True,
+			Data: &entities.AppDataSt{
+				Name: name,
+				Path: app.epPathPrefix,
+				BackendBase: entities.AppDataBackendBaseSt{
+					Host: app.beHost,
+					Path: app.bePathPrefix,
+				},
+			},
+		})
+		if err != nil {
+			return err
+		}
+
+		for _, endpoint := range app.endpoints {
+			epData := &entities.EndpointDataSt{
+				Method: strings.ToUpper(endpoint.ep.Method),
+				Path:   endpoint.commonSuffix,
+				Backend: entities.EndpointDataBackendSt{
+					CustomPath: false,
+					Path:       "",
+				},
+				JwtValidation: entities.EndpointDataJwtValidationSt{Roles: []string{}},
+				IpValidation:  entities.EndpointDataIpValidationSt{AllowedIps: []string{}},
+			}
+
+			if endpoint.ep.ExtraConfig != nil {
+				if endpoint.ep.ExtraConfig.AuthValidator != nil {
+					if endpoint.ep.ExtraConfig.AuthValidator.Alg != "" && realm.Data.JwtConf.Alg != endpoint.ep.ExtraConfig.AuthValidator.Alg {
+						realm.Data.JwtConf.Alg = endpoint.ep.ExtraConfig.AuthValidator.Alg
+					}
+					if realm.Data.JwtConf.JwkUrl == "" && endpoint.ep.ExtraConfig.AuthValidator.JwkUrl != "" {
+						realm.Data.JwtConf.JwkUrl = endpoint.ep.ExtraConfig.AuthValidator.JwkUrl
+					}
+					if realm.Data.JwtConf.DisableJwkSecurity != endpoint.ep.ExtraConfig.AuthValidator.DisableJwkSecurity {
+						realm.Data.JwtConf.DisableJwkSecurity = endpoint.ep.ExtraConfig.AuthValidator.DisableJwkSecurity
+					}
+					if realm.Data.JwtConf.RolesKey == "" && endpoint.ep.ExtraConfig.AuthValidator.RolesKey != "" {
+						realm.Data.JwtConf.RolesKey = endpoint.ep.ExtraConfig.AuthValidator.RolesKey
+					}
+					if realm.Data.JwtConf.RolesKeyIsNested != endpoint.ep.ExtraConfig.AuthValidator.RolesKeyIsNested {
+						realm.Data.JwtConf.RolesKeyIsNested = endpoint.ep.ExtraConfig.AuthValidator.RolesKeyIsNested
+					}
+
+					epData.JwtValidation.Enabled = true
+					if endpoint.ep.ExtraConfig.AuthValidator.Roles != nil {
+						epData.JwtValidation.Roles = endpoint.ep.ExtraConfig.AuthValidator.Roles
+					}
+				}
+
+				if len(endpoint.ep.ExtraConfig.ValidationCel) == 1 {
+					vCel := endpoint.ep.ExtraConfig.ValidationCel[0]
+					if strings.HasPrefix(vCel.CheckExpr, "req_headers['X-Real-Ip'][0] in ") {
+						ips := ipRegexp.FindAllString(vCel.CheckExpr[31:], -1)
+						if len(ips) > 0 {
+							epData.IpValidation.Enabled = true
+							epData.IpValidation.AllowedIps = ips
+						}
+					}
+				}
+			}
+
+			_, err := c.r.Endpoint.Create(ctx, &entities.EndpointCUSt{
+				AppId:  &appId,
+				Active: &cns.True,
+				Data:   epData,
+			})
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	// update realm
+
+	realm.Data.Timeout = cfg.Timeout
+	realm.Data.ReadHeaderTimeout = cfg.ReadHeaderTimeout
+	realm.Data.ReadTimeout = cfg.ReadTimeout
+
+	if cfg.ExtraConfig != nil {
+		if cfg.ExtraConfig.SecurityCors != nil {
+			realm.Data.CorsConf.Enabled = true
+			realm.Data.CorsConf.AllowCredentials = cfg.ExtraConfig.SecurityCors.AllowCredentials
+			realm.Data.CorsConf.MaxAge = cfg.ExtraConfig.SecurityCors.MaxAge
+			if cfg.ExtraConfig.SecurityCors.AllowOrigins == nil {
+				cfg.ExtraConfig.SecurityCors.AllowOrigins = []string{}
+			}
+			realm.Data.CorsConf.AllowOrigins = cfg.ExtraConfig.SecurityCors.AllowOrigins
+			if cfg.ExtraConfig.SecurityCors.AllowMethods == nil {
+				cfg.ExtraConfig.SecurityCors.AllowMethods = []string{}
+			}
+			realm.Data.CorsConf.AllowMethods = cfg.ExtraConfig.SecurityCors.AllowMethods
+			if cfg.ExtraConfig.SecurityCors.AllowHeaders == nil {
+				cfg.ExtraConfig.SecurityCors.AllowHeaders = []string{}
+			}
+			realm.Data.CorsConf.AllowHeaders = cfg.ExtraConfig.SecurityCors.AllowHeaders
+		}
+	}
+	err = c.Update(ctx, realm.Id, &entities.RealmCUSt{Data: &realm.Data})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (c *Realm) Deploy(ctx context.Context, id string) error {

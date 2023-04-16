@@ -925,6 +925,23 @@ paths:
             $ref: '#/definitions/dopTypes.ErrRep'
       tags:
       - realm
+  /realm/:id/import_conf:
+    post:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - realm
   /realm/:id/preview_conf:
     get:
       parameters:

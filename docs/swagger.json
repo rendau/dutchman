@@ -882,6 +882,33 @@
                 }
             }
         },
+        "/realm/:id/import_conf": {
+            "post": {
+                "tags": [
+                    "realm"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dopTypes.ErrRep"
+                        }
+                    }
+                }
+            }
+        },
         "/realm/:id/preview_conf": {
             "get": {
                 "tags": [

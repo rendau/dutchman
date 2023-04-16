@@ -76,6 +76,7 @@ func GetHandler(
 	r.DELETE("/realm/:id", s.hRealmDelete)
 	r.GET("/realm/:id/preview_conf", s.hRealmPreviewConf)
 	r.POST("/realm/:id/deploy", s.hRealmDeploy)
+	r.POST("/realm/:id/import_conf", s.hRealmImportConf)
 
 	// role
 	r.GET("/role", s.hRoleList)

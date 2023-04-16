@@ -125,3 +125,19 @@ func (o *St) hRealmDeploy(c *gin.Context) {
 
 	dopHttps.Error(c, o.ucs.RealmDeploy(o.getRequestContext(c), id))
 }
+
+// @Router		/realm/:id/import_conf [POST]
+// @Tags		realm
+// @Param		id		path	string				true	"id"
+// @Success	200
+// @Failure	400	{object}	dopTypes.ErrRep
+func (o *St) hRealmImportConf(c *gin.Context) {
+	id := c.Param("id")
+
+	reqObj := &entities.KrakendSt{}
+	if !dopHttps.BindJSON(c, reqObj) {
+		return
+	}
+
+	dopHttps.Error(c, o.ucs.RealmImportConf(o.getRequestContext(c), id, reqObj))
+}
