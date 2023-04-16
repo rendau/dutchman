@@ -31,6 +31,10 @@ func (d *St) RoleList(ctx context.Context, pars *entities.RoleListParsSt) ([]*en
 	args := map[string]any{}
 
 	// filter
+	if pars.RealmId != nil {
+		conds = append(conds, `t.realm_id = ${realm_id}`)
+		args["realm_id"] = *pars.RealmId
+	}
 	if pars.AppId != nil {
 		if *pars.AppId == "-" {
 			conds = append(conds, `t.app_id is null`)

@@ -179,6 +179,7 @@ func (c *App) SyncRoles(ctx context.Context, id string) {
 		if !found {
 			// create
 			_, err = c.r.Role.Create(ctx, &entities.RoleCUSt{
+				RealmId:   &app.RealmId,
 				DbAppId:   dopTools.NewPtr(&id),
 				IsFetched: &cns.True,
 				Code:      &freshRole.Code,

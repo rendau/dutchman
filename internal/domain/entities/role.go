@@ -6,6 +6,7 @@ import (
 
 type RoleSt struct {
 	Id        string  `json:"id" db:"id"`
+	RealmId   string  `json:"realm_id" db:"realm_id"`
 	AppId     *string `json:"app_id" db:"app_id"`
 	IsFetched bool    `json:"is_fetched" db:"is_fetched"`
 	Code      string  `json:"code" db:"code"`
@@ -15,12 +16,14 @@ type RoleSt struct {
 type RoleListParsSt struct {
 	dopTypes.ListParams
 
+	RealmId     *string `json:"realm_id" form:"realm_id"`
 	AppId       *string `json:"app_id" form:"app_id"`
 	AppIdOrNull *string `json:"app_id_or_null" form:"app_id_or_null"`
 	IsFetched   *bool   `json:"is_fetched" form:"is_fetched"`
 }
 
 type RoleCUSt struct {
+	RealmId   *string  `json:"realm_id" db:"realm_id"`
 	AppId     *string  `json:"app_id" db:"-"`
 	DbAppId   **string `json:"-" db:"app_id"`
 	IsFetched *bool    `json:"is_fetched" db:"is_fetched"`

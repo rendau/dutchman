@@ -1000,6 +1000,11 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
+                        "type": "string",
+                        "name": "realm_id",
+                        "in": "query"
+                    },
+                    {
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -1772,6 +1777,9 @@ const docTemplate = `{
                 },
                 "is_fetched": {
                     "type": "boolean"
+                },
+                "realm_id": {
+                    "type": "string"
                 }
             }
         },
@@ -1814,6 +1822,9 @@ const docTemplate = `{
                 },
                 "is_fetched": {
                     "type": "boolean"
+                },
+                "realm_id": {
+                    "type": "string"
                 }
             }
         }

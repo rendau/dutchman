@@ -988,6 +988,11 @@
                         "in": "query"
                     },
                     {
+                        "type": "string",
+                        "name": "realm_id",
+                        "in": "query"
+                    },
+                    {
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -1760,6 +1765,9 @@
                 },
                 "is_fetched": {
                     "type": "boolean"
+                },
+                "realm_id": {
+                    "type": "string"
                 }
             }
         },
@@ -1802,6 +1810,9 @@
                 },
                 "is_fetched": {
                     "type": "boolean"
+                },
+                "realm_id": {
+                    "type": "string"
                 }
             }
         }

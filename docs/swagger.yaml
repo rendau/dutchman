@@ -357,6 +357,8 @@ definitions:
         type: string
       is_fetched:
         type: boolean
+      realm_id:
+        type: string
     type: object
   entities.RoleFetchRemoteRepItemSt:
     properties:
@@ -384,6 +386,8 @@ definitions:
         type: string
       is_fetched:
         type: boolean
+      realm_id:
+        type: string
     type: object
 info:
   contact: {}
@@ -988,6 +992,9 @@ paths:
       - in: query
         name: page_size
         type: integer
+      - in: query
+        name: realm_id
+        type: string
       - collectionFormat: csv
         in: query
         items:
