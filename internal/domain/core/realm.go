@@ -5,11 +5,6 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"github.com/rendau/dop/adapters/client/httpc"
-	"github.com/rendau/dop/adapters/client/httpc/httpclient"
-	"github.com/rendau/dutchman/internal/cns"
-	"github.com/rendau/dutchman/internal/domain/errs"
-	"github.com/rendau/dutchman/internal/domain/util"
 	"net/http"
 	"os"
 	"path"
@@ -17,6 +12,12 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/rendau/dop/adapters/client/httpc"
+	"github.com/rendau/dop/adapters/client/httpc/httpclient"
+	"github.com/rendau/dutchman/internal/cns"
+	"github.com/rendau/dutchman/internal/domain/errs"
+	"github.com/rendau/dutchman/internal/domain/util"
 
 	"github.com/rendau/dop/dopErrs"
 	"github.com/rendau/dutchman/internal/domain/entities"
@@ -122,7 +123,7 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 		}
 
 		result.ExtraConfig.SecurityCors = &entities.KrakendExtraConfigSecurityCorsSt{
-			ExposeHeaders:    "*",
+			ExposeHeaders:    []string{"*"},
 			AllowCredentials: realm.Data.CorsConf.AllowCredentials,
 			MaxAge:           realm.Data.CorsConf.MaxAge,
 		}
@@ -223,6 +224,8 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 }
 
 func (c *Realm) ImportConf(ctx context.Context, id string, cfg *entities.KrakendSt) error {
+	// KrakendExtraConfigSecurityCorsSt.extra_config.security/cors.expose_headers
+
 	ipRegexp := regexp.MustCompile(`\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}`)
 
 	realm, err := c.Get(ctx, id, true)

@@ -4,8 +4,8 @@ type KrakendSt struct {
 	Schema            string                `json:"$schema"`
 	Version           int                   `json:"version"`
 	Timeout           string                `json:"timeout"`
-	ReadHeaderTimeout string                `json:"read_header_timeout"`
-	ReadTimeout       string                `json:"read_timeout"`
+	ReadHeaderTimeout string                `json:"read_header_timeout,omitempty"`
+	ReadTimeout       string                `json:"read_timeout,omitempty"`
 	Endpoints         []*KrakendEndpointSt  `json:"endpoints"`
 	ExtraConfig       *KrakendExtraConfigSt `json:"extra_config,omitempty"`
 }
@@ -52,7 +52,7 @@ type KrakendExtraConfigSt struct {
 }
 
 type KrakendExtraConfigSecurityCorsSt struct {
-	ExposeHeaders    string   `json:"expose_headers"`
+	ExposeHeaders    []string `json:"expose_headers"`
 	AllowCredentials bool     `json:"allow_credentials"`
 	MaxAge           string   `json:"max_age,omitempty"`
 	AllowOrigins     []string `json:"allow_origins"`

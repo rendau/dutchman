@@ -27,10 +27,10 @@ func GetHandler(
 	r := gin.New()
 
 	// middlewares
-	r.Use(dopHttps.MwRecovery(lg, nil))
 	if withCors {
 		r.Use(dopHttps.MwCors())
 	}
+	r.Use(dopHttps.MwRecovery(lg, nil))
 
 	// healthcheck
 	r.GET("/healthcheck", func(c *gin.Context) { c.Status(http.StatusOK) })
