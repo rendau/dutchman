@@ -85,6 +85,21 @@ func (u *St) AppDelete(ctx context.Context,
 	})
 }
 
+func (u *St) AppDuplicate(ctx context.Context,
+	id string, reObj *entities.AppDuplicateReq) error {
+	var err error
+
+	ses := u.SessionGetFromContext(ctx)
+
+	if err = u.SessionRequireAuth(ses); err != nil {
+		return err
+	}
+
+	return u.db.TransactionFn(ctx, func(ctx context.Context) error {
+		return u.cr.App.Duplicate(ctx, id, reObj)
+	})
+}
+
 func (u *St) AppSyncRoles(ctx context.Context,
 	id string) {
 	var err error

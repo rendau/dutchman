@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	dopHttps "github.com/rendau/dop/adapters/server/https"
 	"github.com/rendau/dop/dopTypes"
+
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
@@ -97,6 +98,24 @@ func (o *St) hAppDelete(c *gin.Context) {
 	id := c.Param("id")
 
 	dopHttps.Error(c, o.ucs.AppDelete(o.getRequestContext(c), id))
+}
+
+// @Router		/app/:id/duplicate [post]
+// @Tags		app
+// @Param		id		path	string				true	"id"
+// @Param		body	body	entities.AppDuplicateReq	false	"body"
+// @Produce	json
+// @Success	200
+// @Failure	400	{object}	dopTypes.ErrRep
+func (o *St) hAppDuplicate(c *gin.Context) {
+	id := c.Param("id")
+
+	reqObj := &entities.AppDuplicateReq{}
+	if !dopHttps.BindJSON(c, reqObj) {
+		return
+	}
+
+	dopHttps.Error(c, o.ucs.AppDuplicate(o.getRequestContext(c), id, reqObj))
 }
 
 // @Router		/app/:id/sync_roles [post]

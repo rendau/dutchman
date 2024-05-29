@@ -7,9 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rendau/dop/adapters/logger"
 	dopHttps "github.com/rendau/dop/adapters/server/https"
-	"github.com/rendau/dutchman/internal/domain/usecases"
 	swagFiles "github.com/swaggo/files"
 	ginSwag "github.com/swaggo/gin-swagger"
+
+	"github.com/rendau/dutchman/internal/domain/usecases"
 )
 
 type St struct {
@@ -59,6 +60,7 @@ func GetHandler(
 	r.GET("/app/:id", s.hAppGet)
 	r.PUT("/app/:id", s.hAppUpdate)
 	r.DELETE("/app/:id", s.hAppDelete)
+	r.POST("/app/:id/duplicate", s.hAppDuplicate)
 	r.POST("/app/:id/sync_roles", s.hAppSyncRoles)
 
 	// endpoint

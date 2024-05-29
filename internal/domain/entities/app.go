@@ -42,3 +42,10 @@ type AppDataRemoteRolesSt struct {
 	Url      string `json:"url"`
 	JsonPath string `json:"json_path"`
 }
+
+// duplicate
+
+type AppDuplicateReq struct {
+	NewRealmId *string `json:"new_realm_id"`
+	NewName    *string `json:"new_name"`
+}

@@ -5,6 +5,7 @@ import (
 
 	"github.com/rendau/dop/dopErrs"
 	"github.com/rendau/dop/dopTools"
+
 	"github.com/rendau/dutchman/internal/cns"
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
@@ -90,6 +91,51 @@ func (c *App) Update(ctx context.Context, id string, obj *entities.AppCUSt) erro
 
 func (c *App) Delete(ctx context.Context, id string) error {
 	return c.r.repo.AppDelete(ctx, id)
+}
+
+func (c *App) Duplicate(ctx context.Context, id string, reqObj *entities.AppDuplicateReq) error {
+	app, err := c.Get(ctx, id, true)
+	if err != nil {
+		return err
+	}
+
+	endpoints, _, err := c.r.Endpoint.List(ctx, &entities.EndpointListParsSt{
+		AppId: &id,
+	})
+
+	data := app.Data
+
+	if reqObj.NewRealmId == nil {
+		reqObj.NewRealmId = &app.RealmId
+	}
+
+	if reqObj.NewName != nil {
+		data.Name = *reqObj.NewName
+	} else {
+		data.Name = data.Name + " copy"
+	}
+
+	newId, err := c.Create(ctx, &entities.AppCUSt{
+		RealmId: reqObj.NewRealmId,
+		Active:  dopTools.NewPtr(true),
+		Data:    &data,
+	})
+	if err != nil {
+		return err
+	}
+
+	for _, endpoint := range endpoints {
+		_, err = c.r.Endpoint.Create(ctx, &entities.EndpointCUSt{
+			AppId:  &newId,
+			Active: dopTools.NewPtr(true),
+			Data:   &endpoint.Data,
+		})
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (c *App) DeleteMany(ctx context.Context, pars *entities.AppListParsSt) error {
