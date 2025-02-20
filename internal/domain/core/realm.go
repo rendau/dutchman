@@ -494,11 +494,15 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 				return fmt.Errorf("failed to get deployment: %v", err)
 			}
 
-			if deployment.ObjectMeta.Annotations == nil {
-				deployment.ObjectMeta.Annotations = make(map[string]string)
+			if deployment.Spec.Template.ObjectMeta.Annotations == nil {
+				deployment.Spec.Template.ObjectMeta.Annotations = make(map[string]string)
 			}
+			deployment.Spec.Template.ObjectMeta.Annotations["kubectl.kubernetes.io/restartedAt"] = time.Now().Format(time.RFC3339)
 
-			deployment.ObjectMeta.Annotations["kubectl.kubernetes.io/restartedAt"] = time.Now().Format(time.RFC3339)
+			// if deployment.ObjectMeta.Annotations == nil {
+			// 	deployment.ObjectMeta.Annotations = make(map[string]string)
+			// }
+			// deployment.ObjectMeta.Annotations["kubectl.kubernetes.io/restartedAt"] = time.Now().Format(time.RFC3339)
 
 			_, err = deploymentsClient.Update(bgCtx, deployment, metav1.UpdateOptions{})
 			if err != nil {
