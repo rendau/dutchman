@@ -15,12 +15,15 @@ import (
 
 	"github.com/rendau/dop/adapters/client/httpc"
 	"github.com/rendau/dop/adapters/client/httpc/httpclient"
+	"github.com/rendau/dop/dopErrs"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
+
 	"github.com/rendau/dutchman/internal/cns"
+	"github.com/rendau/dutchman/internal/domain/entities"
 	"github.com/rendau/dutchman/internal/domain/errs"
 	"github.com/rendau/dutchman/internal/domain/util"
-
-	"github.com/rendau/dop/dopErrs"
-	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
 type Realm struct {
@@ -156,12 +159,12 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 		}
 
 		for _, endpoint := range endpoints {
-			//switch endpoint.Id {
-			//case "8252c666-62d7-4e26-9216-a678f92f5ae9",
+			// switch endpoint.Id {
+			// case "8252c666-62d7-4e26-9216-a678f92f5ae9",
 			//	"c010c570-6805-45df-a662-1d7b9d935ea7":
-			//default:
+			// default:
 			//	continue
-			//}
+			// }
 
 			epPath := endpoint.Data.Path
 			if endpoint.Data.Backend.CustomPath {
@@ -442,27 +445,75 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 	}
 
 	if realm.Data.DeployConf.Url != "" {
-		method := realm.Data.DeployConf.Method
-		if method == "" {
-			method = "GET"
-		}
+		if strings.HasPrefix(realm.Data.DeployConf.Url, "http") { // webhook
+			method := realm.Data.DeployConf.Method
+			if method == "" {
+				method = "GET"
+			}
 
-		hClient := httpclient.New(c.r.lg, &httpc.OptionsSt{
-			Client: &http.Client{
-				Timeout:   15 * time.Second,
-				Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
-			},
-			Method:    method,
-			LogPrefix: "Deploy webhook:",
-		})
+			hClient := httpclient.New(c.r.lg, &httpc.OptionsSt{
+				Client: &http.Client{
+					Timeout:   15 * time.Second,
+					Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
+				},
+				Method:    method,
+				LogPrefix: "Deploy webhook:",
+			})
 
-		_, err = hClient.Send(&httpc.OptionsSt{
-			Uri: realm.Data.DeployConf.Url,
-		})
-		if err != nil {
-			return errs.FailToSendDeployWebhook
+			_, err = hClient.Send(&httpc.OptionsSt{
+				Uri: realm.Data.DeployConf.Url,
+			})
+			if err != nil {
+				return errs.FailToSendDeployWebhook
+			}
+		} else { // try to restart deployment in k8s, (url == deployment-name)
+			bgCtx := context.Background()
+
+			config, err := rest.InClusterConfig() // Использовать внутри кластера
+			if err != nil {
+				return fmt.Errorf("failed to load Kubernetes config: %v", err)
+			}
+
+			clientSet, err := kubernetes.NewForConfig(config) // Инициализация клиента
+			if err != nil {
+				return fmt.Errorf("failed to create Kubernetes client: %v", err)
+			}
+
+			namespace, deploymentName := parseK8sDeploymentName(realm.Data.DeployConf.Url)
+			if namespace == "" {
+				namespace = "default"
+			}
+
+			deploymentsClient := clientSet.AppsV1().Deployments(namespace)
+			deployment, err := deploymentsClient.Get(bgCtx, deploymentName, metav1.GetOptions{})
+			if err != nil {
+				return fmt.Errorf("failed to get deployment: %v", err)
+			}
+
+			if deployment.ObjectMeta.Annotations == nil {
+				deployment.ObjectMeta.Annotations = make(map[string]string)
+			}
+
+			deployment.ObjectMeta.Annotations["kubectl.kubernetes.io/restartedAt"] = time.Now().Format(time.RFC3339)
+
+			_, err = deploymentsClient.Update(bgCtx, deployment, metav1.UpdateOptions{})
+			if err != nil {
+				return fmt.Errorf("failed to update deployment: %v", err)
+			}
+
 		}
 	}
 
 	return nil
+}
+
+// parseK8sDeploymentName splits a Kubernetes deployment name into its namespace and name components based on the ':' separator.
+// Returns an empty string and the input if no separator is found.
+func parseK8sDeploymentName(v string) (string, string) {
+	parts := strings.Split(v, ":")
+	if len(parts) == 1 {
+		return "", v
+	}
+
+	return parts[0], parts[1]
 }
