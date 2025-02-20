@@ -11,6 +11,7 @@ import (
 	dopLoggerZap "github.com/rendau/dop/adapters/logger/zap"
 	dopServerHttps "github.com/rendau/dop/adapters/server/https"
 	"github.com/rendau/dop/dopTools"
+
 	"github.com/rendau/dutchman/docs"
 	"github.com/rendau/dutchman/internal/adapters/repo/pg"
 	"github.com/rendau/dutchman/internal/adapters/server/rest"
@@ -79,7 +80,7 @@ func Execute() {
 
 	// START
 
-	app.lg.Infow("Starting")
+	app.lg.Infow("Starting...")
 
 	app.restApiSrv = dopServerHttps.Start(
 		conf.HttpListen,

@@ -467,6 +467,8 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 				return errs.FailToSendDeployWebhook
 			}
 		} else { // try to restart deployment in k8s, (url == deployment-name)
+			c.r.lg.Infow("Try to restart deployment in k8s", "deployment", realm.Data.DeployConf.Url)
+
 			bgCtx := context.Background()
 
 			config, err := rest.InClusterConfig() // Использовать внутри кластера
@@ -484,6 +486,8 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 				namespace = "default"
 			}
 
+			c.r.lg.Infow("parsed namespace and deployment name", "namespace", namespace, "deployment", deploymentName)
+
 			deploymentsClient := clientSet.AppsV1().Deployments(namespace)
 			deployment, err := deploymentsClient.Get(bgCtx, deploymentName, metav1.GetOptions{})
 			if err != nil {
@@ -500,7 +504,6 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 			if err != nil {
 				return fmt.Errorf("failed to update deployment: %v", err)
 			}
-
 		}
 	}
 
