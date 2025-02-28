@@ -441,6 +441,7 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 
 	err = os.WriteFile(filepath.Join(c.r.confDir, realm.Data.DeployConf.ConfFile), confJson, os.ModePerm)
 	if err != nil {
+		c.r.lg.Errorw("Failed to save conf file", err)
 		return errs.FailToSaveFile
 	}
 
