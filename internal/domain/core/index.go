@@ -6,6 +6,7 @@ import (
 	"github.com/rendau/dop/adapters/cache"
 	"github.com/rendau/dop/adapters/db"
 	"github.com/rendau/dop/adapters/logger"
+
 	"github.com/rendau/dutchman/internal/adapters/repo"
 )
 
@@ -16,7 +17,6 @@ type St struct {
 	repo                repo.Repo
 	authPassword        string
 	sessionRefreshToken string
-	confDir             string
 	testing             bool
 
 	wg sync.WaitGroup
@@ -37,7 +37,6 @@ func New(
 	repo repo.Repo,
 	authPassword string,
 	sessionRefreshToken string,
-	confDir string,
 	testing bool,
 ) *St {
 	c := &St{
@@ -47,7 +46,6 @@ func New(
 		repo:                repo,
 		authPassword:        authPassword,
 		sessionRefreshToken: sessionRefreshToken,
-		confDir:             confDir,
 		testing:             testing,
 	}
 

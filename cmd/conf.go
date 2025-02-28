@@ -20,7 +20,6 @@ var conf = struct {
 	RedisKeyPrefix      string `mapstructure:"REDIS_KEY_PREFIX"`
 	AuthPassword        string `mapstructure:"AUTH_PASSWORD"`
 	SessionRefreshToken string `mapstructure:"SESSION_REFRESH_TOKEN"`
-	ConfDir             string `mapstructure:"CONF_DIR"`
 }{}
 
 func confLoad() {

@@ -3,12 +3,9 @@ package core
 import (
 	"context"
 	"crypto/tls"
-	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
 	"path"
-	"path/filepath"
 	"regexp"
 	"strings"
 	"time"
@@ -424,26 +421,26 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 		return err
 	}
 
-	if realm.Data.DeployConf.ConfFile == "" {
-		return errs.ConfFileNameRequired
-	}
-
-	conf, err := c.GenerateConf(ctx, id)
-	if err != nil {
-		return err
-	}
-
-	confJson, err := json.MarshalIndent(conf, "", "  ")
-	if err != nil {
-		c.r.lg.Errorw("Failed to marshal conf", err)
-		return err
-	}
-
-	err = os.WriteFile(filepath.Join(c.r.confDir, realm.Data.DeployConf.ConfFile), confJson, os.ModePerm)
-	if err != nil {
-		c.r.lg.Errorw("Failed to save conf file", err)
-		return errs.FailToSaveFile
-	}
+	// if realm.Data.DeployConf.ConfFile == "" {
+	// 	return errs.ConfFileNameRequired
+	// }
+	//
+	// conf, err := c.GenerateConf(ctx, id)
+	// if err != nil {
+	// 	return err
+	// }
+	//
+	// confJson, err := json.MarshalIndent(conf, "", "  ")
+	// if err != nil {
+	// 	c.r.lg.Errorw("Failed to marshal conf", err)
+	// 	return err
+	// }
+	//
+	// err = os.WriteFile(filepath.Join(c.r.confDir, realm.Data.DeployConf.ConfFile), confJson, os.ModePerm)
+	// if err != nil {
+	// 	c.r.lg.Errorw("Failed to save conf file", err)
+	// 	return errs.FailToSaveFile
+	// }
 
 	if realm.Data.DeployConf.Url != "" {
 		if strings.HasPrefix(realm.Data.DeployConf.Url, "http") { // webhook

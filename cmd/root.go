@@ -67,7 +67,6 @@ func Execute() {
 		app.repo,
 		conf.AuthPassword,
 		conf.SessionRefreshToken,
-		conf.ConfDir,
 		false,
 	)
 
