@@ -499,11 +499,6 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 			}
 			deployment.Spec.Template.ObjectMeta.Annotations["kubectl.kubernetes.io/restartedAt"] = time.Now().Format(time.RFC3339)
 
-			// if deployment.ObjectMeta.Annotations == nil {
-			// 	deployment.ObjectMeta.Annotations = make(map[string]string)
-			// }
-			// deployment.ObjectMeta.Annotations["kubectl.kubernetes.io/restartedAt"] = time.Now().Format(time.RFC3339)
-
 			_, err = deploymentsClient.Update(bgCtx, deployment, metav1.UpdateOptions{})
 			if err != nil {
 				return fmt.Errorf("failed to update deployment: %v", err)

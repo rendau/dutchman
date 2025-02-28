@@ -85,6 +85,11 @@ func (u *St) RealmDelete(ctx context.Context,
 	})
 }
 
+func (u *St) RealmExportConf(ctx context.Context,
+	id string) (*entities.KrakendSt, error) {
+	return u.cr.Realm.GenerateConf(ctx, id)
+}
+
 func (u *St) RealmPreviewConf(ctx context.Context,
 	id string) (*entities.KrakendSt, error) {
 	var err error

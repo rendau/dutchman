@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	dopHttps "github.com/rendau/dop/adapters/server/https"
 	"github.com/rendau/dop/dopTypes"
+
 	"github.com/rendau/dutchman/internal/domain/entities"
 )
 
@@ -97,6 +98,22 @@ func (o *St) hRealmDelete(c *gin.Context) {
 	id := c.Param("id")
 
 	dopHttps.Error(c, o.ucs.RealmDelete(o.getRequestContext(c), id))
+}
+
+// @Router		/realm/:id/export [GET]
+// @Tags		realm
+// @Param		id	path		string	true	"id"
+// @Success	200	{object}	entities.KrakendSt
+// @Failure	400	{object}	dopTypes.ErrRep
+func (o *St) hRealmExportConf(c *gin.Context) {
+	id := c.Param("id")
+
+	result, err := o.ucs.RealmExportConf(o.getRequestContext(c), id)
+	if dopHttps.Error(c, err) {
+		return
+	}
+
+	c.JSON(http.StatusOK, result)
 }
 
 // @Router		/realm/:id/preview_conf [GET]
