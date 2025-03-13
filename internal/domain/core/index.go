@@ -37,6 +37,7 @@ func New(
 	repo repo.Repo,
 	authPassword string,
 	sessionRefreshToken string,
+	k8sRestartResourceType string,
 	testing bool,
 ) *St {
 	c := &St{
@@ -52,7 +53,7 @@ func New(
 	c.Config = NewConfig(c)
 	c.Session = NewSession(c)
 	c.Profile = NewProfile(c)
-	c.Realm = NewRealm(c)
+	c.Realm = NewRealm(c, k8sRestartResourceType)
 	c.App = NewApp(c)
 	c.Endpoint = NewEndpoint(c)
 	c.Role = NewRole(c)

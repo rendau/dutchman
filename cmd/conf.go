@@ -6,20 +6,21 @@ import (
 )
 
 var conf = struct {
-	Debug               bool   `mapstructure:"DEBUG"`
-	LogLevel            string `mapstructure:"LOG_LEVEL"`
-	HttpListen          string `mapstructure:"HTTP_LISTEN"`
-	HttpCors            bool   `mapstructure:"HTTP_CORS"`
-	SwagHost            string `mapstructure:"SWAG_HOST"`
-	SwagBasePath        string `mapstructure:"SWAG_BASE_PATH"`
-	SwagSchema          string `mapstructure:"SWAG_SCHEMA"`
-	PgDsn               string `mapstructure:"PG_DSN"`
-	RedisUrl            string `mapstructure:"REDIS_URL"`
-	RedisPsw            string `mapstructure:"REDIS_PSW"`
-	RedisDb             int    `mapstructure:"REDIS_DB"`
-	RedisKeyPrefix      string `mapstructure:"REDIS_KEY_PREFIX"`
-	AuthPassword        string `mapstructure:"AUTH_PASSWORD"`
-	SessionRefreshToken string `mapstructure:"SESSION_REFRESH_TOKEN"`
+	Debug                  bool   `mapstructure:"DEBUG"`
+	LogLevel               string `mapstructure:"LOG_LEVEL"`
+	HttpListen             string `mapstructure:"HTTP_LISTEN"`
+	HttpCors               bool   `mapstructure:"HTTP_CORS"`
+	SwagHost               string `mapstructure:"SWAG_HOST"`
+	SwagBasePath           string `mapstructure:"SWAG_BASE_PATH"`
+	SwagSchema             string `mapstructure:"SWAG_SCHEMA"`
+	PgDsn                  string `mapstructure:"PG_DSN"`
+	RedisUrl               string `mapstructure:"REDIS_URL"`
+	RedisPsw               string `mapstructure:"REDIS_PSW"`
+	RedisDb                int    `mapstructure:"REDIS_DB"`
+	RedisKeyPrefix         string `mapstructure:"REDIS_KEY_PREFIX"`
+	AuthPassword           string `mapstructure:"AUTH_PASSWORD"`
+	SessionRefreshToken    string `mapstructure:"SESSION_REFRESH_TOKEN"`
+	K8sRestartResourceType string `mapstructure:"K8S_RESTART_RESOURCE_TYPE,default=daemonset"`
 }{}
 
 func confLoad() {

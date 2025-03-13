@@ -67,6 +67,7 @@ func Execute() {
 		app.repo,
 		conf.AuthPassword,
 		conf.SessionRefreshToken,
+		conf.K8sRestartResourceType,
 		false,
 	)
 

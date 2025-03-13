@@ -24,11 +24,15 @@ import (
 )
 
 type Realm struct {
-	r *St
+	r                      *St
+	k8sRestartResourceType string
 }
 
-func NewRealm(r *St) *Realm {
-	return &Realm{r: r}
+func NewRealm(r *St, k8sRestartResourceType string) *Realm {
+	return &Realm{
+		r:                      r,
+		k8sRestartResourceType: k8sRestartResourceType,
+	}
 }
 
 func (c *Realm) ValidateCU(ctx context.Context, obj *entities.RealmCUSt, id string) error {
@@ -486,6 +490,12 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 
 			c.r.lg.Infow("parsed namespace and deployment name", "namespace", namespace, "deployment", deploymentName)
 
+			daemonSetsClient := clientSet.AppsV1().DaemonSets(namespace)
+			daemonSet, err := daemonSetsClient.Get(bgCtx, deploymentName, metav1.GetOptions{})
+			if err != nil {
+				return fmt.Errorf("failed to get daemonSet: %v", err)
+			}
+
 			deploymentsClient := clientSet.AppsV1().Deployments(namespace)
 			deployment, err := deploymentsClient.Get(bgCtx, deploymentName, metav1.GetOptions{})
 			if err != nil {
@@ -505,6 +515,15 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 	}
 
 	return nil
+}
+
+func restartDaemonSet(namespace, name string) error {
+	parts := strings.Split(v, ":")
+	if len(parts) == 1 {
+		return "", v
+	}
+
+	return parts[0], parts[1]
 }
 
 // parseK8sDeploymentName splits a Kubernetes deployment name into its namespace and name components based on the ':' separator.
