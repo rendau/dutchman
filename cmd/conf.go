@@ -20,7 +20,7 @@ var conf = struct {
 	RedisKeyPrefix         string `mapstructure:"REDIS_KEY_PREFIX"`
 	AuthPassword           string `mapstructure:"AUTH_PASSWORD"`
 	SessionRefreshToken    string `mapstructure:"SESSION_REFRESH_TOKEN"`
-	K8sRestartResourceType string `mapstructure:"K8S_RESTART_RESOURCE_TYPE,default=daemonset"`
+	K8sRestartResourceType string `mapstructure:"K8S_RESTART_RESOURCE_TYPE"`
 }{}
 
 func confLoad() {
@@ -33,6 +33,7 @@ func confLoad() {
 	viper.SetDefault("SWAG_BASE_PATH", "/")
 	viper.SetDefault("SWAG_SCHEMA", "https")
 	viper.SetDefault("REDIS_KEY_PREFIX", "dutchman_")
+	viper.SetDefault("K8S_RESTART_RESOURCE_TYPE", "daemonset")
 
 	viper.SetConfigFile("conf.yml")
 	_ = viper.ReadInConfig()
