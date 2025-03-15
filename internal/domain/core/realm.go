@@ -465,8 +465,6 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 				namespace = "default"
 			}
 
-			c.r.lg.Infow("parsed namespace and resource name", "namespace", namespace, "resource", resourceName)
-
 			if c.k8sRestartResourceType == "daemonset" {
 				err = c.restartDaemonSet(bgCtx, clientSet, namespace, resourceName)
 				if err != nil {
