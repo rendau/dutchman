@@ -425,27 +425,6 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 		return err
 	}
 
-	// if realm.Data.DeployConf.ConfFile == "" {
-	// 	return errs.ConfFileNameRequired
-	// }
-	//
-	// conf, err := c.GenerateConf(ctx, id)
-	// if err != nil {
-	// 	return err
-	// }
-	//
-	// confJson, err := json.MarshalIndent(conf, "", "  ")
-	// if err != nil {
-	// 	c.r.lg.Errorw("Failed to marshal conf", err)
-	// 	return err
-	// }
-	//
-	// err = os.WriteFile(filepath.Join(c.r.confDir, realm.Data.DeployConf.ConfFile), confJson, os.ModePerm)
-	// if err != nil {
-	// 	c.r.lg.Errorw("Failed to save conf file", err)
-	// 	return errs.FailToSaveFile
-	// }
-
 	if realm.Data.DeployConf.Url != "" {
 		if strings.HasPrefix(realm.Data.DeployConf.Url, "http") { // webhook
 			method := realm.Data.DeployConf.Method
@@ -469,8 +448,6 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 				return errs.FailToSendDeployWebhook
 			}
 		} else { // try to restart deployment in k8s, (url == deployment-name)
-			c.r.lg.Infow("Try to restart deployment in k8s", "deployment", realm.Data.DeployConf.Url)
-
 			bgCtx := context.Background()
 
 			config, err := rest.InClusterConfig() // Использовать внутри кластера
@@ -483,33 +460,25 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 				return fmt.Errorf("failed to create Kubernetes client: %v", err)
 			}
 
-			namespace, deploymentName := parseK8sDeploymentName(realm.Data.DeployConf.Url)
+			namespace, resourceName := parseK8sResourceName(realm.Data.DeployConf.Url)
 			if namespace == "" {
 				namespace = "default"
 			}
 
-			c.r.lg.Infow("parsed namespace and deployment name", "namespace", namespace, "deployment", deploymentName)
+			c.r.lg.Infow("parsed namespace and resource name", "namespace", namespace, "resource", resourceName)
 
-			daemonSetsClient := clientSet.AppsV1().DaemonSets(namespace)
-			daemonSet, err := daemonSetsClient.Get(bgCtx, deploymentName, metav1.GetOptions{})
-			if err != nil {
-				return fmt.Errorf("failed to get daemonSet: %v", err)
-			}
-
-			deploymentsClient := clientSet.AppsV1().Deployments(namespace)
-			deployment, err := deploymentsClient.Get(bgCtx, deploymentName, metav1.GetOptions{})
-			if err != nil {
-				return fmt.Errorf("failed to get deployment: %v", err)
-			}
-
-			if deployment.Spec.Template.ObjectMeta.Annotations == nil {
-				deployment.Spec.Template.ObjectMeta.Annotations = make(map[string]string)
-			}
-			deployment.Spec.Template.ObjectMeta.Annotations["kubectl.kubernetes.io/restartedAt"] = time.Now().Format(time.RFC3339)
-
-			_, err = deploymentsClient.Update(bgCtx, deployment, metav1.UpdateOptions{})
-			if err != nil {
-				return fmt.Errorf("failed to update deployment: %v", err)
+			if c.k8sRestartResourceType == "daemonset" {
+				err = c.restartDaemonSet(bgCtx, clientSet, namespace, resourceName)
+				if err != nil {
+					return fmt.Errorf("failed to restart daemonset: %w", err)
+				}
+			} else if c.k8sRestartResourceType == "deployment" {
+				err = c.restartDeployment(bgCtx, clientSet, namespace, resourceName)
+				if err != nil {
+					return fmt.Errorf("failed to restart deployment: %w", err)
+				}
+			} else {
+				return fmt.Errorf("unknown k8s-resource type: %s", c.k8sRestartResourceType)
 			}
 		}
 	}
@@ -517,18 +486,53 @@ func (c *Realm) Deploy(ctx context.Context, id string) error {
 	return nil
 }
 
-func restartDaemonSet(namespace, name string) error {
-	parts := strings.Split(v, ":")
-	if len(parts) == 1 {
-		return "", v
+func (c *Realm) restartDaemonSet(ctx context.Context, clientSet *kubernetes.Clientset, namespace, name string) error {
+	c.r.lg.Infow("Start restart DaemonSet", "namespace", namespace, "name", name)
+
+	resClient := clientSet.AppsV1().DaemonSets(namespace)
+	res, err := resClient.Get(ctx, name, metav1.GetOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to find DaemonSets: %v", err)
 	}
 
-	return parts[0], parts[1]
+	if res.Spec.Template.ObjectMeta.Annotations == nil {
+		res.Spec.Template.ObjectMeta.Annotations = make(map[string]string)
+	}
+	res.Spec.Template.ObjectMeta.Annotations["kubectl.kubernetes.io/restartedAt"] = time.Now().Format(time.RFC3339)
+
+	_, err = resClient.Update(ctx, res, metav1.UpdateOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to update deployment: %v", err)
+	}
+
+	return nil
 }
 
-// parseK8sDeploymentName splits a Kubernetes deployment name into its namespace and name components based on the ':' separator.
+func (c *Realm) restartDeployment(ctx context.Context, clientSet *kubernetes.Clientset, namespace, name string) error {
+	c.r.lg.Infow("Start restart Deployment", "namespace", namespace, "name", name)
+
+	resClient := clientSet.AppsV1().Deployments(namespace)
+	res, err := resClient.Get(ctx, name, metav1.GetOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to find Deployment: %v", err)
+	}
+
+	if res.Spec.Template.ObjectMeta.Annotations == nil {
+		res.Spec.Template.ObjectMeta.Annotations = make(map[string]string)
+	}
+	res.Spec.Template.ObjectMeta.Annotations["kubectl.kubernetes.io/restartedAt"] = time.Now().Format(time.RFC3339)
+
+	_, err = resClient.Update(ctx, res, metav1.UpdateOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to update deployment: %v", err)
+	}
+
+	return nil
+}
+
+// parseK8sResourceName splits a Kubernetes resource name into its namespace and name components based on the ':' separator.
 // Returns an empty string and the input if no separator is found.
-func parseK8sDeploymentName(v string) (string, string) {
+func parseK8sResourceName(v string) (string, string) {
 	parts := strings.Split(v, ":")
 	if len(parts) == 1 {
 		return "", v
