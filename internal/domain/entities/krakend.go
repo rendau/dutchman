@@ -41,6 +41,7 @@ type KrakendEndpointExtraConfigAuthValidatorSt struct {
 	Roles              []string `json:"roles,omitempty"`
 	RolesKey           string   `json:"roles_key,omitempty"`
 	RolesKeyIsNested   bool     `json:"roles_key_is_nested"`
+	OperationDebug     bool     `json:"operation_debug"`
 }
 
 type KrakendEndpointExtraConfigValidationCelSt struct {

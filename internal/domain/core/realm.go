@@ -199,6 +199,7 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 					DisableJwkSecurity: realm.Data.JwtConf.DisableJwkSecurity,
 					Cache:              realm.Data.JwtConf.Cache,
 					CacheDuration:      realm.Data.JwtConf.CacheDuration,
+					OperationDebug:     true,
 				}
 
 				if len(endpoint.Data.JwtValidation.Roles) > 0 {
