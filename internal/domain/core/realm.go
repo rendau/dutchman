@@ -200,6 +200,7 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 					Cache:              realm.Data.JwtConf.Cache,
 					CacheDuration:      realm.Data.JwtConf.CacheDuration,
 					OperationDebug:     true,
+					CookeKey:           "jwt_token",
 				}
 
 				if len(endpoint.Data.JwtValidation.Roles) > 0 {

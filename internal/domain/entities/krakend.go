@@ -42,6 +42,7 @@ type KrakendEndpointExtraConfigAuthValidatorSt struct {
 	RolesKey           string   `json:"roles_key,omitempty"`
 	RolesKeyIsNested   bool     `json:"roles_key_is_nested"`
 	OperationDebug     bool     `json:"operation_debug"`
+	CookeKey           string   `json:"cookie_key"`
 }
 
 type KrakendEndpointExtraConfigValidationCelSt struct {
