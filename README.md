@@ -9,7 +9,7 @@ pg_dump --no-owner -Fc -U postgres dutchman -f ./dutchman.custom
 ### DB restore:
 
 ```
-dropdb -U postgres dutchman
+dropdb -f -U postgres dutchman
 createdb -U postgres dutchman
 pg_restore --no-owner -d dutchman -U postgres ./dutchman.custom
 ```

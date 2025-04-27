@@ -7,7 +7,7 @@ fmt_swdoc:
 	swag fmt
 
 swdoc:
-	swag init --parseDependency --parseDepth 3
+	swag init --parseDependency --parseDepth 4
 
 build:
 	mkdir -p $(BUILD_PATH)

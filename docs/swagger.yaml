@@ -58,6 +58,13 @@ definitions:
       remote_roles:
         $ref: '#/definitions/entities.AppDataRemoteRolesSt'
     type: object
+  entities.AppDuplicateReq:
+    properties:
+      new_name:
+        type: string
+      new_realm_id:
+        type: string
+    type: object
   entities.AppSt:
     properties:
       active:
@@ -150,10 +157,14 @@ definitions:
         type: boolean
       cache_duration:
         type: integer
+      cookie_key:
+        type: string
       disable_jwk_security:
         type: boolean
       jwk_url:
         type: string
+      operation_debug:
+        type: boolean
       roles:
         items:
           type: string
@@ -217,7 +228,9 @@ definitions:
           type: string
         type: array
       expose_headers:
-        type: string
+        items:
+          type: string
+        type: array
       max_age:
         type: string
     type: object
@@ -520,6 +533,30 @@ paths:
         name: body
         schema:
           $ref: '#/definitions/entities.AppCUSt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - app
+  /app/:id/duplicate:
+    post:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/entities.AppDuplicateReq'
       produces:
       - application/json
       responses:
@@ -923,6 +960,25 @@ paths:
       responses:
         "200":
           description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dopTypes.ErrRep'
+      tags:
+      - realm
+  /realm/:id/export:
+    get:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.KrakendSt'
         "400":
           description: Bad Request
           schema:

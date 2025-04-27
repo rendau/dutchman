@@ -233,6 +233,44 @@
                 }
             }
         },
+        "/app/:id/duplicate": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "app"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/entities.AppDuplicateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dopTypes.ErrRep"
+                        }
+                    }
+                }
+            }
+        },
         "/app/:id/sync_roles": {
             "post": {
                 "tags": [
@@ -882,6 +920,36 @@
                 }
             }
         },
+        "/realm/:id/export": {
+            "get": {
+                "tags": [
+                    "realm"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.KrakendSt"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dopTypes.ErrRep"
+                        }
+                    }
+                }
+            }
+        },
         "/realm/:id/import_conf": {
             "post": {
                 "tags": [
@@ -1305,6 +1373,17 @@
                 }
             }
         },
+        "entities.AppDuplicateReq": {
+            "type": "object",
+            "properties": {
+                "new_name": {
+                    "type": "string"
+                },
+                "new_realm_id": {
+                    "type": "string"
+                }
+            }
+        },
         "entities.AppSt": {
             "type": "object",
             "properties": {
@@ -1447,11 +1526,17 @@
                 "cache_duration": {
                     "type": "integer"
                 },
+                "cookie_key": {
+                    "type": "string"
+                },
                 "disable_jwk_security": {
                     "type": "boolean"
                 },
                 "jwk_url": {
                     "type": "string"
+                },
+                "operation_debug": {
+                    "type": "boolean"
                 },
                 "roles": {
                     "type": "array",
@@ -1549,7 +1634,10 @@
                     }
                 },
                 "expose_headers": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "max_age": {
                     "type": "string"
