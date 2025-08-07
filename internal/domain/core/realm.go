@@ -121,6 +121,18 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 		Endpoints:         make([]*entities.KrakendEndpointSt, 0),
 	}
 
+	// access logs
+	if c.r.disableAccessLog {
+		if result.ExtraConfig == nil {
+			result.ExtraConfig = &entities.KrakendExtraConfigSt{}
+		}
+		if result.ExtraConfig.Router == nil {
+			result.ExtraConfig.Router = &entities.KrakendExtraConfigRouterSt{}
+		}
+
+		result.ExtraConfig.Router.DisableAccessLog = true
+	}
+
 	// cors
 	if realm.Data.CorsConf.Enabled {
 		if result.ExtraConfig == nil {

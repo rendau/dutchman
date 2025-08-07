@@ -50,8 +50,13 @@ type KrakendEndpointExtraConfigValidationCelSt struct {
 }
 
 type KrakendExtraConfigSt struct {
+	Router                 *KrakendExtraConfigRouterSt                 `json:"router,omitempty"`
 	SecurityCors           *KrakendExtraConfigSecurityCorsSt           `json:"security/cors,omitempty"`
 	TelemetryOpenTelemetry *KrakendExtraConfigTelemetryOpenTelemetrySt `json:"telemetry/opentelemetry,omitempty"`
+}
+
+type KrakendExtraConfigRouterSt struct {
+	DisableAccessLog bool `json:"disable_access_log"`
 }
 
 type KrakendExtraConfigSecurityCorsSt struct {

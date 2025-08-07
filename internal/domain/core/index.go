@@ -17,8 +17,9 @@ type St struct {
 	repo                repo.Repo
 	authPassword        string
 	sessionRefreshToken string
-	testing             bool
+	disableAccessLog    bool
 	withMetrics         bool
+	testing             bool
 
 	wg *sync.WaitGroup
 
@@ -39,8 +40,9 @@ func New(
 	authPassword string,
 	sessionRefreshToken string,
 	k8sRestartResourceType string,
-	testing bool,
+	disableAccessLog bool,
 	withMetrics bool,
+	testing bool,
 ) *St {
 	c := &St{
 		lg:                  lg,
@@ -49,8 +51,9 @@ func New(
 		repo:                repo,
 		authPassword:        authPassword,
 		sessionRefreshToken: sessionRefreshToken,
-		testing:             testing,
+		disableAccessLog:    disableAccessLog,
 		withMetrics:         withMetrics,
+		testing:             testing,
 	}
 
 	c.wg = &sync.WaitGroup{}

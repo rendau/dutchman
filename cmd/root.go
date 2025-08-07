@@ -68,8 +68,9 @@ func Execute() {
 		conf.AuthPassword,
 		conf.SessionRefreshToken,
 		conf.K8sRestartResourceType,
-		false,
+		conf.DisableAccessLog,
 		conf.WithMetrics,
+		false,
 	)
 
 	app.ucs.SetCore(app.core)
