@@ -121,6 +121,7 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 		Endpoints:         make([]*entities.KrakendEndpointSt, 0),
 	}
 
+	// cors
 	if realm.Data.CorsConf.Enabled {
 		if result.ExtraConfig == nil {
 			result.ExtraConfig = &entities.KrakendExtraConfigSt{}
@@ -139,6 +140,22 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 		}
 		if len(realm.Data.CorsConf.AllowHeaders) > 0 {
 			result.ExtraConfig.SecurityCors.AllowHeaders = realm.Data.CorsConf.AllowHeaders
+		}
+	}
+
+	// metrics
+	if c.r.withMetrics {
+		if result.ExtraConfig == nil {
+			result.ExtraConfig = &entities.KrakendExtraConfigSt{}
+		}
+
+		result.ExtraConfig.TelemetryOpenTelemetry.ServiceName = "api-gw"
+		result.ExtraConfig.TelemetryOpenTelemetry.MetricReportingPeriod = 10
+		result.ExtraConfig.TelemetryOpenTelemetry.Exporters.Prometheus = []entities.KrakendExtraConfigTelemetryOpenTelemetryPrometheusItemSt{
+			{
+				Name: "main",
+				Port: 9090,
+			},
 		}
 	}
 

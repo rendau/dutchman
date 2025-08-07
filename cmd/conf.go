@@ -21,6 +21,7 @@ var conf = struct {
 	AuthPassword           string `mapstructure:"AUTH_PASSWORD"`
 	SessionRefreshToken    string `mapstructure:"SESSION_REFRESH_TOKEN"`
 	K8sRestartResourceType string `mapstructure:"K8S_RESTART_RESOURCE_TYPE"`
+	WithMetrics            bool   `mapstructure:"WITH_METRICS"`
 }{}
 
 func confLoad() {
@@ -34,6 +35,7 @@ func confLoad() {
 	viper.SetDefault("SWAG_SCHEMA", "https")
 	viper.SetDefault("REDIS_KEY_PREFIX", "dutchman_")
 	viper.SetDefault("K8S_RESTART_RESOURCE_TYPE", "daemonset")
+	viper.SetDefault("WITH_METRICS", "false")
 
 	viper.SetConfigFile("conf.yml")
 	_ = viper.ReadInConfig()

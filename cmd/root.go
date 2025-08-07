@@ -69,6 +69,7 @@ func Execute() {
 		conf.SessionRefreshToken,
 		conf.K8sRestartResourceType,
 		false,
+		conf.WithMetrics,
 	)
 
 	app.ucs.SetCore(app.core)

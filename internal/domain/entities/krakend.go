@@ -50,7 +50,8 @@ type KrakendEndpointExtraConfigValidationCelSt struct {
 }
 
 type KrakendExtraConfigSt struct {
-	SecurityCors *KrakendExtraConfigSecurityCorsSt `json:"security/cors,omitempty"`
+	SecurityCors           *KrakendExtraConfigSecurityCorsSt           `json:"security/cors,omitempty"`
+	TelemetryOpenTelemetry *KrakendExtraConfigTelemetryOpenTelemetrySt `json:"telemetry/opentelemetry,omitempty"`
 }
 
 type KrakendExtraConfigSecurityCorsSt struct {
@@ -60,4 +61,19 @@ type KrakendExtraConfigSecurityCorsSt struct {
 	AllowOrigins     []string `json:"allow_origins"`
 	AllowMethods     []string `json:"allow_methods"`
 	AllowHeaders     []string `json:"allow_headers"`
+}
+
+type KrakendExtraConfigTelemetryOpenTelemetrySt struct {
+	ServiceName           string `json:"service_name"`
+	MetricReportingPeriod int    `json:"metric_reporting_period"`
+	Exporters             struct {
+		Prometheus []KrakendExtraConfigTelemetryOpenTelemetryPrometheusItemSt `json:"prometheus"`
+	} `json:"exporters"`
+}
+
+type KrakendExtraConfigTelemetryOpenTelemetryPrometheusItemSt struct {
+	Name           string `json:"name"`
+	Port           int    `json:"port"`
+	ProcessMetrics bool   `json:"process_metrics"`
+	GoMetrics      bool   `json:"go_metrics"`
 }

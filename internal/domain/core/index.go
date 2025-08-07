@@ -18,8 +18,9 @@ type St struct {
 	authPassword        string
 	sessionRefreshToken string
 	testing             bool
+	withMetrics         bool
 
-	wg sync.WaitGroup
+	wg *sync.WaitGroup
 
 	Config   *Config
 	Session  *Session
@@ -39,6 +40,7 @@ func New(
 	sessionRefreshToken string,
 	k8sRestartResourceType string,
 	testing bool,
+	withMetrics bool,
 ) *St {
 	c := &St{
 		lg:                  lg,
@@ -48,7 +50,10 @@ func New(
 		authPassword:        authPassword,
 		sessionRefreshToken: sessionRefreshToken,
 		testing:             testing,
+		withMetrics:         withMetrics,
 	}
+
+	c.wg = &sync.WaitGroup{}
 
 	c.Config = NewConfig(c)
 	c.Session = NewSession(c)
