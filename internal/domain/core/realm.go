@@ -163,7 +163,7 @@ func (c *Realm) GenerateConf(ctx context.Context, id string) (*entities.KrakendS
 
 		result.ExtraConfig.TelemetryOpenTelemetry = &entities.KrakendExtraConfigTelemetryOpenTelemetrySt{}
 		result.ExtraConfig.TelemetryOpenTelemetry.ServiceName = "api-gw"
-		result.ExtraConfig.TelemetryOpenTelemetry.MetricReportingPeriod = 10
+		result.ExtraConfig.TelemetryOpenTelemetry.MetricReportingPeriod = 15
 		result.ExtraConfig.TelemetryOpenTelemetry.Exporters.Prometheus = []entities.KrakendExtraConfigTelemetryOpenTelemetryPrometheusItemSt{
 			{
 				Name: "main",
